@@ -1,6 +1,4 @@
-﻿using Template.Services.Shared;
-//using Template.Web.Hubs;
-using Template.Web.Infrastructure;
+﻿//using Template.Web.Hubs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,11 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.IO;
-using Template.Services;
-using Template.Web.SignalR.Hubs;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using Template.Services;
+using Template.Web.Infrastructure;
+using Template.Web.SignalR.Hubs;
 
 namespace Template.Web
 {
