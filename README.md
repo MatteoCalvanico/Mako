@@ -1,7 +1,7 @@
 # Mako
 
 ## What is Mako...
-Mako is a *free* and *open source* web app in **.NET**, and other technologies, for managing workerks, ships, and shifts in a naval port.
+Mako is a *free* and *open source* web app in **.NET**, and other technologies, for managing workers, ships, and shifts in a naval port.
 
 ## What Mako has to offer...
 These are all the features:
