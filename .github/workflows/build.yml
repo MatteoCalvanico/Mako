@@ -22,9 +22,11 @@ jobs:
           dotnet-version: "8.0"
 
       - name: Install Dependencies
+        working-directory: ./src/Template.Web
         run: dotnet restore
 
       - name: Build Project
+        working-directory: ./src/Template.Web
         run: dotnet build --no-restore --configuration Release
 
       #- name: Deploy GitHub Pages
