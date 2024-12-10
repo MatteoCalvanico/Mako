@@ -22,12 +22,10 @@ jobs:
           dotnet-version: "8.0"
 
       - name: Install Dependencies
-        working-directory: ./src/Template.Web
-        run: dotnet restore
+        run: dotnet restore ./src/Template.sln
 
       - name: Build Project
-        working-directory: ./src/Template.Web
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build ./src/Template.sln
 
       #- name: Deploy GitHub Pages
       #  uses: peaceiris/actions-gh-pages@v3
