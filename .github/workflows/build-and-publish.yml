@@ -25,13 +25,13 @@ jobs:
         run: dotnet restore ./Mako/Mako.sln
 
       - name: Build Project
-        run: dotnet build ./Mako/Mako.sln --configuration Release
+        run: dotnet build ./Mako/Mako.sln
 
-      - name: Publish Project
-        run: dotnet publish ./Mako/Mako.csproj -c Release -o ./output
-
-      - name: Deploy GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./output/wwwroot
+      #- name: Publish Project
+      #  run: dotnet publish ./Mako/Mako.csproj -c Release -o ./output
+#
+#- name: Deploy GitHub Pages
+#  uses: peaceiris/actions-gh-pages@v3
+#  with:
+#    github_token: ${{ secrets.GITHUB_TOKEN }}
+#    publish_dir: ./output/wwwroot
