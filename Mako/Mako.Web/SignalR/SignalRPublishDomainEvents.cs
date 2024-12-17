@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Mako.Web.SignalR.Hubs;
+﻿using Mako.Web.SignalR.Hubs;
 using Mako.Web.SignalR.Hubs.Events;
 using Microsoft.AspNetCore.SignalR;
+using System;
+using System.Threading.Tasks;
 
 namespace Mako.Web.SignalR
 {

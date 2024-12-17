@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mako", "Mako\Mako.csproj", "{AC84F8CC-1375-4118-8911-03613DE77B5F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mako", "Mako\Mako.csproj", "{4CA53747-2676-4735-9CED-C63D79AB9201}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mako.Web", "Mako.Web\Mako.Web.csproj", "{7BF3A6DE-437E-475F-ACF0-09E587DEFF31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AC84F8CC-1375-4118-8911-03613DE77B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AC84F8CC-1375-4118-8911-03613DE77B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AC84F8CC-1375-4118-8911-03613DE77B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AC84F8CC-1375-4118-8911-03613DE77B5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CA53747-2676-4735-9CED-C63D79AB9201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA53747-2676-4735-9CED-C63D79AB9201}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA53747-2676-4735-9CED-C63D79AB9201}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA53747-2676-4735-9CED-C63D79AB9201}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BF3A6DE-437E-475F-ACF0-09E587DEFF31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BF3A6DE-437E-475F-ACF0-09E587DEFF31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BF3A6DE-437E-475F-ACF0-09E587DEFF31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BF3A6DE-437E-475F-ACF0-09E587DEFF31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D32B55E8-D3A3-43A1-B32B-AA388868D70A}
 	EndGlobalSection
 EndGlobal

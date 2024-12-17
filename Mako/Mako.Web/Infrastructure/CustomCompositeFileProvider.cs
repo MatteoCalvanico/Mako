@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.FileProviders.Composite;
+using Microsoft.Extensions.Primitives;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.FileProviders.Composite;
-using Microsoft.Extensions.Primitives;
 
 namespace Mako.Web.Infrastructure
 {

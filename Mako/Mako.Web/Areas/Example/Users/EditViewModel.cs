@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Mako.Web.Infrastructure;
+using System;
 using System.ComponentModel.DataAnnotations;
-using Mako.Web.Infrastructure;
-using Template.Services.Shared;
+using Mako.Services.Shared;
 
 namespace Mako.Web.Areas.Example.Users
 {

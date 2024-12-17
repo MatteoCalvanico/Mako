@@ -19,7 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Template\Template.csproj" />
+	  <ProjectReference Include="..\Mako\Mako.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

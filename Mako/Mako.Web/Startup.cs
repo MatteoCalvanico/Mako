@@ -1,7 +1,4 @@
 ﻿//using Mako.Web.Hubs;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using Mako.Web.Infrastructure;
 using Mako.Web.SignalR.Hubs;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -12,7 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Template.Services;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using Mako.Services;
 
 namespace Mako.Web
 {
@@ -32,7 +32,7 @@ namespace Mako.Web
         {
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
-            services.AddDbContext<TemplateDbContext>(options =>
+            services.AddDbContext<MakoDbContext>(options =>
             {
                 options.UseInMemoryDatabase(databaseName: "Template");
             });

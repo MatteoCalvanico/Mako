@@ -1,6 +1,6 @@
 ﻿using Mako.Web.SignalR;
 using Microsoft.Extensions.DependencyInjection;
-using Template.Services.Shared;
+using Mako.Services.Shared;
 
 namespace Mako.Web
 {

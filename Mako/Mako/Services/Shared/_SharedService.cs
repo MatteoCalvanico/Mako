@@ -2,9 +2,9 @@
 {
     public partial class SharedService
     {
-        TemplateDbContext _dbContext;
+        MakoDbContext _dbContext;
 
-        public SharedService(TemplateDbContext dbContext)
+        public SharedService(MakoDbContext dbContext)
         {
             _dbContext = dbContext;
         }

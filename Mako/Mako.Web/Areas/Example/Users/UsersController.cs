@@ -1,12 +1,12 @@
-using System;
-using System.Threading.Tasks;
 using Mako.Web.Infrastructure;
 using Mako.Web.SignalR;
 using Mako.Web.SignalR.Hubs.Events;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Template.Infrastructure.AspNetCore;
-using Template.Services.Shared;
+using System;
+using System.Threading.Tasks;
+using Mako.Infrastructure.AspNetCore;
+using Mako.Services.Shared;
 
 namespace Mako.Web.Areas.Example.Users
 {

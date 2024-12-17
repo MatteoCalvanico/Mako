@@ -1,12 +1,12 @@
 ﻿// Versione 1.0.0
 
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Mako.Web.Infrastructure
 {

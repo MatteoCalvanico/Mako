@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using Mako.Services;
+﻿using Mako.Services;
 using Mako.Services.Shared;
+using System;
+using System.Linq;
 
 namespace Mako.Infrastructure
 {
     public class DataGenerator
     {
-        public static void InitializeUsers(TemplateDbContext context)
+        public static void InitializeUsers(MakoDbContext context)
         {
             if (context.Users.Any())
             {

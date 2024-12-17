@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Mako.Web.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Template.Infrastructure;
-using Template.Services.Shared;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Mako.Infrastructure;
+using Mako.Services.Shared;
 
 namespace Mako.Web.Features.Login
 {

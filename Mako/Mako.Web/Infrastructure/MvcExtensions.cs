@@ -1,9 +1,9 @@
-﻿using System.Globalization;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Globalization;
+using System.Linq;
 
 namespace Mako.Web.Infrastructure
 {

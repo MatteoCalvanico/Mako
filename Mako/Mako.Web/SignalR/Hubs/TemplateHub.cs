@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
+using System;
 
 namespace Mako.Web.SignalR.Hubs
 {

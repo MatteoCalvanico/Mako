@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Mako.Web.Infrastructure;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Mako.Web.Infrastructure;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Template.Services.Shared;
+using Mako.Services.Shared;
 
 namespace Mako.Web.Areas.Example.Users
 {
@@ -34,7 +34,7 @@ namespace Mako.Web.Areas.Example.Users
             return new UsersIndexQuery
             {
                 Filter = Filter,
-                Paging = new Template.Infrastructure.Paging
+                Paging = new Mako.Infrastructure.Paging
                 {
                     OrderBy = OrderBy,
                     OrderByDescending = OrderByDescending,

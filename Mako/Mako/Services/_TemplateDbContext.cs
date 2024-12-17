@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mako.Services
 {
-    public class TemplateDbContext : DbContext
+    public class MakoDbContext : DbContext
     {
-        public TemplateDbContext()
+        public MakoDbContext()
         {
         }
 
-        public TemplateDbContext(DbContextOptions<TemplateDbContext> options) : base(options)
+        public MakoDbContext(DbContextOptions<MakoDbContext> options) : base(options)
         {
             DataGenerator.InitializeUsers(this);
         }
