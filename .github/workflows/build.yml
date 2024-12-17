@@ -22,10 +22,10 @@ jobs:
           dotnet-version: "8.0"
 
       - name: Install Dependencies
-        run: dotnet restore ./src/Template.sln
+        run: dotnet restore ./Mako/Mako.sln
 
       - name: Build Project
-        run: dotnet build ./src/Template.sln
+        run: dotnet build ./Mako/Mako.sln
 
       #- name: Deploy GitHub Pages
       #  uses: peaceiris/actions-gh-pages@v3
