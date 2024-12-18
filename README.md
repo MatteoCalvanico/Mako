@@ -1,4 +1,6 @@
-# Mako
+<p align = "center">
+    <img src="./readme images/logo_scritta.svg"/>
+</p>
 
 ## What is Mako...
 Mako is a *free* and *open source* web app in **.NET**, and other technologies, for managing workers, ships, and shifts in a naval port.
