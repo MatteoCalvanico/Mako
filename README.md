@@ -1,5 +1,5 @@
 <p align = "center">
-    <img src="./readme images/logo_scritta.svg"/>
+    <img src="./readme images/logo_color_scritta.svg"/>
 </p>
 
 ## What is Mako...
