@@ -4,3 +4,17 @@
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 @import "site.layout.scss";
+
+// Variables
+$primary_light: #F8F9FA;
+$secondary_light: #E7F1FF;
+$tertiary_light: #D3E0F2;
+$accent_light: #0E76FE;
+
+$primary_dark: #171717;
+$secondary_dark: #1E242C;
+$tertiary_dark: #2B323C;
+$accent_dark: #5C97E4;
+
+$warning: #FFC107;
+$danger: #DC3545;

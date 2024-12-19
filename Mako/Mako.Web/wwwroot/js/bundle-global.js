@@ -1,6 +1,6 @@
 /*!
-  * Bootstrap v5.3.2 (https://getbootstrap.com/)
-  * Copyright 2011-2023 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Bootstrap v5.3.3 (https://getbootstrap.com/)
+  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 (function (global, factory) {
@@ -210,7 +210,6 @@
   const reflow = element => {
     element.offsetHeight; // eslint-disable-line no-unused-expressions
   };
-
   const getjQuery = () => {
     if (window.jQuery && !document.body.hasAttribute('data-bs-no-jquery')) {
       return window.jQuery;
@@ -648,7 +647,7 @@
    * Constants
    */
 
-  const VERSION = '5.3.2';
+  const VERSION = '5.3.3';
 
   /**
    * Class definition
@@ -729,9 +728,9 @@
       if (hrefAttribute.includes('#') && !hrefAttribute.startsWith('#')) {
         hrefAttribute = `#${hrefAttribute.split('#')[1]}`;
       }
-      selector = hrefAttribute && hrefAttribute !== '#' ? parseSelector(hrefAttribute.trim()) : null;
+      selector = hrefAttribute && hrefAttribute !== '#' ? hrefAttribute.trim() : null;
     }
-    return selector;
+    return selector ? selector.split(',').map(sel => parseSelector(sel)).join(',') : null;
   };
   const SelectorEngine = {
     find(selector, element = document.documentElement) {
@@ -3916,7 +3915,6 @@
     // if false, we use the backdrop helper without adding any element to the dom
     rootElement: 'body' // give the choice to place backdrop under different elements
   };
-
   const DefaultType$8 = {
     className: 'string',
     clickCallback: '(function|null)',
@@ -4041,7 +4039,6 @@
     autofocus: true,
     trapElement: null // The element to trap focus inside of
   };
-
   const DefaultType$7 = {
     autofocus: 'boolean',
     trapElement: 'element'
@@ -4768,7 +4765,10 @@
     br: [],
     col: [],
     code: [],
+    dd: [],
     div: [],
+    dl: [],
+    dt: [],
     em: [],
     hr: [],
     h1: [],
@@ -6314,7 +6314,7 @@
 //# sourceMappingURL=bootstrap.bundle.js.map
 
 /*!
- * Toastify js 1.11.1
+ * Toastify js 1.12.0
  * https://github.com/apvarun/toastify-js
  * @license MIT licensed
  *
@@ -6333,7 +6333,7 @@
       return new Toastify.lib.init(options);
     },
     // Library version
-    version = "1.11.1";
+    version = "1.12.0";
 
   // Set the default global options
   Toastify.defaults = {
@@ -6358,6 +6358,7 @@
     },
     offset: {x: 0, y: 0},
     escapeMarkup: true,
+    ariaLive: 'polite',
     style: {background: ''}
   };
 
@@ -6398,8 +6399,11 @@
       this.options.onClick = options.onClick || Toastify.defaults.onClick; // Callback after click
       this.options.offset = options.offset || Toastify.defaults.offset; // toast offset
       this.options.escapeMarkup = options.escapeMarkup !== undefined ? options.escapeMarkup : Toastify.defaults.escapeMarkup;
+      this.options.ariaLive = options.ariaLive || Toastify.defaults.ariaLive;
       this.options.style = options.style || Toastify.defaults.style;
-      this.options.style.background = Toastify.defaults.backgroundColor || options.backgroundColor;
+      if(options.backgroundColor) {
+        this.options.style.background = options.backgroundColor;
+      }
 
       // Returning the current object for chaining functions
       return this;
@@ -6443,6 +6447,11 @@
         divElement.style[property] = this.options.style[property];
       }
 
+      // Announce the toast to screen readers
+      if (this.options.ariaLive) {
+        divElement.setAttribute('aria-live', this.options.ariaLive)
+      }
+
       // Adding the toast message/node
       if (this.options.node && this.options.node.nodeType === Node.ELEMENT_NODE) {
         // If we have a valid node, we insert it
@@ -6473,10 +6482,11 @@
       // Adding a close icon to the toast
       if (this.options.close === true) {
         // Create a span for close element
-        var closeElement = document.createElement("span");
-        closeElement.innerHTML = "&#10006;";
-
+        var closeElement = document.createElement("button");
+        closeElement.type = "button";
+        closeElement.setAttribute("aria-label", "Close");
         closeElement.className = "toast-close";
+        closeElement.innerHTML = "&#10006;";
 
         // Triggering the removal of toast from DOM on close click
         closeElement.addEventListener(
@@ -6578,7 +6588,7 @@
       var rootElement;
       if (typeof this.options.selector === "string") {
         rootElement = document.getElementById(this.options.selector);
-      } else if (this.options.selector instanceof HTMLElement || this.options.selector instanceof ShadowRoot) {
+      } else if (this.options.selector instanceof HTMLElement || (typeof ShadowRoot !== 'undefined' && this.options.selector instanceof ShadowRoot)) {
         rootElement = this.options.selector;
       } else {
         rootElement = document.body;
