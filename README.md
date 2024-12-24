@@ -15,3 +15,11 @@ These are all the features:
 Check out Mako's Mockups in Figma:
 - [Operator view](https://www.figma.com/design/wp4ofGMWtQCbbOWIsLGGwD/Operatore-Mockup?node-id=0-1&t=vPq89MnYvnbvDabX-1)
 - [Worker view](https://www.figma.com/design/SJbFipIt2abZ3dJBM9sFSn/Operai-Mockup?node-id=0-1&t=R42TsY5lXLRRKSUv-1)
+
+## Project's DB
+Check out Mako's database diagram
+<p align = "center">
+    <img src="https://github.com/user-attachments/assets/53246cf3-fb92-439d-a90e-7e076babd543"/>
+</p>
+
+[Or check out dbdiagram.io](https://dbdiagram.io/d/Mako-DB-676a7daf5406798ef78a3dde)
