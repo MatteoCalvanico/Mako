@@ -1,5 +1,5 @@
 <p align = "center">
-    <img src="./Mako/Mako.Web/wwwroot/images/logo_color.svg"/>
+    <img src="./Mako/Mako.Web/wwwroot/images/logo_color_scritta.svg"/>
 </p>
 
 ## What is Mako...
