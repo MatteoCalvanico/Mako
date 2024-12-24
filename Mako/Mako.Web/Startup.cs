@@ -1,6 +1,5 @@
 ﻿//using Mako.Web.Hubs;
 using Mako.Web.Infrastructure;
-using Mako.Web.SignalR.Hubs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -110,7 +109,6 @@ namespace Mako.Web
             app.UseEndpoints(endpoints =>
             {
                 // ROUTING PER HUB
-                endpoints.MapHub<TemplateHub>("/templateHub");
 
                 endpoints.MapAreaControllerRoute("Example", "Example", "Example/{controller=Users}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("default", "{controller=Login}/{action=Login}");

@@ -1,6 +1,4 @@
 using Mako.Web.Infrastructure;
-using Mako.Web.SignalR;
-using Mako.Web.SignalR.Hubs.Events;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using System;
@@ -14,13 +12,11 @@ namespace Mako.Web.Areas.Example.Users
     public partial class UsersController : AuthenticatedBaseController
     {
         private readonly SharedService _sharedService;
-        private readonly IPublishDomainEvents _publisher;
         private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
 
-        public UsersController(SharedService sharedService, IPublishDomainEvents publisher, IStringLocalizer<SharedResource> sharedLocalizer)
+        public UsersController(SharedService sharedService, IStringLocalizer<SharedResource> sharedLocalizer)
         {
             _sharedService = sharedService;
-            _publisher = publisher;
             _sharedLocalizer = sharedLocalizer;
 
             ModelUnbinderHelpers.ModelUnbinders.Add(typeof(IndexViewModel), new SimplePropertyModelUnbinder());
@@ -69,14 +65,6 @@ namespace Mako.Web.Areas.Example.Users
                     model.Id = await _sharedService.Handle(model.ToAddOrUpdateUserCommand());
 
                     Alerts.AddSuccess(this, "Informazioni aggiornate");
-
-                    // Esempio lancio di un evento SignalR
-                    await _publisher.Publish(new NewMessageEvent
-                    {
-                        IdGroup = model.Id.Value,
-                        IdUser = model.Id.Value,
-                        IdMessage = Guid.NewGuid()
-                    });
                 }
                 catch (Exception e)
                 {

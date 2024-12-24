@@ -1,5 +1,4 @@
-﻿using Mako.Web.SignalR;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Mako.Services.Shared;
 
 namespace Mako.Web
@@ -10,9 +9,6 @@ namespace Mako.Web
         {
             // Registration of all the database services you have
             container.AddScoped<SharedService>();
-
-            // Registration of SignalR events
-            container.AddScoped<IPublishDomainEvents, SignalrPublishDomainEvents>();
         }
     }
 }
