@@ -57,16 +57,5 @@
     },
     "includeInProject": true,
     "sourceMap": true
-  },
-  {
-    "outputFileName": "wwwroot/js/bundle-signalr.js",
-    "inputFiles": [
-      "node_modules/@microsoft/signalr/dist/browser/signalr.js"
-    ],
-    "minify": {
-      "enabled": false
-    },
-    "includeInProject": true,
-    "sourceMap": true
   }
 ]
