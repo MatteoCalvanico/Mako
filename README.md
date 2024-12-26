@@ -14,7 +14,7 @@ These are all the features:
 ## Start-up
 - Open project with *Visual Studio 2022*
 - Install packages by opening the context menu by right-clicking on *package.json* in *Mako.Web*
-- Create bundles using the *Bundle & Minifier 2022* extension by right-clicking on *Mako.Web*
+- Update bundles using the *Bundle & Minifier 2022* extension by right-clicking on *Mako.Web*
 
 ## Project's Mockup
 Check out Mako's Mockups in Figma:
