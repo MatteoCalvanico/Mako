@@ -16,5 +16,6 @@ namespace Mako.Services
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Worker> Workers { get; set; }
     }
 }
