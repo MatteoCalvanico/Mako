@@ -42,8 +42,8 @@ namespace Mako.Services.Shared
         {
             public Guid Id { get; set; }
             public string Email { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
+
+            public Worker Cf { get; set; }
         }
     }
 
@@ -56,9 +56,9 @@ namespace Mako.Services.Shared
     {
         public Guid Id { get; set; }
         public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string NickName { get; set; }
+
+        public Worker Cf { get; set; }
+
     }
 
     public class CheckLoginCredentialsQuery
@@ -120,8 +120,7 @@ namespace Mako.Services.Shared
                     {
                         Id = x.Id,
                         Email = x.Email,
-                        FirstName = x.FirstName,
-                        LastName = x.LastName
+                        Cf = x.Cf,
                     })
                     .ToArrayAsync(),
                 Count = await queryable.CountAsync()
@@ -141,9 +140,7 @@ namespace Mako.Services.Shared
                 {
                     Id = x.Id,
                     Email = x.Email,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    NickName = x.NickName
+                    Cf = x.Cf
                 })
                 .FirstOrDefaultAsync();
         }
@@ -167,9 +164,7 @@ namespace Mako.Services.Shared
             {
                 Id = user.Id,
                 Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                NickName = user.NickName
+                Cf = user.Cf
             };
         }
     }

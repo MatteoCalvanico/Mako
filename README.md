@@ -11,6 +11,11 @@ These are all the features:
 - View for workers with the ability to see their shifts and request holidays, permits, etc.
 - View for operators with the possibility of checking incoming boats (with all the necessary information), creating/managing the various shifts of unloading and loading goods, and more.
 
+## Start-up
+- Open project with *Visual Studio 2022*
+- Install packages by opening the context menu by right-clicking on *package.json* in *Mako.Web*
+- Update bundles using the *Bundle & Minifier 2022* extension by right-clicking on *Mako.Web*
+
 ## Project's Mockup
 Check out Mako's Mockups in Figma:
 - [Operator view](https://www.figma.com/design/wp4ofGMWtQCbbOWIsLGGwD/Operatore-Mockup?node-id=0-1&t=vPq89MnYvnbvDabX-1)

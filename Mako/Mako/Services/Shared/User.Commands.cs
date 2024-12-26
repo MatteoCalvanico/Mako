@@ -9,9 +9,7 @@ namespace Mako.Services.Shared
     {
         public Guid? Id { get; set; }
         public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string NickName { get; set; }
+        public Worker Cf { get; set; }
     }
 
     public partial class SharedService
@@ -31,9 +29,7 @@ namespace Mako.Services.Shared
                 _dbContext.Users.Add(user);
             }
 
-            user.FirstName = cmd.FirstName;
-            user.LastName = cmd.LastName;
-            user.NickName = cmd.NickName;
+            user.Cf = cmd.Cf;
 
             await _dbContext.SaveChangesAsync();
 
