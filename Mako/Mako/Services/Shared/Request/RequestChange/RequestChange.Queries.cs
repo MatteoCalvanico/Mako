@@ -8,7 +8,7 @@ namespace Mako.Services.Shared
 {
     public class RequestChangeSelectQuery
     {
-        public string Sender { get; set; }
+        public Guid Id { get; set; }
         public string Filter { get; set; }
     }
 
@@ -39,7 +39,7 @@ namespace Mako.Services.Shared
         public string Motivation { get; set; }
         public RequestState State { get; set; }
         public DateTime SentDate { get; set; }
-        public string Sender { get; set; }
+        public Worker Sender { get; set; }
     }
 
     public partial class SharedService
@@ -48,9 +48,9 @@ namespace Mako.Services.Shared
         {
             var queryable = _dbContext.RequestsChanges.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(qry.Sender))
+            if (!string.IsNullOrWhiteSpace(qry.Id.ToString()))
             {
-                queryable = queryable.Where(x => x.Sender == qry.Sender);
+                queryable = queryable.Where(x => x.Id == qry.Id);
             }
 
             if (!string.IsNullOrWhiteSpace(qry.Filter))

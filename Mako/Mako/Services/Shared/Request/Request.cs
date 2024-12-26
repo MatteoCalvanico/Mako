@@ -22,9 +22,7 @@ namespace Mako.Services.Shared
 
         [Required]
         [ForeignKey("Worker")]
-        public string Sender { get; set; }
-
-        public Worker Worker { get; set; }
+        public Worker Sender { get; set; }
     }
 
     public enum RequestState
