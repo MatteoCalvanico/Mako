@@ -27,7 +27,7 @@ namespace Mako.Services.Shared
 
             public string surname;
 
-            // TODO: public ICollection<Role> roles { get; set; };
+            public ICollection<Role> roles { get; set; }
         }
     }
 
@@ -44,7 +44,7 @@ namespace Mako.Services.Shared
 
         public string surname;
 
-        // TODO: public ICollection<Role> roles { get; set; };
+        public ICollection<Role> roles { get; set; }
     }
 
 
@@ -73,7 +73,7 @@ namespace Mako.Services.Shared
                     cf = x.cf,
                     name = x.name,
                     surname = x.surname,
-                    // roles = x.roles
+                    roles = x.roles
                 })
                 .ToArrayAsync(),
                 Count = await queryable.CountAsync()
@@ -94,7 +94,7 @@ namespace Mako.Services.Shared
                     cf = x.cf,
                     name = x.name,
                     surname = x.surname,
-                    // roles = x.roles
+                    roles = x.roles
                 })
                 .FirstOrDefaultAsync();
         }
