@@ -19,5 +19,7 @@ namespace Mako.Services
         public DbSet<Shift> Shifts { get; set; }
         public DbSet<Ship> Ships { get; set; }
         public DbSet<Worker> Workers { get; set; }
+        public DbSet<RequestHoliday> RequestHoliday { get; set; }
+        public DbSet<RequestChange> RequestChange { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace Mako.Services.Shared
         public DateOnly date { get; set; }
         public TimeOnly startHour { get; set; }
         public TimeOnly endHour { get; set; }
-        //public Worker workers { get; set; }
+        public Worker workers { get; set; }
         public Ship ship { get; set; }
     }
 
