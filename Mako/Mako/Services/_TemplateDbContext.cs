@@ -16,6 +16,8 @@ namespace Mako.Services
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
+        public DbSet<Ship> Ships { get; set; }
         public DbSet<Worker> Workers { get; set; }
     }
 }
