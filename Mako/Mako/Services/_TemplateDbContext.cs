@@ -16,5 +16,6 @@ namespace Mako.Services
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Certification> Certifications{ get; set; }
     }
 }
