@@ -22,6 +22,7 @@ namespace Mako.Services
         public DbSet<RequestHoliday> RequestsHolidays { get; set; }
         public DbSet<RequestChange> RequestsChanges { get; set; }
         public DbSet<Certification> Certifications{ get; set; }
+        public DbSet<JoinCertification> JoinCertifications { get; set; }
         public DbSet<Role> Roles { get; set; }
     }
 }
