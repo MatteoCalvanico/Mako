@@ -62,13 +62,11 @@ namespace Mako.Web.Areas.Example.Users
         {
             this.Id = userIndexDTO.Id;
             this.Email = userIndexDTO.Email;
-            this.FirstName = userIndexDTO.FirstName;
-            this.LastName = userIndexDTO.LastName;
+            this.Cf = userIndexDTO.Cf;
         }
 
         public Guid Id { get; set; }
         public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public Worker Cf { get; set; }
     }
 }
