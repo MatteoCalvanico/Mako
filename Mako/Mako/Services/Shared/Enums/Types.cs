@@ -17,6 +17,9 @@ namespace Mako.Services.Shared.Enums
 
     public enum CertificationTypes
     {
+        Explosives, 
+        Weapons, 
+        Chemicals,
         None = -1,
     }
 }

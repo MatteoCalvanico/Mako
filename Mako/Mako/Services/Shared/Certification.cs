@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mako.Services.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,6 @@ namespace Mako.Services.Shared
     public class Certification
     {
         public int id { get; set; }
-        public enum type { explosives, weapons, chemicals}
+        public CertificationTypes types { get; set; }
     }
 }

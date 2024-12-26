@@ -1,4 +1,5 @@
 ﻿using Mako.Infrastructure;
+using Mako.Services.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace Mako.Services.Shared
         public class Certification
         {
             public int Id { get; set; }
-            public enum type { explosives, weapons, chemicals }
+            public CertificationTypes types { get; set; }
         }
     }
 
@@ -35,7 +36,7 @@ namespace Mako.Services.Shared
     public class CertificationsDetailDTO
     {
         public int Id { get; set; }
-        public enum type { explosives, weapons, chemicals }
+        public CertificationTypes types { get; set; }
     }
 
     public partial class SharedService
@@ -66,7 +67,8 @@ namespace Mako.Services.Shared
                 .Where(x => x.id == qry.Id)
                 .Select(x => new CertificationsDetailDTO
                 {
-                    Id = x.id
+                    Id = x.id,
+                    types = x.types
                 })
                 .FirstOrDefaultAsync();
         }
