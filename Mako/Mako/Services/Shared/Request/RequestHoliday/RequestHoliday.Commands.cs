@@ -17,7 +17,7 @@ namespace Mako.Services.Shared
         [Required]
         public string Motivation { get; set; }
         [Required]
-        public string Sender { get; set; }
+        public Worker Sender { get; set; }
         public RequestState State { get; set; } = RequestState.Unmanaged;
     }
 
