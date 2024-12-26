@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mako.Services.Shared
 {
     public class ShiftsSelectQuery
     {
         public Guid IdCurrentShift { get; set; }
-        public String filter { get; set; }
+        public String Filter { get; set; }
     }
 
     public class ShiftsSelectDTO

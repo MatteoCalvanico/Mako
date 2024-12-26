@@ -1,18 +1,14 @@
-﻿using Mako.Infrastructure;
-using Mako.Services.Shared.Enums;
+﻿using Mako.Services.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using static Mako.Services.Shared.CertificationsSelectDTO;
 
 namespace Mako.Services.Shared
 {
     public class CertificationsSelectQuery
     {
-        public int idCurrentCertification { get; set; }
+        public int IdCurrentCertification { get; set; }
         public string Filter { get; set; }
     }
 
@@ -24,7 +20,7 @@ namespace Mako.Services.Shared
         public class Certification
         {
             public int Id { get; set; }
-            public CertificationTypes types { get; set; }
+            public CertificationTypes Types { get; set; }
         }
     }
 
@@ -36,7 +32,7 @@ namespace Mako.Services.Shared
     public class CertificationsDetailDTO
     {
         public int Id { get; set; }
-        public CertificationTypes types { get; set; }
+        public CertificationTypes Types { get; set; }
     }
 
     public partial class SharedService
@@ -44,10 +40,10 @@ namespace Mako.Services.Shared
         public async Task<CertificationsSelectDTO> Query(CertificationsSelectQuery qry)
         {
             var queryable = _dbContext.Certifications
-                .Where(x => x.id != qry.idCurrentCertification);
+                .Where(x => x.Id != qry.IdCurrentCertification);
             if (string.IsNullOrWhiteSpace(qry.Filter) == false)
             {
-                queryable = queryable.Where(x => x.id.ToString() == qry.Filter);
+                queryable = queryable.Where(x => x.Id.ToString() == qry.Filter);
             }
 
             return new CertificationsSelectDTO
@@ -55,7 +51,7 @@ namespace Mako.Services.Shared
                 Certifications = await queryable
                 .Select(x => new CertificationsSelectDTO.Certification
                 {
-                    Id = x.id
+                    Id = x.Id
                 })
                 .ToArrayAsync(),
                 Count = await queryable.CountAsync(),
@@ -64,11 +60,11 @@ namespace Mako.Services.Shared
         public async Task<CertificationsDetailDTO> Query(CertificationsDetailQuery qry)
         {
             return await _dbContext.Certifications
-                .Where(x => x.id == qry.Id)
+                .Where(x => x.Id == qry.Id)
                 .Select(x => new CertificationsDetailDTO
                 {
-                    Id = x.id,
-                    types = x.types
+                    Id = x.Id,
+                    Types = x.Types
                 })
                 .FirstOrDefaultAsync();
         }

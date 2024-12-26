@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mako.Services.Shared
@@ -38,13 +37,13 @@ namespace Mako.Services.Shared
 
     public class WorkersDetailDTO
     {
-        public string cf;
+        public string Cf;
 
-        public string name;
+        public string Name;
 
-        public string surname;
+        public string Surname;
 
-        public ICollection<Role> roles { get; set; }
+        public ICollection<Role> Roles { get; set; }
     }
 
 
@@ -58,11 +57,11 @@ namespace Mako.Services.Shared
         public async Task<WorkersSelectDTO> Query(WorkersSelectQuery qry)
         {
             var queryable = _dbContext.Workers
-                .Where(x => x.cf != qry.IdCurrentWorker);
+                .Where(x => x.Cf != qry.IdCurrentWorker);
 
             if (string.IsNullOrWhiteSpace(qry.Filter) == false)
             {
-                queryable = queryable.Where(x => x.cf.Contains(qry.Filter, StringComparison.OrdinalIgnoreCase));
+                queryable = queryable.Where(x => x.Cf.Contains(qry.Filter, StringComparison.OrdinalIgnoreCase));
             }
 
             return new WorkersSelectDTO
@@ -70,10 +69,10 @@ namespace Mako.Services.Shared
                 Workers = await queryable
                 .Select(x => new WorkersSelectDTO.Worker
                 {
-                    cf = x.cf,
-                    name = x.name,
-                    surname = x.surname,
-                    roles = x.roles
+                    cf = x.Cf,
+                    name = x.Name,
+                    surname = x.Surname,
+                    roles = x.Roles
                 })
                 .ToArrayAsync(),
                 Count = await queryable.CountAsync()
@@ -88,13 +87,13 @@ namespace Mako.Services.Shared
         public async Task<WorkersDetailDTO> Query(WorkersDetailQuery qry)
         {
             return await _dbContext.Workers
-                .Where(x => x.cf == qry.Cf)
+                .Where(x => x.Cf == qry.Cf)
                 .Select(x => new WorkersDetailDTO
                 {
-                    cf = x.cf,
-                    name = x.name,
-                    surname = x.surname,
-                    roles = x.roles
+                    Cf = x.Cf,
+                    Name = x.Name,
+                    Surname = x.Surname,
+                    Roles = x.Roles
                 })
                 .FirstOrDefaultAsync();
         }
