@@ -22,7 +22,8 @@ namespace Mako.Services.Shared
 
         [Required]
         [ForeignKey("Worker")]
-        public Worker Sender { get; set; }
+        public string WorkerCf { get; set; } // Foreign key to Worker
+        public Worker Sender { get; set; } // Navigation property to Worker
     }
 
     public enum RequestState
