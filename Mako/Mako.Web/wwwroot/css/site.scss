@@ -43,6 +43,19 @@ $accent_dark: #5C97E4;
 $warning: #FFC107;
 $danger: #DC3545;
 
+// Navbar style
+.capsule {
+    background-color: $accent_light;
+    border-radius: 50px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+
 
 // Login style - TODO: NEED TO BE MOVED IN OTHER FILE
 body {
