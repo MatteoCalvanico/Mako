@@ -22,4 +22,25 @@ namespace Mako.Services.Shared.Enums
         Chemicals,
         None = -1,
     }
+
+    public enum LicenceTypes
+    {
+        A,
+        A1,
+        A2,
+        AM,
+        B,
+        B1,
+        BE,
+        C,
+        C1,
+        CE,
+        C1E,
+        D,
+        D1,
+        DE,
+        D1E,
+        K,
+        None = -1,
+    }
 }

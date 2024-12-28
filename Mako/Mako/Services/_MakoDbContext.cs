@@ -23,6 +23,8 @@ namespace Mako.Services
         public DbSet<RequestChange> RequestsChanges { get; set; }
         public DbSet<Certification> Certifications{ get; set; }
         public DbSet<JoinCertification> JoinCertifications { get; set; }
+        public DbSet<JoinLicence> JoinLicences { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Licence> Licences { get; set; }
     }
 }
