@@ -14,6 +14,7 @@ namespace Mako.Infrastructure
                 return;   // Data was already seeded
             }
 
+            // Passwords need to be converted in SHA-256 base64.
             context.Users.AddRange(
                 new User
                 {
@@ -25,8 +26,8 @@ namespace Mako.Infrastructure
                 new User
                 {
                     Id = Guid.Parse("a030ee81-31c7-47d0-9309-408cb5ac0ac7"), // Forced to specific Guid for tests
-                    Email = "email2@test.it",
-                    Password = "Uy6qvZV0iA2/drm4zACDLCCm7BE9aCKZVQ16bg80XiU=", // SHA-256 of text "Test"
+                    Email = "admin",
+                    Password = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", // SHA-256 of text "Test"
                     Cf = null,
                 },
                 new User
