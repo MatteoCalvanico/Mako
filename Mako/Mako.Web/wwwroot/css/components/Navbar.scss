@@ -1,0 +1,11 @@
+// Navbar custom SCSS
+@import "../site.variables.scss";
+
+// Active links need a blue underline and to be in bold
+.nav-link.active {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: $accent_light;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 4px;
+}
