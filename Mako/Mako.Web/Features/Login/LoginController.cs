@@ -46,7 +46,8 @@ namespace Mako.Web.Features.Login
             if (string.IsNullOrWhiteSpace(returnUrl) == false)
                 return Redirect(returnUrl);
 
-            return RedirectToAction(MVC.Example.Users.Index());
+            //return RedirectToAction(MVC.Example.Users.Index());
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -57,7 +58,8 @@ namespace Mako.Web.Features.Login
                 if (string.IsNullOrWhiteSpace(returnUrl) == false)
                     return Redirect(returnUrl);
 
-                return RedirectToAction(MVC.Example.Users.Index());
+                //return RedirectToAction(MVC.Example.Users.Index());
+                return RedirectToAction("Index", "Home");
             }
 
             var model = new LoginViewModel

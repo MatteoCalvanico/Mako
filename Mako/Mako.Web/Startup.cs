@@ -12,6 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Mako.Services;
+using System.Threading.Tasks;
 
 namespace Mako.Web
 {
@@ -111,6 +112,8 @@ namespace Mako.Web
                 // ROUTING PER HUB
 
                 endpoints.MapAreaControllerRoute("Example", "Example", "Example/{controller=Users}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute("Home", "{controller=Home}/{action=Index}");
                 endpoints.MapControllerRoute("default", "{controller=Login}/{action=Login}");
             });
         }
