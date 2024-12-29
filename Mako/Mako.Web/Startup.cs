@@ -33,7 +33,7 @@ namespace Mako.Web
 
             services.AddDbContext<MakoDbContext>(options =>
             {
-                options.UseInMemoryDatabase(databaseName: "Template");
+                options.UseInMemoryDatabase(databaseName: "MakoDB");
             });
 
             // SERVICES FOR AUTHENTICATION

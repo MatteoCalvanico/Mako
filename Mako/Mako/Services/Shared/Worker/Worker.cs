@@ -13,7 +13,5 @@ namespace Mako.Services.Shared
         public string Name { get; set; }
 
         public string Surname { get; set; }
-
-        public ICollection<Role> Roles { get; set; }
     }
 }

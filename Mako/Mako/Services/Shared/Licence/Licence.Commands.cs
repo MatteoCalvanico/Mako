@@ -30,8 +30,6 @@ namespace Mako.Services.Shared
                 };
                 _dbContext.Licences.Add(licence);
             }
-            
-            licence.Id = cmd.Id;
 
             await _dbContext.SaveChangesAsync();
 

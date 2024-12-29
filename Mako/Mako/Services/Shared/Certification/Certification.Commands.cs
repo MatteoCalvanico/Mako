@@ -30,8 +30,6 @@ namespace Mako.Services.Shared
                 _dbContext.Certifications.Add(certification);
             }
 
-            certification.Id = cmd.Id;
-
             await _dbContext.SaveChangesAsync();
 
             return certification.Id;

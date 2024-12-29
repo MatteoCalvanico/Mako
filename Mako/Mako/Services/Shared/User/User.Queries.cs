@@ -43,7 +43,7 @@ namespace Mako.Services.Shared
             public Guid Id { get; set; }
             public string Email { get; set; }
 
-            public Worker Cf { get; set; }
+            public string Cf { get; set; }
         }
     }
 
@@ -57,7 +57,7 @@ namespace Mako.Services.Shared
         public Guid Id { get; set; }
         public string Email { get; set; }
 
-        public Worker Cf { get; set; }
+        public string Cf { get; set; }
 
     }
 

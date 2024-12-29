@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Mako.Services.Shared
 {
@@ -21,8 +23,8 @@ namespace Mako.Services.Shared
             public DateOnly Date { get; set; }
             public TimeOnly StartHour { get; set; }
             public TimeOnly EndHour { get; set; }
-            public ICollection<Worker> Workers { get; set; } = new List<Worker>();
-            public string Ship {  get; set; }
+            public string ShipName { get; set; }
+            public DateTime ShipDateArrival { get; set; }
         }
     }
 
@@ -39,6 +41,7 @@ namespace Mako.Services.Shared
         public TimeOnly StartHour { get; set; }
         public TimeOnly EndHour { get; set; }
         public string Workers { get; set; }
-        public string Ship { get; set; }
+        public string ShipName { get; set; }
+        public DateTime ShipDateArrival { get; set; }
     }
-    }
+}

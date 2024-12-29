@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
@@ -14,8 +15,9 @@ namespace Mako.Services.Shared
 
         public string Email { get; set; }
         public string Password { get; set; }
-
-        public Worker Cf { get; set; }
+        public string Cf { get; set; }
+        [ForeignKey(nameof(Cf))]
+        public Worker Worker { get; set; }
 
         /// <summary>
         /// Checks if password passed as parameter matches with the Password of the current user

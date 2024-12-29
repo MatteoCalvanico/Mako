@@ -9,7 +9,7 @@ namespace Mako.Services.Shared
     {
         public Guid? Id { get; set; }
         public string Email { get; set; }
-        public Worker Cf { get; set; }
+        public string Cf { get; set; }
     }
 
     public partial class SharedService
@@ -25,11 +25,10 @@ namespace Mako.Services.Shared
                 user = new User
                 {
                     Email = cmd.Email,
+                    Cf = cmd.Cf,
                 };
                 _dbContext.Users.Add(user);
             }
-
-            user.Cf = cmd.Cf;
 
             await _dbContext.SaveChangesAsync();
 

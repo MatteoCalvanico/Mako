@@ -12,8 +12,8 @@ namespace Mako.Services.Shared
         public DateOnly Date { get; set; }
         public TimeOnly StartHour { get; set; }
         public TimeOnly EndHour { get; set; }
-        public Worker Workers { get; set; }
-        public Ship Ship { get; set; }
+        public string ShipName { get; set; }
+        public DateTime ShipDateArrival { get; set; }
     }
 
     public partial class SharedService
@@ -34,6 +34,8 @@ namespace Mako.Services.Shared
                     Date = cmd.Date,
                     StartHour = cmd.StartHour,
                     EndHour = cmd.EndHour,
+                    ShipName = cmd.ShipName,
+                    ShipDateArrival = cmd.ShipDateArrival
                 };
                 _dbContext.Shifts.Add(shift);
             }

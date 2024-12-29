@@ -15,7 +15,10 @@ namespace Mako.Services.Shared
         public DateOnly Date { get; set; }
         public TimeOnly StartHour { get; set; }
         public TimeOnly EndHour { get; set; }
-        public ICollection<Worker> Workers { get; set; } = new List<Worker>();
-        public Ship Ship {  get; set; }
+
+        public string ShipName { get; set; }
+        public DateTime ShipDateArrival { get; set; }
+        [ForeignKey(nameof(ShipName) + "," + nameof(ShipDateArrival))]
+        public Ship Ship { get; set; }
     }
 }

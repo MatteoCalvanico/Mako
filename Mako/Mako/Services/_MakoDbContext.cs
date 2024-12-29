@@ -1,6 +1,8 @@
 ﻿using Mako.Infrastructure;
 using Mako.Services.Shared;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace Mako.Services
 {
@@ -12,7 +14,7 @@ namespace Mako.Services
 
         public MakoDbContext(DbContextOptions<MakoDbContext> options) : base(options)
         {
-            DataGenerator.InitializeUsers(this);
+            DataGenerator.Initialize(this);
         }
 
         public DbSet<User> Users { get; set; }
@@ -24,6 +26,8 @@ namespace Mako.Services
         public DbSet<Certification> Certifications{ get; set; }
         public DbSet<JoinCertification> JoinCertifications { get; set; }
         public DbSet<JoinLicence> JoinLicences { get; set; }
+        public DbSet<WorkerRole> WorkerRoles { get; set; }
+        public DbSet<ShiftWorker> ShiftWorker { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Licence> Licences { get; set; }
     }

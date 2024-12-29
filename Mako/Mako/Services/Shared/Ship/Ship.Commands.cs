@@ -12,7 +12,7 @@ namespace Mako.Services.Shared
         public DateTime DateArrival { get; set; }
         public DateTime DateDeparture { get; set; }
         public int Pier { get; set; }
-        public TimeOnly TimeEstimation { get; set; }
+        public TimeSpan TimeEstimation { get; set; }
         public string CargoManifest { get; set; }
     }
 
