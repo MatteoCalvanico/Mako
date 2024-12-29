@@ -43,19 +43,16 @@ $accent_dark: #5C97E4;
 $warning: #FFC107;
 $danger: #DC3545;
 
-// Navbar style
-.capsule {
-    background-color: $accent_light;
-    border-radius: 50px;
-    padding: 10px 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-}
+// Navbar custom SCSS
 
+// Active links need a blue underline and to be in bold
+.nav-link.active {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: $accent_light;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 4px;
+}
 
 // Login style - TODO: NEED TO BE MOVED IN OTHER FILE
 body {
