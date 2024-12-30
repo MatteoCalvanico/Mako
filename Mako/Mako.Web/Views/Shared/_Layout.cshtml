@@ -5,6 +5,8 @@
     var version = System.Reflection.Assembly.GetAssembly(typeof(Startup)).GetName().Version;
 
     var identitaCorrente = (Mako.Web.Areas.IdentitaViewModel)ViewData[Mako.Web.Areas.IdentitaViewModel.VIEWDATA_IDENTITACORRENTE_KEY];
+
+    var darkMode = false;
 }
 @section metas {
     @RenderSection("metas", false)
@@ -30,7 +32,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item ms-5">
-                            <a class="nav-link active" href="#">Shifts</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["action"].ToString() == "Shifts" ? "active" : "")" href="#">Shifts</a>
                         </li>
                         <li class="nav-item ms-5">
                             <a class="nav-link @(ViewContext.RouteData.Values["action"].ToString() == "Requests" ? "active" : "")" href="#">Requests</a>
@@ -53,8 +55,17 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" onclick="">
+                                        <i class="fa-solid fa-person-booth"></i>&nbsp;@SharedLocalizer["Change view"]
+                                    </a>
+                                    <a class="dropdown-item" id="darkModeToggle" href="javascript:void(0)" onclick="toggleDarkMode()">
+                                        <i class="fa-solid fa-moon"></i>&nbsp;@SharedLocalizer["Dark Mode"]
+                                    </a>
+                                    <a class="dropdown-item" id="lightModeToggle" href="javascript:void(0)" onclick="toggleDarkMode()" style="display:none;">
+                                        <i class="fa-solid fa-sun"></i>&nbsp;@SharedLocalizer["Light Mode"]
+                                    </a>
                                     <a class="dropdown-item" href="javascript:void(0)" onclick="document.getElementById('POST_LogOut').submit()">
-                                        <i class="fa-solid fa-right-from-bracket"></i>&nbsp;@SharedLocalizer["Esci"]
+                                        <i class="fa-solid fa-right-from-bracket"></i>&nbsp;@SharedLocalizer["Log out"]
                                     </a>
                                 </li>
                             </ul>
@@ -69,6 +80,7 @@
     @RenderSection("pageSubtitle", false)
     @RenderBody()
 </div>
+<input type="hidden" id="darkModeState" value="@darkMode" />
 @section googlehead {
     @*<script async src="https://www.googletagmanager.com/gtag/js?id=UA-"></script>
     <script>
@@ -81,6 +93,21 @@
 @section scripts {
     <script type="text/javascript">
         @this.RenderAlertsWithToastify()
+
+        function toggleDarkMode() {
+            var darkMode = document.getElementById('darkModeState').value === 'true';
+            darkMode = !darkMode;
+            document.getElementById('darkModeState').value = darkMode;
+
+            // Update user interface
+            if (darkMode) {
+                document.getElementById('darkModeToggle').style.display = 'none';
+                document.getElementById('lightModeToggle').style.display = 'block';
+            } else {
+                document.getElementById('darkModeToggle').style.display = 'block';
+                document.getElementById('lightModeToggle').style.display = 'none';
+            }
+        }
     </script>
 
     @RenderSection("scripts", false)
