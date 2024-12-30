@@ -1,8 +1,64 @@
 ﻿@model Mako.Web.Features.Home.HomeViewModel
 @{
-	ViewData["Title"] = "Home";
+    ViewData["Title"] = "Home";
 }
 
-<h1>Benvenuto nella Home</h1>
-<p>Questa è la pagina di benvenuto.</p>
-   
+@section styles {
+    <link href="~/css/Pages/Home.scss" rel="stylesheet" />
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+            <h1 class="custom-title">Choose what to do</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-4 mb-4 d-flex">
+            <div class="card text-center mx-3 flex-fill">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <h5 class="card-title custom-card-title">Manage Shifts</h5>
+                    <p class="card-text custom-card-text"><em>Create, edit and delete incoming shifts</em></p>
+                    <div class="mt-auto">
+                        <a href="#" class="btn btn-primary btn-sm custom-btn">Enter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4 d-flex">
+            <div class="card text-center mx-3 flex-fill">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <h5 class="card-title custom-card-title">Manage Worker Request</h5>
+                    <p class="card-text custom-card-text"><em>View and approve/deny workers requests</em></p>
+                    <div class="mt-auto">
+                        <a href="#" class="btn btn-primary btn-sm custom-btn">Enter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4 d-flex">
+            <div class="card text-center mx-3 flex-fill">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <h5 class="card-title custom-card-title">Worker</h5>
+                    <p class="card-text custom-card-text"><em>View all workers information</em></p>
+                    <div class="mt-auto">
+                        <a href="#" class="btn btn-primary btn-sm custom-btn">Enter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-4 d-flex">
+            <div class="card text-center mx-3 flex-fill">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <h5 class="card-title custom-card-title">Ships</h5>
+                    <p class="card-text custom-card-text"><em>View all incoming ships information</em></p>
+                    <div class="mt-auto">
+                        <a href="#" class="btn btn-primary btn-sm custom-btn">Enter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
