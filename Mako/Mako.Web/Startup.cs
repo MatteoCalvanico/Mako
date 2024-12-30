@@ -113,8 +113,9 @@ namespace Mako.Web
 
                 endpoints.MapAreaControllerRoute("Example", "Example", "Example/{controller=Users}/{action=Index}/{id?}");
 
-                endpoints.MapControllerRoute("Home", "{controller=Home}/{action=Index}");
+                // Order is important
                 endpoints.MapControllerRoute("default", "{controller=Login}/{action=Login}");
+                endpoints.MapControllerRoute("Home", "{controller=Home}/{action=Index}");
             });
         }
     }
