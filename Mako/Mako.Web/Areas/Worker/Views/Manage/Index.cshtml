@@ -3,10 +3,31 @@
     ViewData["Title"] = "Manage shifts";
 }
 
-<div class="container-fluid p-0">
-    <header class="text-black text-center py-3">
-        <h1 class="fw-bold">@ViewData["Title"]</h1>
-    </header>
-    <main class="mt-4 mb-5">
+<header class="text-black text-center py-3">
+    <h1 class="fw-bold">@ViewData["Title"]</h1>
+</header>
+<div class="container-fluid p-0 d-flex flex-column justify-content-center align-items-center" style="min-height: calc(100vh - 100px);">
+    <main class="mt-4 mb-5 d-flex justify-content-center align-items-center flex-column">
+        <div class="w-75">
+            <h2 class="text-center">Ask for holidays</h2>
+            <form>
+                <div class="mb-3">
+                    <textarea class="form-control" id="requestInput" rows="3" placeholder="Write a message..."></textarea>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-center">
+                        <div class="me-2 flex-fill">
+                            <input type="text" class="text-center form-control date-input text-white placeholder-white" id="startDate" placeholder="Start Date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                        </div>
+                        <div class="ms-2 flex-fill">
+                            <input type="text" class="text-center form-control date-input text-white placeholder-white" id="endDate" placeholder="End Date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                </div>
+            </form>
+        </div>
     </main>
 </div>

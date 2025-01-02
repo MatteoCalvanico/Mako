@@ -22,3 +22,26 @@ main {
 .startedMsg {
     color: $accent_light;
 }
+
+.date-input {
+    background-color: $accent_light;
+}
+
+.btn-sm {
+    width: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.text-white {
+    color: white !important;
+}
+
+.placeholder-white::placeholder {
+    color: white !important;
+    opacity: 1; /* Per assicurarsi che il colore sia visibile */
+}
+
+#requestInput {
+    background-color: #E2E2E2;
+}
