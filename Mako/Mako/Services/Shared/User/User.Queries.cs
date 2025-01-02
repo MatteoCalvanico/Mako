@@ -167,5 +167,17 @@ namespace Mako.Services.Shared
                 Cf = user.Cf
             };
         }
+
+        /// <summary>
+        /// Get the CF of a worker by email
+        /// </summary>
+        /// <param name="email"></param>
+        public async Task<string> GetWorkerCfByEmailAsync(string email)
+        {
+            return await _dbContext.Users
+                .Where(u => u.Email == email)
+                .Select(u => u.Cf)
+                .FirstOrDefaultAsync();
+        }
     }
 }

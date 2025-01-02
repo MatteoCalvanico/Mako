@@ -18,9 +18,12 @@ namespace Mako.Web.Areas.Worker.Controllers
         [HttpGet]
         public virtual async Task<IActionResult> Index()
         {
+            var email = Identita.EmailUtenteCorrente;
+            var workerCf = await _sharedService.GetWorkerCfByEmailAsync(email);
+            var shiftIds = await _sharedService.Handle(new GetShiftIdsByWorkerCommand { WorkerCf = workerCf });
             var model = new ShiftViewModel
             {
-                Message = "Hello, World!"
+                Shifts = await _sharedService.Handle(new GetShiftsByIdsCommand { ShiftIds = shiftIds })
             };
             return View(model);
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,6 +9,10 @@ namespace Mako.Services.Shared
     public class AddOrUpdateShiftWorkerCommand
     {
         public Guid ShiftId { get; set; }
+        public string WorkerCf { get; set; }
+    }
+    public class GetShiftIdsByWorkerCommand
+    {
         public string WorkerCf { get; set; }
     }
 
@@ -28,6 +33,10 @@ namespace Mako.Services.Shared
                 _dbContext.ShiftWorker.Add(join);
             }
             await _dbContext.SaveChangesAsync();
+        }
+        public async Task<List<Guid>> Handle(GetShiftIdsByWorkerCommand cmd)
+        {
+            return await GetShiftIdsByWorkerAsync(cmd.WorkerCf);
         }
     }
 }

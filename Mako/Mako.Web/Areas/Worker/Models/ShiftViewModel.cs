@@ -1,7 +1,11 @@
-﻿namespace Mako.Web.Areas.Worker.Models
+﻿using Mako.Services.Shared;
+using System;
+using System.Collections.Generic;
+
+namespace Mako.Web.Areas.Worker.Models
 {
     public class ShiftViewModel
     {
-        public string Message { get; set; }
+        public List<CustomShift> Shifts { get; set; } = new List<CustomShift>();
     }
 }
