@@ -115,6 +115,7 @@ namespace Mako.Web
                 // ROUTING PER HUB
 
                 endpoints.MapAreaControllerRoute("Worker", "Worker", "Worker/{controller=Shift}/{action=Index}");
+                endpoints.MapAreaControllerRoute("Worker", "Worker", "Worker/{controller=Manage}/{action=Index}");
                 endpoints.MapAreaControllerRoute("Example", "Example", "Example/{controller=Users}/{action=Index}/{id?}");
 
                 // Order is important
