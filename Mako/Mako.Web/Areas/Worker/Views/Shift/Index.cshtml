@@ -8,6 +8,44 @@
         <h1>@ViewData["Title"]</h1>
     </header>
     <main class="mt-4">
-        <!-- TODO -->
+        <div id="shiftApp">
+            <div v-for="(shifts, date) in groupedShifts" :key="date">
+                <h2>{{ date }}</h2>
+                <ul>
+                    <li v-for="shift in shifts" :key="shift.id">
+                        Pier {{ shift.pier }}: {{ shift.startHour }} - {{ shift.endHour }}
+                    </li>
+                </ul>
+            </div>
+        </div>
     </main>
 </div>
+
+@section Scripts {
+    <!--<script src="~/js/bundle-vue.js" asp-append-version="true"></script> <== Need to use this, but doesn't work-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var shiftData = @Html.Raw(Json.Serialize(Model.Shifts));
+
+            new Vue({
+                el: '#shiftApp',
+                data: {
+                    shifts: shiftData
+                },
+                computed: {
+                    groupedShifts() {
+                        return this.shifts.reduce((groups, shift) => {
+                            const date = shift.date;
+                            if (!groups[date]) {
+                                groups[date] = [];
+                            }
+                            groups[date].push(shift);
+                            return groups;
+                        }, {});
+                    }
+                }
+            });
+        });
+    </script>
+}
