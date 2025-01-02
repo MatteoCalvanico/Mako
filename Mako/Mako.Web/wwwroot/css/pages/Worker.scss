@@ -3,3 +3,22 @@
 header {
     background-color: $secondary_light;
 }
+
+h2 {
+    margin-left: 10px;
+}
+
+main {
+    padding-bottom: 80px; // Avoid that the dock hide some part
+}
+
+.shiftLi {
+    list-style-type: none;
+    background-color: $tertiary_light;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.startedMsg {
+    color: $accent_light;
+}
