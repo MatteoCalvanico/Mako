@@ -89,6 +89,9 @@ namespace Mako.Web
                 // Https redirection only in production
                 app.UseHsts();
                 app.UseHttpsRedirection();
+            } else
+            {
+                app.UseDeveloperExceptionPage();
             }
 
             // Localization support if you want to
