@@ -1,4 +1,5 @@
 ﻿using Mako.Services.Shared;
+using Mako.Web.Areas.Worker.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -16,7 +17,31 @@ namespace Mako.Web.Areas.Worker.Controllers
 
         public virtual async Task<IActionResult> Index()
         {
-            return View();
+            return View(new RequestViewModel());
+        }
+
+        [HttpPost]
+        public virtual async Task<IActionResult> AddRequest(RequestViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var command = new AddOrUpdateRequestHolidayCommand
+                {
+                    Id = model.Id,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    Motivation = model.Motivation,
+                    WorkerCf = model.WorkerCf,
+                    State = RequestState.Unmanaged
+                };
+
+                await _sharedService.Handle(command);
+
+                TempData["SuccessMessage"] = "Request added!";
+                return RedirectToAction("Index");
+            }
+
+            return View("Index", model);
         }
     }
 }
