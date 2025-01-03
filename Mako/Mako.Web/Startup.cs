@@ -116,7 +116,7 @@ namespace Mako.Web
 
                 endpoints.MapAreaControllerRoute("Worker", "Worker", "Worker/{controller=Shift}/{action=Index}");
                 endpoints.MapAreaControllerRoute("Worker", "Worker", "Worker/{controller=Manage}/{action=Index}");
-                endpoints.MapAreaControllerRoute("Example", "Example", "Example/{controller=Users}/{action=Index}/{id?}");
+                endpoints.MapAreaControllerRoute("Worker", "Worker", "Worker/{controller=Account}/{action=Index}");
 
                 // Order is important
                 endpoints.MapControllerRoute("default", "{controller=Login}/{action=Login}");
