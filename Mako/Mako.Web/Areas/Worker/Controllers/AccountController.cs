@@ -1,5 +1,7 @@
 ﻿using Mako.Services.Shared;
+using Mako.Web.Areas.Worker.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Mako.Web.Areas.Worker.Controllers
 {
@@ -13,8 +15,15 @@ namespace Mako.Web.Areas.Worker.Controllers
             _sharedService = sharedService;
         }
 
-        public virtual IActionResult Index()
+        [HttpGet]
+        public virtual async Task<IActionResult> Index()
         {
+            var email = Identita.EmailUtenteCorrente;
+            var workerCf = await _sharedService.GetWorkerCfByEmailAsync(email);
+            var isAdmin = await _sharedService.IsShiftAdminAsync(workerCf);
+
+            ViewBag.IsShiftAdmin = isAdmin;
+
             return View();
         }
     }

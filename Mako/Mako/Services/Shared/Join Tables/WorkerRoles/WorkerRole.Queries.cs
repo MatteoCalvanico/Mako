@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mako.Services.Shared.Enums;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,6 +87,21 @@ namespace Mako.Services.Shared
                 WorkerCf = join.WorkerCf,
                 RoleId = join.RoleId
             };
+        }
+
+        public async Task<bool> IsShiftAdminAsync(string workerCf)
+        {
+            // Obtain ShiftAdmin Id
+            var shiftAdminRoleId = await _dbContext.Roles
+                .Where(r => r.Type == RoleTypes.ShiftAdmin)
+                .Select(r => r.Id)
+                .FirstOrDefaultAsync();
+
+            // Check if worker have ShiftAdmin's Id
+            var isShiftAdmin = await _dbContext.WorkerRoles
+                .AnyAsync(wr => wr.WorkerCf == workerCf && wr.RoleId == shiftAdminRoleId);
+
+            return isShiftAdmin;
         }
     }
 }
