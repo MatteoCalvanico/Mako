@@ -45,3 +45,23 @@ main {
 #requestInput {
     background-color: #E2E2E2;
 }
+
+#darkMode {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+}
+
+#lightMode {
+    background-color: ghostwhite;
+    color: black;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    width: 150px; 
+    text-align: center;
+}
