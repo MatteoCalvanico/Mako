@@ -220,7 +220,6 @@ namespace Mako.Infrastructure
                 new User
                 {
                     Id = Guid.Parse("a030ee81-31c7-47d0-9309-408cb5ac0ac7"), // Forced to specific Guid for tests
-                    // LASCIALO COSI' NON ME LO TOGLIERE LURIDO
                     Email = "admin",
                     Password = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", // SHA-256 of text "admin"
                     Cf = "00000000001",
