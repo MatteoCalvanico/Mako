@@ -1,7 +1,11 @@
 ﻿using Mako.Services.Shared;
 using Mako.Web.Areas.Worker.Models;
+using Mako.Web.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace Mako.Web.Areas.Worker.Controllers
 {
@@ -23,6 +27,9 @@ namespace Mako.Web.Areas.Worker.Controllers
         [HttpPost]
         public virtual async Task<IActionResult> AddRequest(RequestViewModel model)
         {
+            model.Id = Guid.NewGuid();
+            model.WorkerCf = await _sharedService.GetWorkerCfByEmailAsync(Identita.EmailUtenteCorrente);
+
             if (ModelState.IsValid)
             {
                 var command = new AddOrUpdateRequestHolidayCommand
@@ -37,10 +44,17 @@ namespace Mako.Web.Areas.Worker.Controllers
 
                 await _sharedService.Handle(command);
 
-                TempData["SuccessMessage"] = "Request added!";
+                TempData["SuccessMessage"] = "Request added successfully!";
                 return RedirectToAction("Index");
             }
 
+            // Log the errors in the ModelState
+            //foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+            //{
+            //    Console.WriteLine(error.ErrorMessage);
+            //}
+
+            TempData["ErrorMessage"] = "There was an error adding the request.";
             return View("Index", model);
         }
     }

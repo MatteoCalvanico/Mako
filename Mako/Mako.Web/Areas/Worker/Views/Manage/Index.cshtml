@@ -10,17 +10,32 @@
     <main class="mt-4 mb-5 d-flex justify-content-center align-items-center flex-column">
         <div class="w-75">
             <h2 class="text-center">Ask for holidays</h2>
-            <form>
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success text-center">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger text-center">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+            <form asp-action="AddRequest" method="post">
                 <div class="mb-3">
-                    <textarea class="form-control" id="requestInput" rows="3" placeholder="Write a message..."></textarea>
+                    <textarea class="form-control" asp-for="Motivation" rows="3" placeholder="Write a message..."></textarea>
+                    <span asp-validation-for="Motivation" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <div class="d-flex justify-content-center">
                         <div class="me-2 flex-fill">
-                            <input type="text" class="text-center form-control date-input text-white placeholder-white" id="startDate" placeholder="Start Date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            <input type="text" class="text-center form-control date-input text-white placeholder-white" asp-for="StartDate" placeholder="Start Date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            <span asp-validation-for="StartDate" class="text-danger"></span>
                         </div>
                         <div class="ms-2 flex-fill">
-                            <input type="text" class="text-center form-control date-input text-white placeholder-white" id="endDate" placeholder="End Date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            <input type="text" class="text-center form-control date-input text-white placeholder-white" asp-for="EndDate" placeholder="End Date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            <span asp-validation-for="EndDate" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
