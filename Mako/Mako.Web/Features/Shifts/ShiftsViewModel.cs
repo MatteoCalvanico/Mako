@@ -7,9 +7,9 @@ namespace Mako.Web.Features.Shifts
     {
         public Guid Id { get; set; }
         public int Pier { get; set; }
-        public DateTime Date { get; set; }
-        public TimeSpan StartHour { get; set; }
-        public TimeSpan EndHour { get; set; }
+        public DateOnly Date { get; set; }
+        public TimeOnly StartHour { get; set; }
+        public TimeOnly EndHour { get; set; }
         public string ShipName { get; set; }
         public DateTime ShipDateArrival { get; set; }
     }

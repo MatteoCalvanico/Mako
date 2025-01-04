@@ -4,14 +4,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Mako.Web.Features.Shifts
 {
-    public partial class ShiftsController : Controller
+    public partial class ShiftsController : AuthenticatedBaseController
     {
         private readonly SharedService _sharedService;
 
@@ -32,25 +31,16 @@ namespace Mako.Web.Features.Shifts
                 };
             }
 
-            // Create and populate the model
-            var shiftsViewModel = new ShiftsViewModel
+            try
             {
-                Shifts = new List<ShiftViewModel>
-                {
-                    new ShiftViewModel
-                    {
-                        Id = Guid.NewGuid(),
-                        Pier = 1,
-                        Date = DateTime.Today,
-                        StartHour = TimeSpan.FromHours(8),
-                        EndHour = TimeSpan.FromHours(16),
-                        ShipName = "Ship A",
-                        ShipDateArrival = DateTime.Today.AddDays(1)
-                    }
-                }
-            };
-
-            return View("Shifts", shiftsViewModel);
+                var shiftsViewModel = await GetAllShifts();
+                return View("Shifts", shiftsViewModel);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while retrieving shifts: " + ex.Message);
+                return View("Shifts", new ShiftsViewModel());
+            }
         }
 
         [HttpPost]
@@ -65,21 +55,17 @@ namespace Mako.Web.Features.Shifts
             return Redirect(Request.GetTypedHeaders().Referer?.ToString() ?? "/");
         }
 
-        [HttpPost]
-        public async virtual Task<IActionResult> GetShifts(ShiftsViewModel viewModel)
+        public async Task<ShiftsViewModel> GetAllShifts()
         {
-            if (!ModelState.IsValid)
-            {
-                return View("Shifts", viewModel);
-            }
+            var viewModel = new ShiftsViewModel();
 
             try
             {
-                var shifts = await _sharedService.Query(new ShiftsSelectQuery
-                {
-                    IdCurrentShift = viewModel.Shifts.FirstOrDefault()?.Id ?? Guid.Empty,
-                });
+                // Create a new ShiftsSelectQuery without any filters to retrieve all shifts
+                var shiftsQuery = new ShiftsSelectQuery();
+                var shifts = await _sharedService.SelectShiftsQuery(shiftsQuery);
 
+                // Map the retrieved shifts to the view model
                 viewModel.Shifts = shifts.Shifts.Select(s => new ShiftViewModel
                 {
                     Id = s.Id,
@@ -90,14 +76,14 @@ namespace Mako.Web.Features.Shifts
                     ShipName = s.ShipName,
                     ShipDateArrival = s.ShipDateArrival
                 }).ToList();
-
-                return View("Shifts", viewModel);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while retrieving shifts.");
-                return View("Shifts", viewModel);
+                // Handle the exception as needed, e.g., log it
+                throw new Exception("An error occurred while retrieving shifts", ex);
             }
+
+            return viewModel;
         }
     }
 }
