@@ -116,6 +116,7 @@ namespace Mako.Web
                 // Order is important
                 endpoints.MapControllerRoute("default", "{controller=Login}/{action=Login}");
                 endpoints.MapControllerRoute("Home", "{controller=Home}/{action=Index}");
+                endpoints.MapControllerRoute("Shifts", "{controller=Shifts}/{action=Index}");
             });
         }
     }

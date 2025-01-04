@@ -32,7 +32,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item ms-5">
-                            <a class="nav-link @(ViewContext.RouteData.Values["action"].ToString() == "Shifts" ? "active" : "")" href="#">Shifts</a>
+                            <a class="nav-link @ViewContext.RouteData.Values["controller"]?.ToString() == "Shifts" ? "active" : "")" href="@Url.Action("Index", "Shifts")">Shifts</a>
                         </li>
                         <li class="nav-item ms-5">
                             <a class="nav-link @(ViewContext.RouteData.Values["action"].ToString() == "Requests" ? "active" : "")" href="#">Requests</a>

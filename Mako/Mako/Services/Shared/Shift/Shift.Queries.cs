@@ -1,7 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Mako.Services.Shared
 {
@@ -20,9 +18,9 @@ namespace Mako.Services.Shared
         {
             public Guid Id { get; set; }
             public int Pier { get; set; }
-            public DateOnly Date { get; set; }
-            public TimeOnly StartHour { get; set; }
-            public TimeOnly EndHour { get; set; }
+            public DateTime Date { get; set; }
+            public TimeSpan StartHour { get; set; }
+            public TimeSpan EndHour { get; set; }
             public string ShipName { get; set; }
             public DateTime ShipDateArrival { get; set; }
         }
