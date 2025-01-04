@@ -9,7 +9,7 @@ using Mako.Web.Areas;
 
 namespace Mako.Web.Features.Home
 {
-    public partial class HomeController : Controller
+    public partial class HomeController : AuthenticatedBaseController
     {
         private readonly SharedService _sharedService;
 

@@ -1,0 +1,67 @@
+﻿@import "../site.variables.scss";
+
+header {
+    background-color: $secondary_light;
+}
+
+h2 {
+    margin-left: 10px;
+}
+
+main {
+    padding-bottom: 80px; // Avoid that the dock hide some part
+}
+
+.shiftLi {
+    list-style-type: none;
+    background-color: $tertiary_light;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.startedMsg {
+    color: $accent_light;
+}
+
+.date-input {
+    background-color: $accent_light;
+}
+
+.btn-sm {
+    width: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.text-white {
+    color: white !important;
+}
+
+.placeholder-white::placeholder {
+    color: white !important;
+    opacity: 1; /* Per assicurarsi che il colore sia visibile */
+}
+
+#requestInput {
+    background-color: #E2E2E2;
+}
+
+#darkMode {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+}
+
+#lightMode {
+    background-color: ghostwhite;
+    color: black;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    width: 150px; 
+    text-align: center;
+}

@@ -89,6 +89,9 @@ namespace Mako.Web
                 // Https redirection only in production
                 app.UseHsts();
                 app.UseHttpsRedirection();
+            } else
+            {
+                app.UseDeveloperExceptionPage();
             }
 
             // Localization support if you want to
@@ -111,7 +114,9 @@ namespace Mako.Web
             {
                 // ROUTING PER HUB
 
-                endpoints.MapAreaControllerRoute("Example", "Example", "Example/{controller=Users}/{action=Index}/{id?}");
+                endpoints.MapAreaControllerRoute("Worker", "Worker", "Worker/{controller=Shift}/{action=Index}");
+                endpoints.MapAreaControllerRoute("Worker", "Worker", "Worker/{controller=Manage}/{action=Index}");
+                endpoints.MapAreaControllerRoute("Worker", "Worker", "Worker/{controller=Account}/{action=Index}");
 
                 // Order is important
                 endpoints.MapControllerRoute("default", "{controller=Login}/{action=Login}");
