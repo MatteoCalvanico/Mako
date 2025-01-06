@@ -1,0 +1,111 @@
+﻿@model Mako.Web.Areas.Worker.Models.ShiftViewModel
+@{
+    ViewData["Title"] = "Your shifts";
+}
+
+<div class="container-fluid p-0">
+    <header class="text-center py-3">
+        <h1 class="fw-bold">@ViewData["Title"]</h1>
+    </header>
+    <main class="d-flex justify-content-center">
+        <div class="col-lg-5 col-md-8 col-sm-10 mt-4 mb-5">
+            <div id="shiftApp">
+                <div v-for="(shifts, date) in groupedShifts" :key="date" class="mb-5">
+                    <h2 class="fw-bold text-center">{{ formatDate(date) }}</h2>
+                    <ul class="list-unstyled">
+                        <li v-for="(shift, index) in shifts" :key="shift.id" class="shiftLi mb-2 p-3 border rounded">
+                            <span class="fs-5">Pier {{ shift.pier }}: <span class="fw-bold">{{ formatTime(shift.startHour) }}</span> - <span class="fw-bold">{{ formatTime(shift.endHour) }}</span></span>
+                            <span v-if="isFirstShift(index, date)" class="startedMsg fw-bold ms-2">Get started soon</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Deserialize the shift data from the server
+            var shiftData = @Html.Raw(Json.Serialize(Model.Shifts));
+
+            new Vue({
+                el: '#shiftApp',
+                data: {
+                    shifts: shiftData // Initialize shifts data
+                },
+                computed: {
+                    groupedShifts() {
+                        // Sort shifts by date and start time
+                        const sortedShifts = this.shifts.sort((a, b) => {
+                            const dateA = new Date(a.date);
+                            const dateB = new Date(b.date);
+                            if (dateA < dateB) return -1;
+                            if (dateA > dateB) return 1;
+                            const timeA = new Date(`1970-01-01T${a.startHour}`);
+                            const timeB = new Date(`1970-01-01T${b.startHour}`);
+                            return timeA - timeB;
+                        });
+
+                        // Group shifts by date
+                        return sortedShifts.reduce((groups, shift) => {
+                            const date = shift.date;
+                            if (!groups[date]) {
+                                groups[date] = [];
+                            }
+                            groups[date].push(shift);
+                            return groups;
+                        }, {});
+                    }
+                },
+                methods: {
+                    // Format time to 'HH:MM AM/PM'
+                    formatTime(time) {
+                        const date = new Date(`1970-01-01T${time}`);
+                        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    },
+                    // Format date to 'Today', 'Tomorrow', or 'Weekday DD/MM'
+                    formatDate(date) {
+                        const today = new Date();
+                        const tomorrow = new Date();
+                        tomorrow.setDate(today.getDate() + 1);
+
+                        const dateToFormat = new Date(date);
+                        if (dateToFormat.toDateString() === today.toDateString()) {
+                            return "Today";
+                        } else if (dateToFormat.toDateString() === tomorrow.toDateString()) {
+                            return "Tomorrow";
+                        } else {
+                            const options = { weekday: 'long', day: '2-digit', month: '2-digit' };
+                            const formattedDate = dateToFormat.toLocaleDateString('en-US', options);
+                            const [weekday, dayMonth] = formattedDate.split(', ');
+                            return `${weekday.charAt(0).toUpperCase() + weekday.slice(1)} ${dayMonth}`;
+                        }
+                    },
+                    // Check if the shift is the first shift of the first day
+                    isFirstShift(index, date) {
+                        const firstDate = Object.keys(this.groupedShifts)[0];
+                        return index === 0 && date === firstDate;
+                    }
+                }
+            });
+
+            // Apply theme based on user's preference or system preference
+            const applyTheme = (theme) => {
+                document.documentElement.setAttribute('data-theme', theme);
+            };
+
+            // Check localStorage for user's theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            } else {
+                // If no preference is saved, use system preference
+                const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                applyTheme(prefersDarkScheme ? 'dark' : 'light');
+            }
+        });
+    </script>
+}

@@ -43,7 +43,7 @@ namespace Mako.Services.Shared
             public Guid Id { get; set; }
             public string Email { get; set; }
 
-            public Worker Cf { get; set; }
+            public string Cf { get; set; }
         }
     }
 
@@ -57,7 +57,7 @@ namespace Mako.Services.Shared
         public Guid Id { get; set; }
         public string Email { get; set; }
 
-        public Worker Cf { get; set; }
+        public string Cf { get; set; }
 
     }
 
@@ -166,6 +166,18 @@ namespace Mako.Services.Shared
                 Email = user.Email,
                 Cf = user.Cf
             };
+        }
+
+        /// <summary>
+        /// Get the CF of a worker by email
+        /// </summary>
+        /// <param name="email"></param>
+        public async Task<string> GetWorkerCfByEmailAsync(string email)
+        {
+            return await _dbContext.Users
+                .Where(u => u.Email == email)
+                .Select(u => u.Cf)
+                .FirstOrDefaultAsync();
         }
     }
 }

@@ -5,6 +5,8 @@
     var version = System.Reflection.Assembly.GetAssembly(typeof(Startup)).GetName().Version;
 
     var identitaCorrente = (Mako.Web.Areas.IdentitaViewModel)ViewData[Mako.Web.Areas.IdentitaViewModel.VIEWDATA_IDENTITACORRENTE_KEY];
+
+    var darkMode = false;
 }
 @section metas {
     @RenderSection("metas", false)
@@ -14,24 +16,62 @@
 }
 <div id="pageId">
     <div>
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #E7F1FF">
+        <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/">
-                    <img src="~/images/logo.svg" />
+                <!-- Logo -->
+                <a class="navbar-brand ms-5" href="/">
+                    <img id="navLogo"
+                         src="@Url.Content("~/images/logo.svg")"
+                         alt="Logo" />
                 </a>
-                <div class="ms-auto">
+
+                <!-- Toggler for responsive design -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navbar content -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item ms-5">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Shifts" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" href="@Url.Action("Index", "Shifts")">Shifts</a>
+                        </li>
+                        <li class="nav-item ms-5">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" href="#">Requests</a>
+                        </li>
+                        <li class="nav-item ms-5">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workers" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" href="#">Workers</a>
+                        </li>
+                        <li class="nav-item ms-5">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Ships" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" href="#">Ships</a>
+                        </li>
+                    </ul>
+
+                    <!-- User profile dropdown -->
                     @if (identitaCorrente != null)
                     {
-                        <div class="capsule" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img class="user-profile-picture" src="@identitaCorrente.GravatarUrl" />&nbsp;@identitaCorrente.EmailUtenteCorrente
+                        <div class="dropdown me-5">
+                            <button class="btn btn-primary text-white fw-bold dropdown-toggle d-flex align-items-center justify-content-center px-4 py-2 rounded-pill" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img class="user-profile-picture rounded-circle me-3" src="@identitaCorrente.GravatarUrl" alt="User" style="width: 28px; height: 28px;" />
+                                @identitaCorrente.EmailUtenteCorrente
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="/Worker/Shift/Index" onclick="">
+                                        <i class="fa-solid fa-person-booth"></i>&nbsp;@SharedLocalizer["Change view"]
+                                    </a>
+                                    <a class="dropdown-item" id="darkModeToggle" href="javascript:void(0)" onclick="toggleDarkMode()">
+                                        <i class="fa-solid fa-moon"></i>&nbsp;@SharedLocalizer["Dark Mode"]
+                                    </a>
+                                    <a class="dropdown-item" id="lightModeToggle" href="javascript:void(0)" onclick="toggleDarkMode()" style="display:none;">
+                                        <i class="fa-solid fa-sun"></i>&nbsp;@SharedLocalizer["Light Mode"]
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:void(0)" onclick="document.getElementById('POST_LogOut').submit()">
+                                        <i class="fa-solid fa-right-from-bracket"></i>&nbsp;@SharedLocalizer["Log out"]
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" role="menu">
-                            <li>
-                                <a class="dropdown-item" href="javascript:void(0)" onclick="javascript: document.getElementById('POST_LogOut').submit()" title="@SharedLocalizer["Chiudi sessione di lavoro"]">
-                                    <i class="fa-solid fa-right-from-bracket"></i>&nbsp;@SharedLocalizer["Esci"]
-                                </a>
-                            </li>
-                        </ul>
                         <form autocomplete="off" method="post" action="@Url.Action(MVC.Login.Logout())" id="POST_LogOut" style="display:none;"></form>
                     }
                 </div>
@@ -42,6 +82,7 @@
     @RenderSection("pageSubtitle", false)
     @RenderBody()
 </div>
+<input type="hidden" id="darkModeState" value="@darkMode" />
 @section googlehead {
     @*<script async src="https://www.googletagmanager.com/gtag/js?id=UA-"></script>
     <script>
@@ -54,6 +95,29 @@
 @section scripts {
     <script type="text/javascript">
         @this.RenderAlertsWithToastify()
+
+          function setLogo(theme) {
+                const logoImg = document.getElementById('navLogo');
+                if (theme === 'dark') {
+                    logoImg.src = '@Url.Content("~/images/logo_white.svg")';
+                } else {
+                    logoImg.src = '@Url.Content("~/images/logo.svg")';
+                }
+          }
+
+          function toggleDarkMode() {
+              const currentTheme = document.documentElement.getAttribute('data-theme');
+              const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+              document.documentElement.setAttribute('data-theme', newTheme);
+              localStorage.setItem('theme', newTheme);
+              setLogo(newTheme);
+           }
+
+            document.addEventListener('DOMContentLoaded', function () {
+              const savedTheme = localStorage.getItem('theme') || 'light';
+              document.documentElement.setAttribute('data-theme', savedTheme);
+              setLogo(savedTheme);
+           });
     </script>
 
     @RenderSection("scripts", false)

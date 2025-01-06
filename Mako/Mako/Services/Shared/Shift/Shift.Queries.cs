@@ -1,12 +1,15 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mako.Services.Shared
 {
     public class ShiftsSelectQuery
     {
         public Guid IdCurrentShift { get; set; }
-        public String Filter { get; set; }
+        public string Filter { get; set; }
     }
 
     public class ShiftsSelectDTO
@@ -21,8 +24,8 @@ namespace Mako.Services.Shared
             public DateOnly Date { get; set; }
             public TimeOnly StartHour { get; set; }
             public TimeOnly EndHour { get; set; }
-            public ICollection<Worker> Workers { get; set; } = new List<Worker>();
-            public string Ship {  get; set; }
+            public string ShipName { get; set; }
+            public DateTime ShipDateArrival { get; set; }
         }
     }
 
@@ -39,6 +42,66 @@ namespace Mako.Services.Shared
         public TimeOnly StartHour { get; set; }
         public TimeOnly EndHour { get; set; }
         public string Workers { get; set; }
-        public string Ship { get; set; }
+        public string ShipName { get; set; }
+        public DateTime ShipDateArrival { get; set; }
     }
+
+    public class CustomShift
+    {
+        public Guid Id { get; set; }
+        public int Pier { get; set; }
+        public DateOnly Date { get; set; }
+        public TimeOnly StartHour { get; set; }
+        public TimeOnly EndHour { get; set; }
     }
+
+    public partial class SharedService
+    {
+        public async Task<List<CustomShift>> GetShiftsByIdsAsync(List<Guid> shiftIds)
+        {
+            return await _dbContext.Shifts
+                .Where(s => shiftIds.Contains(s.Id))
+                .Select(s => new CustomShift
+                {
+                    Id = s.Id,
+                    Pier = s.Pier,
+                    Date = s.Date,
+                    StartHour = s.StartHour,
+                    EndHour = s.EndHour
+                })
+                .ToListAsync();
+        }
+
+        public async Task<ShiftsSelectDTO> SelectShiftsQuery(ShiftsSelectQuery query)
+        {
+            var shiftsQuery = _dbContext.Shifts.AsQueryable();
+
+            if (query.IdCurrentShift != Guid.Empty)
+            {
+                shiftsQuery = shiftsQuery.Where(s => s.Id == query.IdCurrentShift);
+            }
+
+            if (!string.IsNullOrEmpty(query.Filter))
+            {
+                shiftsQuery = shiftsQuery.Where(s => s.ShipName.Contains(query.Filter));
+            }
+
+            var shifts = await shiftsQuery.Select(s => new ShiftsSelectDTO.Shift
+            {
+                Id = s.Id,
+                Pier = s.Pier,
+                Date = s.Date,
+                StartHour = s.StartHour,
+                EndHour = s.EndHour,
+                ShipName = s.ShipName,
+                ShipDateArrival = s.ShipDateArrival
+            }).ToListAsync();
+
+            return new ShiftsSelectDTO
+            {
+                Shifts = shifts,
+                Count = shifts.Count
+            };
+        }
+    }
+}

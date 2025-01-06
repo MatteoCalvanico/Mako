@@ -1,0 +1,84 @@
+// Login.scss
+@import "../site.variables.scss";
+
+body {
+    background-color: $primary_light;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    height: 60vh;
+}
+
+.login-header {
+    background-color: $secondary_light;
+    color: black;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-logo {
+    max-width: 250px;
+    margin-bottom: 20px;
+}
+
+.welcome-text {
+    font-size: 3.5em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.login-subtext {
+    font-size: 1.8em;
+    margin: 0;
+}
+
+.login-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    flex-direction: column;
+}
+
+.input-group {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: solid 1px;
+    border-radius: 5px;
+    background-color: $tertiary_light;
+
+    input {
+        background-color: $tertiary_light;
+    }
+
+    input:focus,
+    input:active {
+        background-color: $tertiary_light;
+    }
+}
+
+.form-control {
+    font-size: 1.2em;
+    padding: 5px;
+}
+
+.btn-primary {
+    background-color: $accent_light;
+    font-size: 1.2em;
+    padding: 5px;
+    width: 100%;
+}
+
+.password-reset-link {
+    color: $accent_light;
+    text-decoration: none;
+}
+
+.password-reset-link:hover {
+    text-decoration: underline;
+}

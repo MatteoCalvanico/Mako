@@ -1,16 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mako.Services.Shared
 {
-
     public class ShipsSelectQuery
     {
-        public string CurrentShipName;
-        public DateTime CurrentShipDateArrival;
+        public string CurrentShipName { get; set; }
+        public DateTime? CurrentShipDateArrival { get; set; }
     }
 
     public class ShipSelectDTO
@@ -18,18 +17,18 @@ namespace Mako.Services.Shared
         public IEnumerable<Ship> Ships { get; set; }
         public int Count { get; set; }
 
-        public class Ship 
+        public class Ship
         {
             public string Name { get; set; }
             public DateTime DateArrival { get; set; }
             public DateTime DateDeparture { get; set; }
             public int Pier { get; set; }
-            public TimeOnly TimeEstimation { get; set; }
+            public TimeSpan TimeEstimation { get; set; }
             public string CargoManifest { get; set; }
         }
     }
 
-    public class ShipDetailQuery 
+    public class ShipDetailQuery
     {
         public string ShipName { get; set; }
         public DateTime DateArrival { get; set; }
@@ -41,19 +40,42 @@ namespace Mako.Services.Shared
         public DateTime DateArrival { get; set; }
         public DateTime DateDeparture { get; set; }
         public int Pier { get; set; }
-        public TimeOnly TimeEstimation { get; set; }
+        public TimeSpan TimeEstimation { get; set; }
         public string CargoManifest { get; set; }
     }
 
-    public partial class  SharedService
+    public partial class SharedService
     {
-        // Recupero tutte le navi
-        public async Task<List<Ship>> GetShipsAsync()
+
+        public async Task<ShipSelectDTO> SelectShipsQuery(ShipsSelectQuery query)
         {
-            return await _dbContext.Ships
-                                   .AsNoTracking()  // Non traccia le entità restituite
-                                   .OrderBy(s => s.DateArrival) //  Ordina le navi per data di arrivo
-                                   .ToListAsync();
+            var shipsQuery = _dbContext.Ships.AsQueryable();
+
+            if (!string.IsNullOrEmpty(query.CurrentShipName))
+            {
+                shipsQuery = shipsQuery.Where(s => s.Name == query.CurrentShipName);
+            }
+
+            if (query.CurrentShipDateArrival.HasValue)
+            {
+                shipsQuery = shipsQuery.Where(s => s.DateArrival == query.CurrentShipDateArrival.Value);
+            }
+
+            var ships = await shipsQuery.Select(s => new ShipSelectDTO.Ship
+            {
+                Name = s.Name,
+                DateArrival = s.DateArrival,
+                DateDeparture = s.DateDeparture,
+                Pier = s.Pier,
+                TimeEstimation = s.TimeEstimation,
+                CargoManifest = s.CargoManifest
+            }).ToListAsync();
+
+            return new ShipSelectDTO
+            {
+                Ships = ships,
+                Count = ships.Count
+            };
         }
     }
 }

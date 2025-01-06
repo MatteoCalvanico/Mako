@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Mako.Infrastructure;
 using Mako.Services.Shared;
+using static Mako.Services.Shared.WorkersSelectDTO;
 
 namespace Mako.Web.Features.Login
 {
@@ -46,7 +47,8 @@ namespace Mako.Web.Features.Login
             if (string.IsNullOrWhiteSpace(returnUrl) == false)
                 return Redirect(returnUrl);
 
-            return RedirectToAction(MVC.Example.Users.Index());
+            //return RedirectToAction(MVC.Example.Users.Index());
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -57,7 +59,8 @@ namespace Mako.Web.Features.Login
                 if (string.IsNullOrWhiteSpace(returnUrl) == false)
                     return Redirect(returnUrl);
 
-                return RedirectToAction(MVC.Example.Users.Index());
+                //return RedirectToAction(MVC.Example.Users.Index());
+                return RedirectToAction("Index", "Home");
             }
 
             var model = new LoginViewModel
@@ -81,7 +84,16 @@ namespace Mako.Web.Features.Login
                         Password = model.Password,
                     });
 
-                    return LoginAndRedirect(utente, model.ReturnUrl, model.RememberMe);
+                    var isAdmin = await _sharedService.IsShiftAdminAsync(utente.Cf);
+                    if (isAdmin)
+                    {
+                        return LoginAndRedirect(utente, model.ReturnUrl, model.RememberMe); // Go to Shift admin home
+                    }
+                    else
+                    {
+                        var workerReturnUrl = Url.Action("Index", "Shift", new { area = "Worker" });
+                        return LoginAndRedirect(utente, workerReturnUrl, model.RememberMe); // Go to Worker home
+                    }
                 }
                 catch (LoginException e)
                 {

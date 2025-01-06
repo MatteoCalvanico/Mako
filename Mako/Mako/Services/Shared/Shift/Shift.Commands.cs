@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,8 +13,12 @@ namespace Mako.Services.Shared
         public DateOnly Date { get; set; }
         public TimeOnly StartHour { get; set; }
         public TimeOnly EndHour { get; set; }
-        public Worker Workers { get; set; }
-        public Ship Ship { get; set; }
+        public string ShipName { get; set; }
+        public DateTime ShipDateArrival { get; set; }
+    }
+    public class GetShiftsByIdsCommand
+    {
+        public List<Guid> ShiftIds { get; set; }
     }
 
     public partial class SharedService
@@ -34,6 +39,8 @@ namespace Mako.Services.Shared
                     Date = cmd.Date,
                     StartHour = cmd.StartHour,
                     EndHour = cmd.EndHour,
+                    ShipName = cmd.ShipName,
+                    ShipDateArrival = cmd.ShipDateArrival
                 };
                 _dbContext.Shifts.Add(shift);
             }
@@ -50,7 +57,9 @@ namespace Mako.Services.Shared
 
             return shift.Id;
         }
-
+        public async Task<List<CustomShift>> Handle(GetShiftsByIdsCommand cmd)
+        {
+            return await GetShiftsByIdsAsync(cmd.ShiftIds);
+        }
     }
-
 }

@@ -12,6 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Mako.Services;
+using System.Threading.Tasks;
 
 namespace Mako.Web
 {
@@ -33,7 +34,7 @@ namespace Mako.Web
 
             services.AddDbContext<MakoDbContext>(options =>
             {
-                options.UseInMemoryDatabase(databaseName: "Template");
+                options.UseInMemoryDatabase(databaseName: "MakoDB");
             });
 
             // SERVICES FOR AUTHENTICATION
@@ -88,6 +89,9 @@ namespace Mako.Web
                 // Https redirection only in production
                 app.UseHsts();
                 app.UseHttpsRedirection();
+            } else
+            {
+                app.UseDeveloperExceptionPage();
             }
 
             // Localization support if you want to
@@ -110,13 +114,15 @@ namespace Mako.Web
             {
                 // ROUTING PER HUB
 
-                endpoints.MapAreaControllerRoute("Example", "Example", "Example/{controller=Users}/{action=Index}/{id?}");
+                endpoints.MapAreaControllerRoute("Worker", "Worker", "Worker/{controller=Shift}/{action=Index}");
+                endpoints.MapAreaControllerRoute("Worker", "Worker", "Worker/{controller=Manage}/{action=Index}");
+                endpoints.MapAreaControllerRoute("Worker", "Worker", "Worker/{controller=Account}/{action=Index}");
+
+                // Order is important
                 endpoints.MapControllerRoute("default", "{controller=Login}/{action=Login}");
-<<<<<<< Updated upstream
-=======
                 endpoints.MapControllerRoute("Home", "{controller=Home}/{action=Index}");
+                endpoints.MapControllerRoute("Shifts", "{controller=Shifts}/{action=Index}");
                 endpoints.MapControllerRoute("Ship", "{controller=Ship}/{action=Index}");
->>>>>>> Stashed changes
             });
         }
     }

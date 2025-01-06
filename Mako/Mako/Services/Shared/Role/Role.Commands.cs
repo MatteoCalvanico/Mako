@@ -7,7 +7,7 @@ namespace Mako.Services.Shared
 {
     public class AddOrUpdateRoleCommand
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public RoleTypes Type { get; set; }
     }
 
@@ -23,7 +23,7 @@ namespace Mako.Services.Shared
             {
                 role = new Role
                 {
-                    Id = cmd.Id ?? 999
+                    Id = cmd.Id
                 };
                 _dbContext.Roles.Add(role);
             }

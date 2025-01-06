@@ -10,7 +10,6 @@ namespace Mako.Services.Shared
         public string Cf { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public ICollection<Role> Roles { get; set; }
     }
 
     public partial class SharedService
@@ -32,7 +31,6 @@ namespace Mako.Services.Shared
 
             worker.Name = cmd.Name;
             worker.Surname = cmd.Surname;
-            worker.Roles = cmd.Roles;
 
             await _dbContext.SaveChangesAsync();
 
