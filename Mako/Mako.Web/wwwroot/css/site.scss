@@ -8,7 +8,14 @@
 @import "./pages/Login.scss";
 @import "./pages/Home.scss";
 @import "./pages/Worker.scss";
+@import "./pages/Shifts.scss";
 
 // IMPORT SECTION FOR COMPONENTS
 @import "./components/Navbar.scss";
 @import "./components/Dock.scss";
+
+// SCSS section for base layout
+body {
+    background-color: var(--primary-color);
+    color: var(--text-primary-color);
+}

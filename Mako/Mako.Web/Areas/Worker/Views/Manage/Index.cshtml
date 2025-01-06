@@ -30,11 +30,11 @@
                 <div class="mb-3">
                     <div class="d-flex justify-content-center">
                         <div class="me-2 flex-fill">
-                            <input type="text" class="text-center form-control date-input text-white placeholder-white" asp-for="StartDate" placeholder="Start Date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            <input type="text" class="text-center form-control date-input" asp-for="StartDate" placeholder="Start Date" onfocus="(this.type='date')" onblur="(this.type='text')">
                             <span asp-validation-for="StartDate" class="text-danger"></span>
                         </div>
                         <div class="ms-2 flex-fill">
-                            <input type="text" class="text-center form-control date-input text-white placeholder-white" asp-for="EndDate" placeholder="End Date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            <input type="text" class="text-center form-control date-input" asp-for="EndDate" placeholder="End Date" onfocus="(this.type='date')" onblur="(this.type='text')">
                             <span asp-validation-for="EndDate" class="text-danger"></span>
                         </div>
                     </div>
@@ -46,3 +46,24 @@
         </div>
     </main>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Apply theme based on user's preference or system preference
+            const applyTheme = (theme) => {
+                document.documentElement.setAttribute('data-theme', theme);
+            };
+
+            // Check localStorage for user's theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            } else {
+                // If no preference is saved, use system preference
+                const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                applyTheme(prefersDarkScheme ? 'dark' : 'light');
+            }
+        });
+    </script>
+}
