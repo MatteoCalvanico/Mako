@@ -7,11 +7,38 @@ $primary_light: #F8F9FA;
 $secondary_light: #E7F1FF;
 $tertiary_light: #D3E0F2;
 $accent_light: #0E76FE;
+$button_blue_light: #0e76fe;
+$text_primary_light: black;
 
 $primary_dark: #171717;
 $secondary_dark: #1E242C;
 $tertiary_dark: #2B323C;
 $accent_dark: #5C97E4;
+$button_blue_dark: #5c97e4;
+$text_primary_dark: white;
 
 $warning: #FFC107;
 $danger: #DC3545;
+
+// Define CSS variables for light and dark themes
+:root {
+    --primary-color: #{$primary_light};
+    --secondary-color: #{$secondary_light};
+    --tertiary-color: #{$tertiary_light};
+    --accent-color: #{$accent_light};
+    --warning-color: #{$warning};
+    --danger-color: #{$danger};
+    --button-blue-color: #{$button_blue_light};
+    --text-primary-color: #{$text_primary_light};
+}
+
+[data-theme="dark"] {
+    --primary-color: #{$primary_dark};
+    --secondary-color: #{$secondary_dark};
+    --tertiary-color: #{$tertiary_dark};
+    --accent-color: #{$accent_dark};
+    --warning-color: #{$warning};
+    --danger-color: #{$danger};
+    --button-blue-color: #{$button_blue_dark};
+    --text-primary-color: #{$text_primary_dark};
+}

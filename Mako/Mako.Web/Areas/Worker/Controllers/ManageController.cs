@@ -35,8 +35,8 @@ namespace Mako.Web.Areas.Worker.Controllers
                 var command = new AddOrUpdateRequestHolidayCommand
                 {
                     Id = model.Id,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate,
+                    StartDate = model.StartDate ?? DateTime.MinValue,
+                    EndDate = model.EndDate ?? DateTime.MinValue,
                     Motivation = model.Motivation,
                     WorkerCf = model.WorkerCf,
                     State = RequestState.Unmanaged

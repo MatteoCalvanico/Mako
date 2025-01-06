@@ -1,4 +1,5 @@
 ﻿@model Mako.Web.Features.Home.HomeViewModel
+
 @{
     ViewData["Title"] = "Home";
 }
@@ -16,7 +17,7 @@
                     <h5 class="card-title custom-card-title">Manage Shifts</h5>
                     <p class="card-text custom-card-text"><em>Create, edit and delete incoming shifts</em></p>
                     <div class="mt-auto">
-                        <a href="#" class="btn btn-primary btn-sm custom-btn">Enter</a>
+                        <a asp-controller="Shifts" asp-action="Index" class="btn btn-primary btn-sm custom-btn">Enter</a>
                     </div>
                 </div>
             </div>
@@ -27,7 +28,7 @@
                     <h5 class="card-title custom-card-title">Manage Worker Request</h5>
                     <p class="card-text custom-card-text"><em>View and approve/deny workers requests</em></p>
                     <div class="mt-auto">
-                        <a href="#" class="btn btn-primary btn-sm custom-btn">Enter</a>
+                        <a asp-controller="Requests" asp-action="Index" class="btn btn-primary btn-sm custom-btn">Enter</a>
                     </div>
                 </div>
             </div>
@@ -38,7 +39,7 @@
                     <h5 class="card-title custom-card-title">Worker</h5>
                     <p class="card-text custom-card-text"><em>View all workers information</em></p>
                     <div class="mt-auto">
-                        <a href="#" class="btn btn-primary btn-sm custom-btn">Enter</a>
+                        <a asp-controller="Workers" asp-action="Index" class="btn btn-primary btn-sm custom-btn">Enter</a>
                     </div>
                 </div>
             </div>
@@ -51,7 +52,7 @@
                     <h5 class="card-title custom-card-title">Ships</h5>
                     <p class="card-text custom-card-text"><em>View all incoming ships information</em></p>
                     <div class="mt-auto">
-                        <a href="#" class="btn btn-primary btn-sm custom-btn">Enter</a>
+                        <a asp-controller="Ships" asp-action="Index" class="btn btn-primary btn-sm custom-btn">Enter</a>
                     </div>
                 </div>
             </div>
