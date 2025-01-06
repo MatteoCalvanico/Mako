@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Mako.Services.Shared.Ship>
+
+@* View per il componente ShipCOntroller.cs *@
+
+<div class="row g-4">
+    @foreach (var ship in Model)
+    {
+        // Esempio di calcolo "days to arrival"
+        // (ship.DateArrival - DateTime.UtcNow).Days
+        // -> gestisci i valori negativi (se la data è già passata) e i formati come preferisci.
+        var daysToArrival = (ship.DateArrival - DateTime.UtcNow).Days;
+
+        <div class="col-md-6">
+            <div class="ship-card p-3 rounded">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div class="ship-title">
+                        <strong>@ship.Name - Time estimation: @ship.TimeEstimation</strong>
+                    </div>
+                    <span class="arrival-badge">
+                        @(daysToArrival > 0 ? $"{daysToArrival} days to arrival" : "Arrived / In port")
+                    </span>
+                </div>
+                <div class="mb-1">
+                    <small><strong>Pier:</strong> @ship.Pier</small>
+                </div>
+                <div class="mb-1">
+                    <small>
+                        <strong>Turni assegnati</strong> <a href="#"><i class="fa fa-link"></i></a>
+                    </small>
+                </div>
+                <div class="mb-1">
+                    <small>
+                        <strong>Cargo manifest</strong> @ship.CargoManifest
+                        <a href="#"><i class="fa fa-link"></i></a>
+                    </small>
+                </div>
+                <div class="mb-1">
+                    <small><strong>Arrival:</strong> @ship.DateArrival.ToShortDateString()</small>
+                </div>
+                <div class="mb-1">
+                    <small><strong>Departure:</strong> @ship.DateDeparture.ToShortDateString()</small>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- FilterBar -->
+    <div class="container mt-5">
+        @Html.Partial("~/Views/Shared/Filter/FilterBar.cshtml")
+    </div>
+</div>

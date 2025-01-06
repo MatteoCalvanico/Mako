@@ -11,6 +11,7 @@ $secondary_light: #E7F1FF;
 $tertiary_light: #D3E0F2;
 $accent_light: #0E76FE;
 
+<<<<<<< Updated upstream
 $primary_dark: #171717;
 $secondary_dark: #1E242C;
 $tertiary_dark: #2B323C;
@@ -149,3 +150,10 @@ body {
 .password-reset-link:hover {
     text-decoration: underline;
 }
+=======
+// IMPORT SECTION FOR COMPONENTS
+@import "./components/Navbar.scss";
+@import "./components/FilterBar.scss";
+@import "./components/Ship.scss";
+@import "./components/Dock.scss";
+>>>>>>> Stashed changes

@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Mako.Services.Shared
 {
@@ -12,7 +15,7 @@ namespace Mako.Services.Shared
 
     public class ShipSelectDTO
     {
-        public IEnumerable<Shift> Ships { get; set; }
+        public IEnumerable<Ship> Ships { get; set; }
         public int Count { get; set; }
 
         public class Ship 
@@ -40,5 +43,17 @@ namespace Mako.Services.Shared
         public int Pier { get; set; }
         public TimeOnly TimeEstimation { get; set; }
         public string CargoManifest { get; set; }
+    }
+
+    public partial class  SharedService
+    {
+        // Recupero tutte le navi
+        public async Task<List<Ship>> GetShipsAsync()
+        {
+            return await _dbContext.Ships
+                                   .AsNoTracking()  // Non traccia le entità restituite
+                                   .OrderBy(s => s.DateArrival) //  Ordina le navi per data di arrivo
+                                   .ToListAsync();
+        }
     }
 }

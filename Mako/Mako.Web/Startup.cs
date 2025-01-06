@@ -112,6 +112,11 @@ namespace Mako.Web
 
                 endpoints.MapAreaControllerRoute("Example", "Example", "Example/{controller=Users}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("default", "{controller=Login}/{action=Login}");
+<<<<<<< Updated upstream
+=======
+                endpoints.MapControllerRoute("Home", "{controller=Home}/{action=Index}");
+                endpoints.MapControllerRoute("Ship", "{controller=Ship}/{action=Index}");
+>>>>>>> Stashed changes
             });
         }
     }
