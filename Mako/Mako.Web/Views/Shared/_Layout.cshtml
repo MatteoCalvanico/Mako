@@ -32,16 +32,16 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item ms-5">
-                            <a class="nav-link @ViewContext.RouteData.Values["controller"]?.ToString() == "Shifts" ? "active" : "")" href="@Url.Action("Index", "Shifts")">Shifts</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Shifts" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" href="@Url.Action("Index", "Shifts")">Shifts</a>
                         </li>
                         <li class="nav-item ms-5">
-                            <a class="nav-link @(ViewContext.RouteData.Values["action"].ToString() == "Requests" ? "active" : "")" href="#">Requests</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" href="#">Requests</a>
                         </li>
                         <li class="nav-item ms-5">
-                            <a class="nav-link @(ViewContext.RouteData.Values["action"].ToString() == "Workers" ? "active" : "")" href="#">Workers</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workers" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" href="#">Workers</a>
                         </li>
                         <li class="nav-item ms-5">
-                            <a class="nav-link @(ViewContext.RouteData.Values["action"].ToString() == "Ships" ? "active" : "")" href="#">Ships</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Ships" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" href="#">Ships</a>
                         </li>
                     </ul>
 
@@ -95,7 +95,7 @@
         @this.RenderAlertsWithToastify()
 
         function toggleDarkMode() {
-            var darkMode = document.getElementById('darkModeState').value === 'true';
+            let darkMode = document.getElementById('darkModeState').value === 'true';
             darkMode = !darkMode;
             document.getElementById('darkModeState').value = darkMode;
 
