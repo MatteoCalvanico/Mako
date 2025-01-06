@@ -9,7 +9,18 @@ h2 {
 }
 
 main {
-    padding-bottom: 80px; // Avoid that the dock hide some part
+    padding-bottom: 80px; // Avoid that the dock hides some part
+}
+
+.modal-content {
+    background-color: var(---secondary-color);
+    color: var(--text-primary-color);
+
+    .btn-close {
+        color: var(--text-primary-color);
+        background-color: transparent;
+        border: none;
+    }
 }
 
 .shiftLi {
@@ -25,6 +36,7 @@ main {
 
 .date-input {
     background-color: var(--accent-color);
+    color: var(--text-primary-color);
 }
 
 .btn-sm {
@@ -39,7 +51,7 @@ main {
 
 .placeholder-white::placeholder {
     color: white !important;
-    opacity: 1; /* Per assicurarsi che il colore sia visibile */
+    opacity: 1; /* Ensures the color is visible */
 }
 
 #requestInput {
@@ -64,4 +76,21 @@ main {
     padding: 10px;
     width: 150px;
     text-align: center;
+}
+
+/* Form boxes styling */
+.modal-body .form-control,
+.modal-body .form-select {
+    background-color: var(---primary-color);
+    color: var(--text-primary-color);
+}
+
+.modal-body .form-control::placeholder,
+.modal-body .form-select::placeholder {
+    color: var(--text-primary-color);
+    opacity: 1;
+}
+
+.modal-body .form-label {
+    color: var(--text-primary-color);
 }
