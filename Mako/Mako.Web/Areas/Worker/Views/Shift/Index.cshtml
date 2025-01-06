@@ -4,19 +4,21 @@
 }
 
 <div class="container-fluid p-0">
-    <header class="text-black text-center py-3">
+    <header class="text-center py-3">
         <h1 class="fw-bold">@ViewData["Title"]</h1>
     </header>
-    <main class="mt-4 mb-5">
-        <div id="shiftApp">
-            <div v-for="(shifts, date) in groupedShifts" :key="date" class="mb-5">
-                <h2 class="fw-bold">{{ formatDate(date) }}</h2>
-                <ul class="list-unstyled">
-                    <li v-for="(shift, index) in shifts" :key="shift.id" class="shiftLi mb-2 p-3 border rounded">
-                        <span class="fs-5">Pier {{ shift.pier }}: <span class="fw-bold">{{ formatTime(shift.startHour) }}</span> - <span class="fw-bold">{{ formatTime(shift.endHour) }}</span></span>
-                        <span v-if="isFirstShift(index, date)" class="startedMsg fw-bold ms-2">Get started soon</span>
-                    </li>
-                </ul>
+    <main class="d-flex justify-content-center">
+        <div class="col-lg-5 col-md-8 col-sm-10 mt-4 mb-5">
+            <div id="shiftApp">
+                <div v-for="(shifts, date) in groupedShifts" :key="date" class="mb-5">
+                    <h2 class="fw-bold text-center">{{ formatDate(date) }}</h2>
+                    <ul class="list-unstyled">
+                        <li v-for="(shift, index) in shifts" :key="shift.id" class="shiftLi mb-2 p-3 border rounded">
+                            <span class="fs-5">Pier {{ shift.pier }}: <span class="fw-bold">{{ formatTime(shift.startHour) }}</span> - <span class="fw-bold">{{ formatTime(shift.endHour) }}</span></span>
+                            <span v-if="isFirstShift(index, date)" class="startedMsg fw-bold ms-2">Get started soon</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </main>
@@ -89,6 +91,21 @@
                     }
                 }
             });
+
+            // Apply theme based on user's preference or system preference
+            const applyTheme = (theme) => {
+                document.documentElement.setAttribute('data-theme', theme);
+            };
+
+            // Check localStorage for user's theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            } else {
+                // If no preference is saved, use system preference
+                const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                applyTheme(prefersDarkScheme ? 'dark' : 'light');
+            }
         });
     </script>
 }

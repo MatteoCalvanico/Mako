@@ -10,11 +10,11 @@ namespace Mako.Web.Areas.Worker.Models
 
         [Required]
         [DataType(DataType.Date)]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [Required]
         [StringLength(500, ErrorMessage = "Motivation cannot be longer than 500 characters.")]
