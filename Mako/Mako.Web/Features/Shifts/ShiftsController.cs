@@ -33,7 +33,7 @@ namespace Mako.Web.Features.Shifts
 
             try
             {
-                var shiftsViewModel = await GetAllShifts();
+                var shiftsViewModel = await GetAllShiftsAndShips();
                 return View("Shifts", shiftsViewModel);
             }
             catch (Exception ex)
@@ -55,17 +55,15 @@ namespace Mako.Web.Features.Shifts
             return Redirect(Request.GetTypedHeaders().Referer?.ToString() ?? "/");
         }
 
-        public async Task<ShiftsViewModel> GetAllShifts()
+        public async Task<ShiftsViewModel> GetAllShiftsAndShips()
         {
             var viewModel = new ShiftsViewModel();
 
             try
             {
-                // Create a new ShiftsSelectQuery without any filters to retrieve all shifts
+                // Retrieve shifts
                 var shiftsQuery = new ShiftsSelectQuery();
                 var shifts = await _sharedService.SelectShiftsQuery(shiftsQuery);
-
-                // Map the retrieved shifts to the view model
                 viewModel.Shifts = shifts.Shifts.Select(s => new ShiftViewModel
                 {
                     Id = s.Id,
@@ -76,11 +74,24 @@ namespace Mako.Web.Features.Shifts
                     ShipName = s.ShipName,
                     ShipDateArrival = s.ShipDateArrival
                 }).ToList();
+
+                // Retrieve ships
+                var shipsQuery = new ShipsSelectQuery();
+                var ships = await _sharedService.SelectShipsQuery(shipsQuery);
+                viewModel.Ships = ships.Ships.Select(s => new ShipViewModel
+                {
+                    Name = s.Name,
+                    DateArrival = s.DateArrival,
+                    DateDeparture = s.DateDeparture,
+                    Pier = s.Pier,
+                    TimeEstimation = s.TimeEstimation,
+                    CargoManifest = s.CargoManifest
+                }).ToList();
             }
             catch (Exception ex)
             {
                 // Handle the exception as needed, e.g., log it
-                throw new Exception("An error occurred while retrieving shifts", ex);
+                throw new Exception("An error occurred while retrieving shifts and ships", ex);
             }
 
             return viewModel;

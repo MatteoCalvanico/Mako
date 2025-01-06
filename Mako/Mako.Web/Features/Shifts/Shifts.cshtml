@@ -1,49 +1,48 @@
 ﻿@model Mako.Web.Features.Shifts.ShiftsViewModel
 
 @{
-    ViewData["Title"] = "Shifts";
+    ViewData["Title"] = "Ships";
 }
 
-@section styles {
-    <link href="~/css/Pages/Shifts.scss" rel="stylesheet" />
-}
-
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <h1>Shifts Overview</h1>
-        @if (Model.Shifts.Any())
-        {
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Shift ID</th>
-                        <th>Pier</th>
-                        <th>Date</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                        <th>Ship Name</th>
-                        <th>Arrival Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var shift in Model.Shifts)
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-7 col-sm-10">
+            @if (Model.Ships.Any())
+            {
+                <div class="row">
+                    @foreach (var ship in Model.Ships)
                     {
-                        <tr>
-                            <td>@shift.Id</td>
-                            <td>@shift.Pier</td>
-                            <td>@shift.Date.ToShortDateString()</td>
-                            <td>@shift.StartHour</td>
-                            <td>@shift.EndHour</td>
-                            <td>@shift.ShipName</td>
-                            <td>@shift.ShipDateArrival.ToShortDateString()</td>
-                        </tr>
+                        <div class="card card-custom mt-4 shadow">
+                            <div class="card-body">
+                                <div class="overlay-card px-2 py-1">
+                                    @if (ship.DateArrival > DateTime.Now)
+                                    {
+                                        @((ship.DateArrival - DateTime.Now).Days)
+                                        @:days left to arrival
+                                    }
+                                    else
+                                    {
+                                        @:Arrived
+                                    }
+                                </div>
+                                <h5 class="card-title fs-3"><b>@ship.Name</b> - <i>Time estimation: @(Math.Round(ship.TimeEstimation.TotalHours, 1)) hr</i></h5>
+                                <div class="d-flex justify-content-between">
+                                    <p class="card-text fs-5 mb-0">
+                                        <strong class="fs-4">Pier @ship.Pier</strong><br />
+                                        Arrival: @ship.DateArrival.ToShortDateString() <br />
+                                        Departure: @ship.DateDeparture.ToShortDateString()
+                                    </p>
+                                    <a href="#" class="card-link mb-1">Cargo Manifest</a>
+                                </div>
+                            </div>
+                        </div>
                     }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <p>No shifts available.</p>
-        }
+                </div>
+            }
+            else
+            {
+                <p>No ships available.</p>
+            }
+        </div>
     </div>
 </div>

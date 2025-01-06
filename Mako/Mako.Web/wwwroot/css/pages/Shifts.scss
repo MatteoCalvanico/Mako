@@ -1,0 +1,20 @@
+@import "../site.variables.scss";
+
+.card-custom {
+    border-radius: 18px;
+}
+
+.overlay-card {
+    position: absolute;
+    top: -10px;
+    right: -70px;
+    font-weight: 600;
+    background-color: $warning;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    z-index: 1; /* Ensure it is above other content */
+}
+
+.card-link {
+    align-self: end;
+}
