@@ -4,7 +4,7 @@
 }
 
 <div class="container-fluid p-0">
-    <header class="text-black text-center py-3">
+    <header class="text-center py-3">
         <h1 class="fw-bold">@ViewData["Title"]</h1>
     </header>
     <main class="d-flex justify-content-center">
@@ -91,6 +91,21 @@
                     }
                 }
             });
+
+            // Apply theme based on user's preference or system preference
+            const applyTheme = (theme) => {
+                document.documentElement.setAttribute('data-theme', theme);
+            };
+
+            // Check localStorage for user's theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            } else {
+                // If no preference is saved, use system preference
+                const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                applyTheme(prefersDarkScheme ? 'dark' : 'light');
+            }
         });
     </script>
 }

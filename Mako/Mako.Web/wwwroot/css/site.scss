@@ -13,3 +13,9 @@
 // IMPORT SECTION FOR COMPONENTS
 @import "./components/Navbar.scss";
 @import "./components/Dock.scss";
+
+// SCSS section for base layout
+body {
+    background-color: var(--primary-color);
+    color: var(--text-primary-color);
+}

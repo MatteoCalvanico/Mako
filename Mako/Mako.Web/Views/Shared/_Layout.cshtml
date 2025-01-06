@@ -16,11 +16,13 @@
 }
 <div id="pageId">
     <div>
-        <nav class="navbar navbar-expand-lg" style="background-color: #E7F1FF">
+        <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <!-- Logo -->
                 <a class="navbar-brand ms-5" href="/">
-                    <img src="~/images/logo.svg" alt="Logo" style="height: 45px; width: 70px" />
+                    <img id="navLogo"
+                         src="@Url.Content("~/images/logo.svg")"
+                         alt="Logo" />
                 </a>
 
                 <!-- Toggler for responsive design -->
@@ -94,20 +96,28 @@
     <script type="text/javascript">
         @this.RenderAlertsWithToastify()
 
-        function toggleDarkMode() {
-            let darkMode = document.getElementById('darkModeState').value === 'true';
-            darkMode = !darkMode;
-            document.getElementById('darkModeState').value = darkMode;
+          function setLogo(theme) {
+                const logoImg = document.getElementById('navLogo');
+                if (theme === 'dark') {
+                    logoImg.src = '@Url.Content("~/images/logo_white.svg")';
+                } else {
+                    logoImg.src = '@Url.Content("~/images/logo.svg")';
+                }
+          }
 
-            // Update user interface
-            if (darkMode) {
-                document.getElementById('darkModeToggle').style.display = 'none';
-                document.getElementById('lightModeToggle').style.display = 'block';
-            } else {
-                document.getElementById('darkModeToggle').style.display = 'block';
-                document.getElementById('lightModeToggle').style.display = 'none';
-            }
-        }
+          function toggleDarkMode() {
+              const currentTheme = document.documentElement.getAttribute('data-theme');
+              const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+              document.documentElement.setAttribute('data-theme', newTheme);
+              localStorage.setItem('theme', newTheme);
+              setLogo(newTheme);
+           }
+
+            document.addEventListener('DOMContentLoaded', function () {
+              const savedTheme = localStorage.getItem('theme') || 'light';
+              document.documentElement.setAttribute('data-theme', savedTheme);
+              setLogo(savedTheme);
+           });
     </script>
 
     @RenderSection("scripts", false)

@@ -2,6 +2,7 @@
 
 .card-custom {
     border-radius: 18px;
+    background-color: var(--secondary-color);
 }
 
 .overlay-card {
@@ -10,6 +11,7 @@
     right: -70px;
     font-weight: 600;
     background-color: $warning;
+    color: var(--text-primary-color);
     border-radius: 10px;
     font-size: 0.9rem;
     z-index: 1; /* Ensure it is above other content */

@@ -1,11 +1,11 @@
 ﻿@import "../site.variables.scss";
 
 .custom-btn {
-    width: auto;
-    padding: 0.375rem 1.25rem;
     white-space: nowrap;
     margin-bottom: 1rem;
-    border-radius: 10px;
+    border-radius: 12px;
+    margin-top: 10%;
+    padding: 8px;
 }
 
 .custom-title {
@@ -28,11 +28,6 @@
     font-weight: bold; 
 }
 
-.custom-btn {
-    font-size: 1.25rem;
-    padding: 0.75rem 1.5rem;
-}
-
 /*
 .custom-card-height {
     height: 250px;
@@ -41,5 +36,6 @@
 .card {
     border-radius: 40px;
     border: none;
-    background-color: $secondary_light;
+    background-color: var(---secondary-color);
+    color: var(--text-primary-color);
 }
