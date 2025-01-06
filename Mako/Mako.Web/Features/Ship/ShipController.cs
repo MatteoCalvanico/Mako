@@ -21,10 +21,10 @@ namespace Mako.Web.Features.ShipName
         public virtual async Task<IActionResult> Index()
         {
             // // Recupera le navi dal database tramite il metodo GetShipsAsync()
-            var ships = await _sharedService.GetShipsAsync();
+            var ships = await _sharedService.SelectShipsQuery(new ShipsSelectQuery { });
 
             // Ritorna la view "Default.cshtml" con la lista di Ship
-            return View("Default", ships);
+            return View("Index", ships);
         }
     }
 }
