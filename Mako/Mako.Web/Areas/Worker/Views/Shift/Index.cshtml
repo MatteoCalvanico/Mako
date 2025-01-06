@@ -13,7 +13,7 @@
                 <div v-for="(shifts, date) in groupedShifts" :key="date" class="mb-5">
                     <h2 class="fw-bold text-center">{{ formatDate(date) }}</h2>
                     <ul class="list-unstyled">
-                        <li v-for="(shift, index) in shifts" :key="shift.id" class="shiftLi mb-2 p-3 border rounded">
+                        <li v-for="(shift, index) in shifts" :key="shift.id" class="shiftLi mb-2 p-3 border rounded" data-bs-toggle="modal" data-bs-target="#changeShiftModal" onclick="populateModal(shift)">
                             <span class="fs-5">Pier {{ shift.pier }}: <span class="fw-bold">{{ formatTime(shift.startHour) }}</span> - <span class="fw-bold">{{ formatTime(shift.endHour) }}</span></span>
                             <span v-if="isFirstShift(index, date)" class="startedMsg fw-bold ms-2">Get started soon</span>
                         </li>
@@ -22,6 +22,42 @@
             </div>
         </div>
     </main>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="changeShiftModal" tabindex="-1" aria-labelledby="changeShiftModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="changeShiftModalLabel">Change shifts</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="changeShiftForm" asp-action="ChangeShift" method="post">
+                    <div class="mb-3">
+                        <label for="selectedShift" class="form-label">Select a shift</label>
+                        <select class="form-select" id="selectedShift" name="SelectedShift">
+                            <!-- Options will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="operation" class="form-label">Select operation</label>
+                        <select class="form-select" id="operation" name="Operation">
+                            <option value="swap">Swap</option>
+                            <option value="cancel">Cancel</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Write a message</label>
+                        <textarea class="form-control" id="message" name="Message" rows="3" placeholder="Write a message..."></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
@@ -88,6 +124,13 @@
                     isFirstShift(index, date) {
                         const firstDate = Object.keys(this.groupedShifts)[0];
                         return index === 0 && date === firstDate;
+                    },
+                    // Populate modal with the clicked shift
+                    populateModal(shift) {
+                        const selectedShiftSelect = document.getElementById('selectedShift');
+                        selectedShiftSelect.innerHTML = `<option value="${shift.id}" selected>Pier ${shift.pier}: ${this.formatTime(shift.startHour)} - ${this.formatTime(shift.endHour)}</option>`;
+
+                        // Optionally, you can add more options here dynamically if needed
                     }
                 }
             });
