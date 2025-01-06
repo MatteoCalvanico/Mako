@@ -17,7 +17,7 @@ namespace Mako.Services.Shared
         [Required]
         public string Motivation { get; set; }
         [Required]
-        public Worker Sender { get; set; }
+        public string WorkerCf { get; set; }
         public RequestState State { get; set; } = RequestState.Unmanaged;
     }
 
@@ -36,7 +36,7 @@ namespace Mako.Services.Shared
                     StartDate = cmd.StartDate,
                     EndDate = cmd.EndDate,
                     Motivation = cmd.Motivation,
-                    Sender = cmd.Sender,
+                    WorkerCf = cmd.WorkerCf,
                     State = cmd.State,
                     SentDate = DateTime.UtcNow
                 };
@@ -47,7 +47,7 @@ namespace Mako.Services.Shared
                 requestHoliday.StartDate = cmd.StartDate;
                 requestHoliday.EndDate = cmd.EndDate;
                 requestHoliday.Motivation = cmd.Motivation;
-                requestHoliday.Sender = cmd.Sender;
+                requestHoliday.WorkerCf = cmd.WorkerCf;
                 requestHoliday.State = cmd.State;
             }
 

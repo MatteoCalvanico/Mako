@@ -1,0 +1,74 @@
+﻿@inject IHtmlLocalizer<Mako.Web.SharedResource> SharedLocalizer
+@inject Microsoft.Extensions.Options.IOptions<AppSettings> appSettings
+@{
+    ViewData["Title"] = "Account";
+    var version = System.Reflection.Assembly.GetAssembly(typeof(Startup)).GetName().Version;
+    var identitaCorrente = (Mako.Web.Areas.IdentitaViewModel)ViewData[Mako.Web.Areas.IdentitaViewModel.VIEWDATA_IDENTITACORRENTE_KEY];
+    var darkMode = false;
+    var isShiftAdmin = ViewBag.IsShiftAdmin;
+}
+
+<div class="container-fluid p-0">
+    <header class="text-black text-center py-3">
+        <h1 class="fw-bold">@ViewData["Title"]</h1>
+    </header>
+</div>
+<div class="container-fluid p-0 d-flex flex-column justify-content-center align-items-center" style="min-height: calc(100vh - 100px);">
+    <div class="text-center">
+        @if (isShiftAdmin)
+        {
+            <button class="btn btn-primary rounded-pill mb-2 d-block mx-auto p-2" onclick="redirectToHome()">
+                <i class="fa-solid fa-person-booth"></i>&nbsp;@SharedLocalizer["Change view"]
+            </button>
+        }
+        <button id="darkMode" onclick="toggleDarkMode()">
+            <i class="fa-solid fa-moon"></i>&nbsp;@SharedLocalizer["Dark Mode"]
+        </button>
+        <button id="lightMode" onclick="toggleDarkMode()" style="display:none;">
+            <i class="fa-solid fa-sun"></i>&nbsp;@SharedLocalizer["Light Mode"]
+        </button>
+        <button class="btn btn-danger rounded-pill mb-2 mt-3 d-block mx-auto" onclick="document.getElementById('POST_LogOut').submit()">
+            <i class="fa-solid fa-right-from-bracket"></i>&nbsp;@SharedLocalizer["Log out"]
+        </button>
+    </div>
+</div>
+
+<form autocomplete="off" method="post" action="@Url.Action(MVC.Login.Logout())" id="POST_LogOut" style="display:none;"></form>
+
+@section scripts {
+    <script type="text/javascript">
+        @this.RenderAlertsWithToastify()
+
+        function toggleDarkMode() {
+            var darkMode = document.getElementById('darkModeState').value === 'true';
+            darkMode = !darkMode;
+            document.getElementById('darkModeState').value = darkMode;
+
+            // Update user interface
+            if (darkMode) {
+                document.getElementById('darkMode').style.display = 'none';
+                document.getElementById('lightMode').style.display = 'block';
+            } else {
+                document.getElementById('darkMode').style.display = 'block';
+                document.getElementById('lightMode').style.display = 'none';
+            }
+        }
+
+        // Ensure the correct button is displayed on page load
+        document.addEventListener("DOMContentLoaded", function() {
+            var darkMode = document.getElementById('darkModeState').value === 'true';
+            if (darkMode) {
+                document.getElementById('darkMode').style.display = 'none';
+                document.getElementById('lightMode').style.display = 'block';
+            } else {
+                document.getElementById('darkMode').style.display = 'block';
+                document.getElementById('lightMode').style.display = 'none';
+            }
+        });
+
+        function redirectToHome() {
+            window.location.href = '/Home/Index';
+        }
+    </script>
+}
+<input type="hidden" id="darkModeState" value="@darkMode" />

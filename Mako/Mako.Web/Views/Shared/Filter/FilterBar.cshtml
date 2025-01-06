@@ -1,0 +1,35 @@
+﻿@* Bottone "Filters" con il menù a tendina *@
+
+@{
+    bool isShip = true;    // if false show worker filters, if true show ship filters
+}
+
+<div class="filter-bar d-flex align-items-center">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle filter-bar-btn"
+                type="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+            Filters
+        </button>
+        <ul class="dropdown-menu filter-bar-dropdown">
+            <li><a class="dropdown-item-header" href="#">FILTER BY</a></li>
+            @if(isShip){
+                <li><a class="dropdown-item" href="#">Ship Name</a></li>
+                <li><a class="dropdown-item" href="#">Pier</a></li>
+                <li><a class="dropdown-item" href="#">Arrival</a></li>
+                <li><a class="dropdown-item" href="#">Departure</a></li>
+            }else{
+                <li><a class="dropdown-item" href="#">Worker Name</a></li>
+                <li><a class="dropdown-item" href="#">Ruolo</a></li>
+                <li><a class="dropdown-item" href="#">Licence</a></li>
+                <li><a class="dropdown-item" href="#">Certification</a></li>
+            }
+        </ul>
+    </div>
+
+    @* Barra “FILTER BY” disabilitata*@
+    <div class="filter-bar-input ms-3">
+        <i class="fa-solid fa-filter"></i>
+        <input type="text" class="input" disabled placeholder="FILTER BY" />
+    </div>
+</div>

@@ -1,0 +1,37 @@
+﻿@inject IHtmlLocalizer<Mako.Web.SharedResource> SharedLocalizer
+@inject Microsoft.Extensions.Options.IOptions<AppSettings> appSettings
+@{
+    Layout = "_LayoutHtml";
+    var version = System.Reflection.Assembly.GetAssembly(typeof(Startup)).GetName().Version;
+    var identitaCorrente = (Mako.Web.Areas.IdentitaViewModel)ViewData[Mako.Web.Areas.IdentitaViewModel.VIEWDATA_IDENTITACORRENTE_KEY];
+    var darkMode = false;
+    var pageTitle = ViewData["Title"]?.ToString();
+}
+
+<div id="pageId">
+    @RenderBody()
+
+    <div class="fixed-bottom custom-dock d-flex align-items-center justify-content-center @(pageTitle == "Utenti" ? "custom-dock-users" : "")">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col text-center py-2">
+                    <a href="/Worker/Account/Index"><i style="color: @(pageTitle == "Account" ? "#0E76FE" : "black")" class="fa-solid fa-user fa-2xl"></i></a>
+                </div>
+                <div class="col text-center py-2">
+                    <a href="/Worker/Shift/Index"><i style="color: @(pageTitle == "Your shifts" ? "#0E76FE" : "black")" class="fa-solid fa-calendar fa-2xl"></i></a>
+                </div>
+                <div class="col text-center py-2">
+                    <a href="/Worker/Manage/Index"><i style="color: @(pageTitle == "Manage shifts" ? "#0E76FE" : "black")" class="fa-solid fa-shuffle fa-2xl"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        @this.RenderAlertsWithToastify()
+    </script>
+
+    @RenderSection("scripts", false)
+}

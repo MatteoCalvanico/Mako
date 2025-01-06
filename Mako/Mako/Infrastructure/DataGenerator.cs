@@ -220,7 +220,6 @@ namespace Mako.Infrastructure
                 new User
                 {
                     Id = Guid.Parse("a030ee81-31c7-47d0-9309-408cb5ac0ac7"), // Forced to specific Guid for tests
-                    // LASCIALO COSI' NON ME LO TOGLIERE LURIDO
                     Email = "admin",
                     Password = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", // SHA-256 of text "admin"
                     Cf = "00000000001",
@@ -279,11 +278,72 @@ namespace Mako.Infrastructure
                     Id = new Guid("a030ee81-31c7-47d0-9309-408cb5ac0ac7"), // Forced to specific Guid for tests
                     Pier = 2,
                     Date = DateOnly.FromDateTime(DateTime.Now),
-                    StartHour = TimeOnly.FromDateTime(DateTime.Now),
-                    EndHour = TimeOnly.FromDateTime(DateTime.Now.AddHours(8)),
+                    StartHour = TimeOnly.FromDateTime(DateTime.Now.AddHours(9)),
+                    EndHour = TimeOnly.FromDateTime(DateTime.Now.AddHours(3)),
                     ShipName = "Thousand Sunny",
                     ShipDateArrival = context.Ships.First(s => s.Name == "Thousand Sunny").DateArrival,
-                });
+                },
+                new Shift
+                {
+                    Id = new Guid("a030993f-9a0b-4667-aa53-0fbc52c4d300"), // Forced to specific Guid for tests
+                    Pier = 1,
+                    Date = DateOnly.FromDateTime(DateTime.Today.AddDays(1)),
+                    StartHour = new TimeOnly(7, 30),
+                    EndHour = new TimeOnly(12, 30),
+                    ShipName = "Going Merry",
+                    ShipDateArrival = context.Ships.First(s => s.Name == "Going Merry").DateArrival,
+                },
+                new Shift
+                {
+                    Id = new Guid("993faa81-31c7-47d0-9309-408cb5ac0ac7"), // Forced to specific Guid for tests
+                    Pier = 2,
+                    Date = DateOnly.FromDateTime(DateTime.Today.AddDays(1)),
+                    StartHour = new TimeOnly(14, 30),
+                    EndHour = new TimeOnly(17, 30),
+                    ShipName = "Thousand Sunny",
+                    ShipDateArrival = context.Ships.First(s => s.Name == "Thousand Sunny").DateArrival,
+                },
+                new Shift
+                {
+                    Id = new Guid("3de6993f-9a0b-4667-31c7-0fbc52c4d300"), // Forced to specific Guid for tests
+                    Pier = 1,
+                    Date = DateOnly.FromDateTime(DateTime.Today.AddDays(2)),
+                    StartHour = new TimeOnly(7, 30),
+                    EndHour = new TimeOnly(12, 30),
+                    ShipName = "Going Merry",
+                    ShipDateArrival = context.Ships.First(s => s.Name == "Going Merry").DateArrival,
+                },
+                new Shift
+                {
+                    Id = new Guid("a030aa81-4667-47d0-9309-0fbc52c4d300"), // Forced to specific Guid for tests
+                    Pier = 2,
+                    Date = DateOnly.FromDateTime(DateTime.Today.AddDays(2)),
+                    StartHour = new TimeOnly(14, 30),
+                    EndHour = new TimeOnly(17, 30),
+                    ShipName = "Thousand Sunny",
+                    ShipDateArrival = context.Ships.First(s => s.Name == "Thousand Sunny").DateArrival,
+                },
+                new Shift
+                {
+                    Id = new Guid("b030aa81-4667-47d0-9309-0fbc52c4d301"), // Forced to specific Guid for tests
+                    Pier = 1,
+                    Date = DateOnly.FromDateTime(DateTime.Today.AddDays(3)),
+                    StartHour = new TimeOnly(8, 0),
+                    EndHour = new TimeOnly(12, 0),
+                    ShipName = "Going Merry",
+                    ShipDateArrival = context.Ships.First(s => s.Name == "Going Merry").DateArrival,
+                },
+                new Shift
+                {
+                    Id = new Guid("c030aa81-4667-47d0-9309-0fbc52c4d302"), // Forced to specific Guid for tests
+                    Pier = 2,
+                    Date = DateOnly.FromDateTime(DateTime.Today.AddDays(3)),
+                    StartHour = new TimeOnly(13, 0),
+                    EndHour = new TimeOnly(17, 0),
+                    ShipName = "Thousand Sunny",
+                    ShipDateArrival = context.Ships.First(s => s.Name == "Thousand Sunny").DateArrival,
+                }
+            );
             context.SaveChanges();
         }
 
@@ -323,6 +383,12 @@ namespace Mako.Infrastructure
 
             var shift1 = context.Shifts.First(s => s.Id == new Guid("3de6883f-9a0b-4667-aa53-0fbc52c4d300"));
             var shift2 = context.Shifts.First(s => s.Id == new Guid("a030ee81-31c7-47d0-9309-408cb5ac0ac7"));
+            var shift3 = context.Shifts.First(s => s.Id == new Guid("a030993f-9a0b-4667-aa53-0fbc52c4d300"));
+            var shift4 = context.Shifts.First(s => s.Id == new Guid("993faa81-31c7-47d0-9309-408cb5ac0ac7"));
+            var shift5 = context.Shifts.First(s => s.Id == new Guid("3de6993f-9a0b-4667-31c7-0fbc52c4d300"));
+            var shift6 = context.Shifts.First(s => s.Id == new Guid("a030aa81-4667-47d0-9309-0fbc52c4d300"));
+            var shift7 = context.Shifts.First(s => s.Id == new Guid("b030aa81-4667-47d0-9309-0fbc52c4d301"));
+            var shift8 = context.Shifts.First(s => s.Id == new Guid("c030aa81-4667-47d0-9309-0fbc52c4d302"));
 
             var worker1 = context.Workers.First(w => w.Cf == "00000000001");
             var worker2 = context.Workers.First(w => w.Cf == "PPPFNC80A01H501K");
@@ -331,7 +397,13 @@ namespace Mako.Infrastructure
                 new ShiftWorker { ShiftId = shift1.Id, WorkerCf = worker1.Cf },
                 new ShiftWorker { ShiftId = shift1.Id, WorkerCf = worker2.Cf },
                 new ShiftWorker { ShiftId = shift2.Id, WorkerCf = worker1.Cf },
-                new ShiftWorker { ShiftId = shift2.Id, WorkerCf = worker2.Cf }
+                new ShiftWorker { ShiftId = shift2.Id, WorkerCf = worker2.Cf },
+                new ShiftWorker { ShiftId = shift3.Id, WorkerCf = worker1.Cf },
+                new ShiftWorker { ShiftId = shift4.Id, WorkerCf = worker1.Cf },
+                new ShiftWorker { ShiftId = shift5.Id, WorkerCf = worker1.Cf },
+                new ShiftWorker { ShiftId = shift6.Id, WorkerCf = worker1.Cf },
+                new ShiftWorker { ShiftId = shift7.Id, WorkerCf = worker1.Cf },
+                new ShiftWorker { ShiftId = shift8.Id, WorkerCf = worker1.Cf }
             );
 
             context.SaveChanges();

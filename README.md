@@ -16,6 +16,7 @@ These are all the features:
 - Install packages by opening the context menu by right-clicking on *package.json* in *Mako.Web*
 - Update bundles using the *Bundle & Minifier 2022* extension by right-clicking on *Mako.Web*
 - Re-compile all files using *Web Compiler 2022* by right-clicking on *Mako.Web*
+- Right-click on *Mako.Web* and select the option *Set as startup project*
 
 ## Project's Mockup
 Check out Mako's Mockups in Figma:
