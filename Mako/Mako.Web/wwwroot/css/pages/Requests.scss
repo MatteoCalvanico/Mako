@@ -1,0 +1,36 @@
+@import "../site.variables.scss";
+
+.btn-group .btn {
+    height: 40px;
+    line-height: 36px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid gray;
+    font-weight: 400;
+    color: black; // Default text color for unselected buttons
+}
+
+table {
+    overflow: hidden;
+    border-radius: 8px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid var(---text-primary-color);
+    background-color: var(--secondary-color);
+    color: var(--text-primary-color);
+}
+
+.btn-group .btn.selected {
+    background-color: var(--button-blue-color); // Custom blue color for selected button
+    color: white; // White text for selected button
+}
+
+.btn-group .btn:not(.selected) {
+    background-color: #e7e7e7; // Gray background for unselected buttons
+}

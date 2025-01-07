@@ -1,4 +1,95 @@
-﻿@page
-@model Mako.Web.Features.Requests.RequestViewModel
+﻿@model Mako.Web.Features.Requests.RequestsViewModel
+
 @{
+    ViewData["Title"] = "Requests";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="mb-4">
+                <div class="btn-group" role="group" aria-label="Filter requests">
+                    <button id="showHolidays" class="btn select-button selected" onclick="showHolidays()">Holidays</button>
+                    <button id="showChanges" class="btn select-button" onclick="showChanges()">Shifts</button>
+                </div>
+            </div>
+
+            <div id="holidayRequests">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Holiday</th>
+                            <th>Motivation</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var holiday in Model.HolidayRequests)
+                        {
+                            <tr>
+                                <td>
+                                    Holiday from @holiday.StartDate.ToShortDateString()
+                                    to @holiday.EndDate.ToShortDateString()
+                                    <br />
+                                    <small>@($"Sent on {holiday.SentDate.ToShortDateString()} by {holiday.WorkerName} {holiday.WorkerSurname}")</small>
+                                </td>
+                                <td>@holiday.Motivation</td>
+                                <td>
+                                    <button class="btn btn-success btn-sm">Accept</button>
+                                    <button class="btn btn-danger btn-sm">Decline</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="changeRequests" style="display:none;">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Change Request</th>
+                            <th>Motivation</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var change in Model.ChangeRequests)
+                        {
+                            <tr>
+                                <td>
+                                    Change shift in @change.ShiftDate.ToShortDateString() - Pier @change.Pier
+                                    <br />
+                                    <small>@($"Sent on {change.SentDate.ToShortDateString()} by {change.WorkerName} {change.WorkerSurname}")</small>
+                                </td>
+                                <td>@change.Motivation</td>
+                                <td>
+                                    <button class="btn btn-success btn-sm">Accept</button>
+                                    <button class="btn btn-danger btn-sm">Decline</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showHolidays() {
+            document.getElementById('holidayRequests').style.display = 'block';
+            document.getElementById('changeRequests').style.display = 'none';
+            document.getElementById('showHolidays').classList.add('selected');
+            document.getElementById('showChanges').classList.remove('selected');
+        }
+
+        function showChanges() {
+            document.getElementById('holidayRequests').style.display = 'none';
+            document.getElementById('changeRequests').style.display = 'block';
+            document.getElementById('showHolidays').classList.remove('selected');
+            document.getElementById('showChanges').classList.add('selected');
+        }
+    </script>
 }

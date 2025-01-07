@@ -12,6 +12,8 @@ namespace Mako.Web.Features.Requests
         public RequestState State { get; set; }
         public string WorkerCf { get; set; }
         public Worker Sender { get; set; }
+        public string WorkerName { get; set; }
+        public string WorkerSurname { get; set; }
     }
 
     public enum RequestState
@@ -23,6 +25,7 @@ namespace Mako.Web.Features.Requests
 
     public class RequestsViewModel
     {
-        public List<RequestViewModel> Requests { get; set; } = new List<RequestViewModel>();
+        public List<RequestChange> ChangeRequests { get; set; } = new List<RequestChange>();
+        public List<RequestHoliday> HolidayRequests { get; set; } = new List<RequestHoliday>();
     }
 }
