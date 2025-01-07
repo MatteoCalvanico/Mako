@@ -16,12 +16,14 @@
                 <form method="post" role="form" autocomplete="off">
                     <input asp-for="ReturnUrl" type="hidden" />
 
+                    <span>Email</span>
                     <div class="input-group">
                         <input asp-for="Email" placeholder="Email" class="form-control" type="text" />
                     </div>
                     <span asp-validation-for="Email" class="text-danger"></span>
 
-                    <div class="input-group mt-3">
+                    <span>Password</span>
+                    <div class="input-group">
                         <input asp-for="Password" placeholder="Password" class="form-control" type="password" />
                     </div>
                     <span asp-validation-for="Password" class="text-danger"></span>
