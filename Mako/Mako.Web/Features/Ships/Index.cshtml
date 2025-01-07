@@ -1,14 +1,14 @@
-﻿@model IEnumerable<Mako.Services.Shared.Ship>
+﻿@model Mako.Web.Features.Ship.ShipsViewModel
 
-@* View per il componente ShipCOntroller.cs *@
+@{
+    var today = DateTime.UtcNow;
+    ViewData["Title"] = "Ships";
+}
 
 <div class="row g-4">
-    @foreach (var ship in Model)
+    @foreach (var ship in Model.Ships)
     {
-        // Esempio di calcolo "days to arrival"
-        // (ship.DateArrival - DateTime.UtcNow).Days
-        // -> gestisci i valori negativi (se la data è già passata) e i formati come preferisci.
-        var daysToArrival = (ship.DateArrival - DateTime.UtcNow).Days;
+        var daysToArrival = (ship.DateArrival - today).Days;
 
         <div class="col-md-6">
             <div class="ship-card p-3 rounded">
