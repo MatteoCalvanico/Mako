@@ -42,15 +42,18 @@ main {
 .date-input {
     background-color: var(--accent-color);
     color: var(--text-primary-color);
+    border:none
 }
 
 .btn-sm {
     width: auto;
     padding-left: 20px;
     padding-right: 20px;
+    background-color: var(--accent-color);
+    border:none
 }
 
-.text-white {
+.text-white::placeholder {
     color: white !important;
 }
 
