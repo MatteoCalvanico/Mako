@@ -45,7 +45,7 @@
                         <label for="operation" class="form-label">Select operation</label>
                         <select class="form-select" id="operation" asp-for="ChangeViewModel.Operation">
                             <option value="swap">Swap</option>
-                            <option value="cancel">Cancel</option>
+                            <option value="cancel" selected="selected">Cancel</option>
                         </select>
                         <span asp-validation-for="ChangeViewModel.Operation" class="text-danger"></span>
                     </div>

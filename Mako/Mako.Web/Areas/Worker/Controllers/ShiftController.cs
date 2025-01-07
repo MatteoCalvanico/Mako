@@ -1,5 +1,6 @@
 ﻿using Mako.Services.Shared;
 using Mako.Web.Areas.Worker.Models;
+using Mako.Web.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -36,8 +37,22 @@ namespace Mako.Web.Areas.Worker.Controllers
         [HttpPost]
         public virtual async Task<IActionResult> AddRequest(CombinedViewModel model)
         {
+            if (model == null || model.ChangeViewModel == null)
+            {
+                Alerts.AddError(this, "You need to select something");
+                return View("Index", model);
+            }
+
             model.ChangeViewModel.Id = Guid.NewGuid();
-            model.ChangeViewModel.WorkerCf = await _sharedService.GetWorkerCfByEmailAsync(Identita.EmailUtenteCorrente);
+            var email = Identita?.EmailUtenteCorrente;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                Alerts.AddError(this, "Impossible to obtain user information");
+                return View("Index", model);
+            }
+
+            model.ChangeViewModel.WorkerCf = await _sharedService.GetWorkerCfByEmailAsync(email);
 
             if (ModelState.IsValid)
             {
@@ -50,9 +65,22 @@ namespace Mako.Web.Areas.Worker.Controllers
                     ShiftId = model.ChangeViewModel.ShiftId
                 };
 
-                await _sharedService.Handle(command);
-                return RedirectToAction("Index");
+                try
+                {
+                    await _sharedService.Handle(command);
+                    Alerts.AddSuccess(this, email + ", your request has been added");
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    Alerts.AddError(this, "Error: " + ex.Message);
+                }
             }
+            else
+            {
+                Alerts.AddError(this, "Model is invalid");
+            }
+
             return View("Index", model);
         }
     }
