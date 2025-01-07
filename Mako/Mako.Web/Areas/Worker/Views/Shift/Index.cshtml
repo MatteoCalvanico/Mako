@@ -1,4 +1,4 @@
-﻿@model Mako.Web.Areas.Worker.Models.ShiftViewModel
+﻿@model Mako.Web.Areas.Worker.Models.CombinedViewModel
 @{
     ViewData["Title"] = "Your shifts";
 }
@@ -33,7 +33,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="changeShiftForm" asp-action="ChangeShift" method="post">
+                <form id="changeShiftForm" asp-action="AddRequest" method="post">
+                    <input type="hidden" id="shiftId" asp-for="ChangeViewModel.ShiftId" />
                     <div class="mb-3">
                         <label for="selectedShift" class="form-label">Shift information:</label>
                         <select class="form-select" id="selectedShift" name="SelectedShift">
@@ -42,14 +43,16 @@
                     </div>
                     <div class="mb-3">
                         <label for="operation" class="form-label">Select operation</label>
-                        <select class="form-select" id="operation" name="Operation">
+                        <select class="form-select" id="operation" asp-for="ChangeViewModel.Operation">
                             <option value="swap">Swap</option>
                             <option value="cancel">Cancel</option>
                         </select>
+                        <span asp-validation-for="ChangeViewModel.Operation" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label for="message" class="form-label">Write a message</label>
-                        <textarea class="form-control" id="message" name="Message" rows="3" placeholder="Write a message..."></textarea>
+                        <textarea class="form-control" id="message" asp-for="ChangeViewModel.Motivation" rows="3" placeholder="Write a message..."></textarea>
+                        <span asp-validation-for="ChangeViewModel.Motivation" class="text-danger"></span>
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -65,7 +68,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Deserialize the shift data from the server
-            var shiftData = @Html.Raw(Json.Serialize(Model.Shifts));
+            var shiftData = @Html.Raw(Json.Serialize(Model.ShiftViewModel.Shifts));
 
             new Vue({
                 el: '#shiftApp',
