@@ -4,7 +4,7 @@
     ViewData["Title"] = "Account";
     var version = System.Reflection.Assembly.GetAssembly(typeof(Startup)).GetName().Version;
     var identitaCorrente = (Mako.Web.Areas.IdentitaViewModel)ViewData[Mako.Web.Areas.IdentitaViewModel.VIEWDATA_IDENTITACORRENTE_KEY];
-    var isShiftAdmin = ViewBag.IsShiftAdmin;
+    bool isShiftAdmin = (bool)ViewData["IsShiftAdmin"];
 }
 
 <div class="container-fluid p-0">

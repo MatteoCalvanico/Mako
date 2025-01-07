@@ -20,8 +20,9 @@ namespace Mako.Web.Areas.Worker.Controllers
         {
             var email = Identita.EmailUtenteCorrente;
             var workerCf = await _sharedService.GetWorkerCfByEmailAsync(email);
-            var isAdmin = await _sharedService.IsShiftAdminAsync(workerCf);
+            bool isAdmin = await _sharedService.IsShiftAdminAsync(workerCf);
 
+            ViewData["IsShiftAdmin"] = isAdmin;
             ViewBag.IsShiftAdmin = isAdmin;
 
             return View();
