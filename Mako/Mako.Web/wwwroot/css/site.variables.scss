@@ -30,6 +30,7 @@ $danger: #DC3545;
     --danger-color: #{$danger};
     --button-blue-color: #{$button_blue_light};
     --text-primary-color: #{$text_primary_light};
+    --title-color: black;
 }
 
 [data-theme="dark"] {
@@ -41,4 +42,5 @@ $danger: #DC3545;
     --danger-color: #{$danger};
     --button-blue-color: #{$button_blue_dark};
     --text-primary-color: #{$text_primary_dark};
+    --title-color: white;
 }

@@ -96,6 +96,14 @@ namespace Mako.Services.Shared
                 .Select(sw => sw.ShiftId)
                 .ToListAsync();
         }
+
+        public async Task<List<string>> GetWorkerCfsByShiftAsync(Guid shiftId)
+        {
+            return await _dbContext.ShiftWorker
+                 .Where(sw => sw.ShiftId == shiftId)
+                 .Select(sw => sw.WorkerCf)
+                 .ToListAsync();
+        }
     }
 }
 

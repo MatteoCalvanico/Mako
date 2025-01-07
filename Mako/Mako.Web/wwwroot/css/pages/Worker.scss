@@ -2,6 +2,10 @@
 
 header {
     background-color: var(--secondary-color);
+
+    h1 {
+        color: var(--title-color);
+    }
 }
 
 h2 {
@@ -26,6 +30,7 @@ main {
 .shiftLi {
     list-style-type: none;
     background-color: var(--tertiary-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -37,15 +42,18 @@ main {
 .date-input {
     background-color: var(--accent-color);
     color: var(--text-primary-color);
+    border:none
 }
 
 .btn-sm {
     width: auto;
     padding-left: 20px;
     padding-right: 20px;
+    background-color: var(--accent-color);
+    border:none
 }
 
-.text-white {
+.text-white::placeholder {
     color: white !important;
 }
 

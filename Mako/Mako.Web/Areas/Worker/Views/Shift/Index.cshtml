@@ -1,4 +1,4 @@
-﻿@model Mako.Web.Areas.Worker.Models.ShiftViewModel
+﻿@model Mako.Web.Areas.Worker.Models.CombinedViewModel
 @{
     ViewData["Title"] = "Your shifts";
 }
@@ -13,7 +13,7 @@
                 <div v-for="(shifts, date) in groupedShifts" :key="date" class="mb-5">
                     <h2 class="fw-bold text-center">{{ formatDate(date) }}</h2>
                     <ul class="list-unstyled">
-                        <li v-for="(shift, index) in shifts" :key="shift.id" class="shiftLi mb-2 p-3 border rounded" data-bs-toggle="modal" data-bs-target="#changeShiftModal" onclick="populateModal(shift)">
+                        <li v-for="(shift, index) in shifts" :key="shift.id" class="shiftLi mb-2 p-3 border rounded" data-bs-toggle="modal" data-bs-target="#changeShiftModal" v-on:click="populateModal(shift)">
                             <span class="fs-5">Pier {{ shift.pier }}: <span class="fw-bold">{{ formatTime(shift.startHour) }}</span> - <span class="fw-bold">{{ formatTime(shift.endHour) }}</span></span>
                             <span v-if="isFirstShift(index, date)" class="startedMsg fw-bold ms-2">Get started soon</span>
                         </li>
@@ -33,23 +33,26 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="changeShiftForm" asp-action="ChangeShift" method="post">
+                <form id="changeShiftForm" asp-action="AddRequest" method="post">
+                    <input type="hidden" id="shiftId" asp-for="ChangeViewModel.ShiftId" />
                     <div class="mb-3">
-                        <label for="selectedShift" class="form-label">Select a shift</label>
+                        <label for="selectedShift" class="form-label">Shift information:</label>
                         <select class="form-select" id="selectedShift" name="SelectedShift">
                             <!-- Options will be populated dynamically -->
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="operation" class="form-label">Select operation</label>
-                        <select class="form-select" id="operation" name="Operation">
+                        <select class="form-select" id="operation" asp-for="ChangeViewModel.Operation">
                             <option value="swap">Swap</option>
-                            <option value="cancel">Cancel</option>
+                            <option value="cancel" selected="selected">Cancel</option>
                         </select>
+                        <span asp-validation-for="ChangeViewModel.Operation" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label for="message" class="form-label">Write a message</label>
-                        <textarea class="form-control" id="message" name="Message" rows="3" placeholder="Write a message..."></textarea>
+                        <textarea class="form-control" id="message" asp-for="ChangeViewModel.Motivation" rows="3" placeholder="Write a message..."></textarea>
+                        <span asp-validation-for="ChangeViewModel.Motivation" class="text-danger"></span>
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -65,7 +68,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Deserialize the shift data from the server
-            var shiftData = @Html.Raw(Json.Serialize(Model.Shifts));
+            var shiftData = @Html.Raw(Json.Serialize(Model.ShiftViewModel.Shifts));
 
             new Vue({
                 el: '#shiftApp',
@@ -128,7 +131,7 @@
                     // Populate modal with the clicked shift
                     populateModal(shift) {
                         const selectedShiftSelect = document.getElementById('selectedShift');
-                        selectedShiftSelect.innerHTML = `<option value="${shift.id}" selected>Pier ${shift.pier}: ${this.formatTime(shift.startHour)} - ${this.formatTime(shift.endHour)}</option>`;
+                        selectedShiftSelect.innerHTML = `<option value="${shift.id}" selected>Pier: ${shift.pier} | ${this.formatTime(shift.startHour)} - ${this.formatTime(shift.endHour)} ${this.formatDate(shift.date)}</option>`;
 
                         // Optionally, you can add more options here dynamically if needed
                     }
