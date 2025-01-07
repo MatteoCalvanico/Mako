@@ -15,7 +15,7 @@ namespace Mako.Services.Shared
         [Required]
         public string Motivation { get; set; }
         [Required]
-        public Worker Sender { get; set; }
+        public string WorkerCf { get; set; }
         public RequestState State { get; set; } = RequestState.Unmanaged;
     }
 
@@ -33,7 +33,7 @@ namespace Mako.Services.Shared
                 {
                     ShiftId = cmd.ShiftId,
                     Motivation = cmd.Motivation,
-                    Sender = cmd.Sender,
+                    WorkerCf = cmd.WorkerCf,
                     State = cmd.State,
                     SentDate = DateTime.UtcNow
                 };
@@ -43,7 +43,7 @@ namespace Mako.Services.Shared
             {
                 requestChange.ShiftId = cmd.ShiftId;
                 requestChange.Motivation = cmd.Motivation;
-                requestChange.Sender = cmd.Sender;
+                requestChange.WorkerCf = cmd.WorkerCf;
                 requestChange.State = cmd.State;
             }
 

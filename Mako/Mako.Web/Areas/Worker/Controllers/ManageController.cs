@@ -42,19 +42,18 @@ namespace Mako.Web.Areas.Worker.Controllers
                     State = RequestState.Unmanaged
                 };
 
-                await _sharedService.Handle(command);
-
-                TempData["SuccessMessage"] = "Request added successfully!";
-                return RedirectToAction("Index");
+                try
+                {
+                    await _sharedService.Handle(command);
+                    Alerts.AddSuccess(this, Identita.EmailUtenteCorrente + ", your request has been added");
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    Alerts.AddError(this, "Error: " + ex.Message);
+                }
             }
-
-            // Log the errors in the ModelState
-            //foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-            //{
-            //    Console.WriteLine(error.ErrorMessage);
-            //}
-
-            TempData["ErrorMessage"] = "There was an error adding the request.";
+            Alerts.AddError(this, "Model is invalid");
             return View("Index", model);
         }
     }
