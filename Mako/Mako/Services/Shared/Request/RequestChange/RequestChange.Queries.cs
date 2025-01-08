@@ -64,19 +64,24 @@ namespace Mako.Services.Shared
             }
 
             var resultList = await changeQuery
+                .Join(_dbContext.Shifts,
+                    change => change.ShiftId,
+                    shift => shift.Id,
+                    (change, shift) => new { change, shift }
+                )
                 .Join(_dbContext.Workers,
-                    change => change.WorkerCf,
+                    cs => cs.change.WorkerCf,
                     worker => worker.Cf,
-                    (change, worker) => new RequestChangeSelectDTO.RequestChange
+                    (cs, worker) => new RequestChangeSelectDTO.RequestChange
                     {
-                        Id = change.Id,
-                        ShiftId = change.ShiftId,
-                        Motivation = change.Motivation,
-                        State = change.State,
-                        SentDate = change.SentDate,
-                        WorkerCf = change.WorkerCf,
-                        ShiftDate = change.ShiftDate,
-                        Pier = change.Pier,
+                        Id = cs.change.Id,
+                        ShiftId = cs.change.ShiftId,
+                        Motivation = cs.change.Motivation,
+                        State = cs.change.State,
+                        SentDate = cs.change.SentDate,
+                        WorkerCf = cs.change.WorkerCf,
+                        ShiftDate = cs.shift.Date.ToDateTime(TimeOnly.MinValue), // Convert DateOnly to DateTime
+                        Pier = cs.shift.Pier,
                         WorkerName = worker.Name,
                         WorkerSurname = worker.Surname
                     }

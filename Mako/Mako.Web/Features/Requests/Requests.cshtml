@@ -44,7 +44,7 @@
                                     }
                                     else if (request.ShiftDate.HasValue)
                                     {
-                                        <span>Change shift in @request.ShiftDate.Value.ToShortDateString() - Pier @request.Pier</span>
+                                        <span>Change shift on @request.ShiftDate.Value.ToShortDateString() - Pier @request.Pier</span>
                                     }
                                     <br />
                                     <small>@($"Sent on {request.SentDate.ToShortDateString()} by {request.WorkerName} {request.WorkerSurname}")</small>
