@@ -43,7 +43,6 @@ namespace Mako.Web.Features.Requests
 
             try
             {
-                // 1) Retrieve change requests (if your RequestChangeSelectQuery supports a text filter)
                 var changesQuery = new RequestChangeSelectQuery
                 {
                     Filter = filter
@@ -61,18 +60,10 @@ namespace Mako.Web.Features.Requests
                     })
                     .ToList();
 
-                // 2) Retrieve holiday requests
-                // If you added filters for ShipCurrentId, StartDateFilter, EndDateFilter, etc., set them here.
-                var holidayQuery = new RequestHolidaySelectQuery
-                {
-                    // ShipCurrentId = ...
-                    // StartDateFilter = ...
-                    // EndDateFilter = ...
-                };
+                // Retrieve holiday requests
+                var holidayQuery = new RequestHolidaySelectQuery{};
                 var holidayResultsDto = await _sharedService.SelectRequestsHolidayQuery(holidayQuery);
 
-                // Map those results into your Mako.Services.Shared.RequestHoliday model
-                // If your RequestHoliday model has WorkerName / WorkerSurname, set those too
                 viewModel.HolidayRequests = holidayResultsDto.RequestHolidays
                     .Select(rh => new RequestHoliday
                     {
