@@ -13,9 +13,20 @@
                 <div class="row">
                     @foreach (var ship in Model.Ships)
                     {
-                        <div class="card card-custom mt-4 shadow">
+                        <div class="card card-custom mt-5 shadow">
                             <div class="card-body">
-                                <div class="overlay-card px-2 py-1">
+                                <div class="overlay-card px-2 py-1 d-none d-md-block">
+                                    @if (ship.DateArrival > DateTime.Now)
+                                    {
+                                        @((ship.DateArrival - DateTime.Now).Days)
+                                        @:days left to arrival
+                                    }
+                                    else
+                                    {
+                                        @:Arrived
+                                    }
+                                </div>
+                                <div class="overlay-card px-2 py-1 d-block d-md-none text-center">
                                     @if (ship.DateArrival > DateTime.Now)
                                     {
                                         @((ship.DateArrival - DateTime.Now).Days)
