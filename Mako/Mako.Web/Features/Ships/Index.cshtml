@@ -1,0 +1,49 @@
+﻿@model Mako.Web.Features.Ship.ShipsViewModel
+
+@{
+    var today = DateTime.UtcNow;
+    ViewData["Title"] = "Ships";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-7 col-sm-10">
+            @if (Model.Ships.Any())
+            {
+                <div class="row">
+                    @foreach (var ship in Model.Ships)
+                    {
+                        <div class="card card-custom mt-4 shadow">
+                            <div class="card-body">
+                                <div class="overlay-card px-2 py-1">
+                                    @if (ship.DateArrival > DateTime.Now)
+                                    {
+                                        @((ship.DateArrival - DateTime.Now).Days)
+                                        @:days left to arrival
+                                    }
+                                    else
+                                    {
+                                        @:Arrived
+                                    }
+                                </div>
+                                <h5 class="card-title fs-3"><b>@ship.Name</b> - <i>Time estimation: @(Math.Round(ship.TimeEstimation.TotalHours, 1)) hr</i></h5>
+                                <div class="d-flex justify-content-between">
+                                    <p class="card-text fs-5 mb-0">
+                                        <strong class="fs-4">Pier @ship.Pier</strong><br />
+                                        Arrival: @ship.DateArrival.ToShortDateString() <br />
+                                        Departure: @ship.DateDeparture.ToShortDateString()
+                                    </p>
+                                    <a href="#" class="card-link mb-1">Cargo Manifest</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No ships available.</p>
+            }
+        </div>
+    </div>
+</div>
