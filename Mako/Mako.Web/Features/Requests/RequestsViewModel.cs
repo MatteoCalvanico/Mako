@@ -26,13 +26,6 @@ namespace Mako.Web.Features.Requests
         public string WorkerSurname { get; set; }
     }
 
-    public enum RequestState
-    {
-        Accepted,
-        Declined,
-        Unmanaged
-    }
-
     public class RequestsViewModel
     {
         public List<RequestChangeCustom> ChangeRequests { get; set; } = new List<RequestChangeCustom>();

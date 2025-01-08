@@ -61,16 +61,16 @@
                                     </td>
                                     <td>@request.Motivation</td>
                                     <td>
-                                        @if (request.State == Mako.Web.Features.Requests.RequestState.Unmanaged)
+                                        @if (request.State == Mako.Services.Shared.RequestState.Unmanaged)
                                         {
                                             <button class="btn btn-success btn-sm">Accept</button>
                                             <button class="btn btn-danger btn-sm">Decline</button>
                                         }
-                                        else if (request.State == Mako.Web.Features.Requests.RequestState.Accepted)
+                                        else if (request.State == Mako.Services.Shared.RequestState.Accepted)
                                         {
                                             <span class="text-success">Accepted</span>
                                         }
-                                        else if (request.State == Mako.Web.Features.Requests.RequestState.Declined)
+                                        else if (request.State == Mako.Services.Shared.RequestState.Declined)
                                         {
                                             <span class="text-danger">Declined</span>
                                         }
