@@ -1,4 +1,4 @@
-﻿@model Mako.Web.Features.Requests.RequestsViewModel
+﻿@model List<Mako.Web.Features.Requests.RequestViewModel>
 
 @{
     ViewData["Title"] = "Requests";
@@ -9,60 +9,37 @@
         <div class="col-md-12">
             <div class="mb-4">
                 <div class="btn-group" role="group" aria-label="Filter requests">
-                    <button id="showHolidays" class="btn select-button selected" onclick="showHolidays()">Holidays</button>
-                    <button id="showChanges" class="btn select-button" onclick="showChanges()">Shifts</button>
+                    <button id="showUnmanaged" class="btn select-button selected" onclick="">Unmanaged</button>
+                    <button id="showManaged" class="btn select-button" onclick="">Managed</button>
                 </div>
             </div>
 
-            <div id="holidayRequests">
+            <div id="allRequests">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Holiday</th>
+                            <th>Request</th>
                             <th>Motivation</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var holiday in Model.HolidayRequests)
+                        @foreach (var request in Model)
                         {
                             <tr>
                                 <td>
-                                    Holiday from @holiday.StartDate.ToShortDateString()
-                                    to @holiday.EndDate.ToShortDateString()
+                                    @if (request.StartDate.HasValue && request.EndDate.HasValue)
+                                    {
+                                        <span>Holiday from @request.StartDate.Value.ToShortDateString() to @request.EndDate.Value.ToShortDateString()</span>
+                                    }
+                                    else if (request.ShiftDate.HasValue)
+                                    {
+                                        <span>Change shift in @request.ShiftDate.Value.ToShortDateString() - Pier @request.Pier</span>
+                                    }
                                     <br />
-                                    <small>@($"Sent on {holiday.SentDate.ToShortDateString()} by {holiday.WorkerName} {holiday.WorkerSurname}")</small>
+                                    <small>@($"Sent on {request.SentDate.ToShortDateString()} by {request.WorkerName} {request.WorkerSurname}")</small>
                                 </td>
-                                <td>@holiday.Motivation</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm">Accept</button>
-                                    <button class="btn btn-danger btn-sm">Decline</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="changeRequests" style="display:none;">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Change Request</th>
-                            <th>Motivation</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var change in Model.ChangeRequests)
-                        {
-                            <tr>
-                                <td>
-                                    Change shift in @change.ShiftDate.ToShortDateString() - Pier @change.Pier
-                                    <br />
-                                    <small>@($"Sent on {change.SentDate.ToShortDateString()} by {change.WorkerName} {change.WorkerSurname}")</small>
-                                </td>
-                                <td>@change.Motivation</td>
+                                <td>@request.Motivation</td>
                                 <td>
                                     <button class="btn btn-success btn-sm">Accept</button>
                                     <button class="btn btn-danger btn-sm">Decline</button>
@@ -78,18 +55,9 @@
 
 @section Scripts {
     <script>
-        function showHolidays() {
-            document.getElementById('holidayRequests').style.display = 'block';
-            document.getElementById('changeRequests').style.display = 'none';
-            document.getElementById('showHolidays').classList.add('selected');
-            document.getElementById('showChanges').classList.remove('selected');
-        }
-
-        function showChanges() {
-            document.getElementById('holidayRequests').style.display = 'none';
-            document.getElementById('changeRequests').style.display = 'block';
-            document.getElementById('showHolidays').classList.remove('selected');
-            document.getElementById('showChanges').classList.add('selected');
+        function showAllRequests() {
+            document.getElementById('allRequests').style.display = 'block';
+            document.getElementById('showAllRequests').classList.add('selected');
         }
     </script>
 }

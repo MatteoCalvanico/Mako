@@ -26,14 +26,14 @@ namespace Mako.Web.Features.Requests
                 var filterParam = Request.Query["filter"].ToString();
 
                 // Combine everything into a single view model
-                var requestsViewModel = await GetAllRequestsAndHolidayRequests(filterParam);
+                var combinedRequests = await GetAllRequestsCombined(filterParam);
 
-                return View("Requests", requestsViewModel);
+                return View("Requests", combinedRequests);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "An error occurred while retrieving requests: " + ex.Message);
-                return View("Requests", new RequestsViewModel());
+                return View("Requests", new List<RequestViewModel>());
             }
         }
 
@@ -133,6 +133,5 @@ namespace Mako.Web.Features.Requests
 
             return combinedRequests;
         }
-
     }
 }
