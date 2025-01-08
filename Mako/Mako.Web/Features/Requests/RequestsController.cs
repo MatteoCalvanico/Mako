@@ -2,6 +2,7 @@
 using Mako.Web.Areas;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -65,13 +66,6 @@ namespace Mako.Web.Features.Requests
                     })
                     .ToList();
 
-                foreach (var changeRequest in viewModel.ChangeRequests)
-                {
-                    var worker = await _sharedService.Query(new WorkersDetailQuery { Cf = changeRequest.WorkerCf });
-                    changeRequest.WorkerName = worker?.Name ?? string.Empty;
-                    changeRequest.WorkerSurname = worker?.Surname ?? string.Empty;
-                }
-
                 var holidayQuery = new RequestHolidaySelectQuery { };
                 var holidayResultsDto = await _sharedService.SelectRequestsHolidayQuery(holidayQuery);
 
@@ -81,21 +75,14 @@ namespace Mako.Web.Features.Requests
                         Id = rh.Id,
                         StartDate = rh.StartDate,
                         EndDate = rh.EndDate,
-                        Motivation = rh.Motivation ?? string.Empty,
+                        Motivation = rh.Motivation,
                         State = (RequestState)rh.State,
                         SentDate = rh.SentDate,
-                        WorkerCf = rh.WorkerCf ?? string.Empty,
-                        WorkerName = rh.WorkerName ?? string.Empty,
-                        WorkerSurname = rh.WorkerSurname ?? string.Empty
+                        WorkerCf = rh.WorkerCf,
+                        WorkerName = rh.WorkerName,
+                        WorkerSurname = rh.WorkerSurname
                     })
                     .ToList();
-
-                foreach (var holidayRequest in viewModel.HolidayRequests)
-                {
-                    var worker = await _sharedService.Query(new WorkersDetailQuery { Cf = holidayRequest.WorkerCf });
-                    holidayRequest.WorkerName = worker?.Name ?? string.Empty;
-                    holidayRequest.WorkerSurname = worker?.Surname ?? string.Empty;
-                }
             }
             catch (Exception ex)
             {
@@ -104,6 +91,22 @@ namespace Mako.Web.Features.Requests
             }
 
             return viewModel;
+        }
+
+        // Return all the requests combined into a single list
+        // See the RequestViewModel class for the properties that are common to both change and holiday requests
+        public async Task<List<RequestViewModel>> GetAllRequestsCombined(string filter)
+        {
+            // Initialize the list to return
+            var combinedRequests = new List<RequestViewModel>();
+
+            // Get the view model with all the requests
+            var requestsViewModel = await GetAllRequestsAndHolidayRequests(filter);
+
+            // Combine the change and holiday requests into a single list
+            // TODO
+
+            return combinedRequests;
         }
     }
 }
