@@ -15,49 +15,57 @@
             </div>
 
             <div id="allRequests">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Model.Count
-                                @if (Model.Count == 1)
-                                {
-                                    @: Open Request
-                                }
-                                else
-                                {
-                                    @: Open Requests
-                                }
-                            </th>
-                            <th>Motivation</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var request in Model)
-                        {
+                @if (Model.Count == 0)
+                {
+                    <h1 class="fw-bold text-lg-center">All done</h1>
+                    <h2 class="fw-bold text-lg-center">No pending request</h2>
+                }
+                else
+                {
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>
-                                    @if (request.StartDate.HasValue && request.EndDate.HasValue)
+                                <th class="text-start">
+                                    @Model.Count
+                                    @if (Model.Count == 1)
                                     {
-                                        <span>Holiday from @request.StartDate.Value.ToShortDateString() to @request.EndDate.Value.ToShortDateString()</span>
+                                        @: Open Request
                                     }
-                                    else if (request.ShiftDate.HasValue)
+                                    else
                                     {
-                                        <span>Change shift on @request.ShiftDate.Value.ToShortDateString() - Pier @request.Pier</span>
+                                        @: Open Requests
                                     }
-                                    <br />
-                                    <small>@($"Sent on {request.SentDate.ToShortDateString()} by {request.WorkerName} {request.WorkerSurname}")</small>
-                                </td>
-                                <td>@request.Motivation</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm">Accept</button>
-                                    <button class="btn btn-danger btn-sm">Decline</button>
-                                </td>
+                                </th>
+                                <th>Motivation</th>
+                                <th>Actions</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var request in Model)
+                            {
+                                <tr>
+                                    <td class="text-start">
+                                        @if (request.StartDate.HasValue && request.EndDate.HasValue)
+                                        {
+                                            <span class="fw-medium">Holiday from @request.StartDate.Value.ToShortDateString() to @request.EndDate.Value.ToShortDateString()</span>
+                                        }
+                                        else if (request.ShiftDate.HasValue)
+                                        {
+                                            <span class="fw-medium">Change shift on @request.ShiftDate.Value.ToShortDateString() - Pier @request.Pier</span>
+                                        }
+                                        <br />
+                                        <small>@($"Sent on {request.SentDate.ToShortDateString()} by {request.WorkerName} {request.WorkerSurname}")</small>
+                                    </td>
+                                    <td>@request.Motivation</td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm">Accept</button>
+                                        <button class="btn btn-danger btn-sm">Decline</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
             </div>
         </div>
     </div>
