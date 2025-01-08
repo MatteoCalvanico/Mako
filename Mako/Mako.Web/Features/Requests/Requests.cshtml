@@ -18,7 +18,17 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Request</th>
+                            <th>
+                                @Model.Count
+                                @if (Model.Count == 1)
+                                {
+                                    @: Open Request
+                                }
+                                else
+                                {
+                                    @: Open Requests
+                                }
+                            </th>
                             <th>Motivation</th>
                             <th>Actions</th>
                         </tr>
