@@ -9,15 +9,14 @@
         <div class="col-md-12">
             <div class="mb-4">
                 <div class="btn-group" role="group" aria-label="Filter requests">
-                    <button id="showUnmanaged" class="btn select-button selected" onclick="">Unmanaged</button>
-                    <button id="showManaged" class="btn select-button" onclick="">Managed</button>
+                    <button id="showUnmanaged" class="btn select-button selected" onclick="filterRequests('Unmanaged')">Unmanaged</button>
+                    <button id="showManaged" class="btn select-button" onclick="filterRequests('Managed')">Managed</button>
                 </div>
             </div>
 
             <div id="allRequests">
                 @if (Model.Count == 0)
                 {
-
                     <div class="text-lg-center p-4">
                         <h1 class="fw-bold">All done</h1>
                         <h2 class="fw-bold">No pending request</h2>
@@ -26,7 +25,7 @@
                 }
                 else
                 {
-                    <table class="table">
+                    <table class="table" id="requestsTable">
                         <thead>
                             <tr>
                                 <th class="text-start">
@@ -41,13 +40,13 @@
                                     }
                                 </th>
                                 <th>Motivation</th>
-                                <th>Actions</th>
+                                <th class="actions-column">Actions / Status</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="requestsBody">
                             @foreach (var request in Model)
                             {
-                                <tr>
+                                <tr data-state="@request.State">
                                     <td class="text-start">
                                         @if (request.StartDate.HasValue && request.EndDate.HasValue)
                                         {
@@ -62,8 +61,19 @@
                                     </td>
                                     <td>@request.Motivation</td>
                                     <td>
-                                        <button class="btn btn-success btn-sm">Accept</button>
-                                        <button class="btn btn-danger btn-sm">Decline</button>
+                                        @if (request.State == Mako.Web.Features.Requests.RequestState.Unmanaged)
+                                        {
+                                            <button class="btn btn-success btn-sm">Accept</button>
+                                            <button class="btn btn-danger btn-sm">Decline</button>
+                                        }
+                                        else if (request.State == Mako.Web.Features.Requests.RequestState.Accepted)
+                                        {
+                                            <span class="text-success">Accepted</span>
+                                        }
+                                        else if (request.State == Mako.Web.Features.Requests.RequestState.Declined)
+                                        {
+                                            <span class="text-danger">Declined</span>
+                                        }
                                     </td>
                                 </tr>
                             }
@@ -77,19 +87,54 @@
 
 @section Scripts {
     <script>
-        function showAllRequests() {
-            document.getElementById('allRequests').style.display = 'block';
-            document.getElementById('showAllRequests').classList.add('selected');
+        function filterRequests(filter) {
+            const rows = document.querySelectorAll('#requestsBody tr');
+            let visibleRows = 0;
+            rows.forEach(row => {
+                const state = row.getAttribute('data-state');
+                if (filter === 'Managed' && (state === 'Accepted' || state === 'Declined')) {
+                    row.style.display = '';
+                    visibleRows++;
+                } else if (filter === 'Unmanaged' && state === 'Unmanaged') {
+                    row.style.display = '';
+                    visibleRows++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Hide the table if no rows are visible
+            const table = document.getElementById('requestsTable');
+            if (visibleRows === 0) {
+                table.style.display = 'none';
+            } else {
+                table.style.display = 'table';
+            }
+
+            document.querySelectorAll('.select-button').forEach(button => {
+                button.classList.remove('selected');
+            });
+
+            if (filter === 'Managed') {
+                document.getElementById('showManaged').classList.add('selected');
+            } else {
+                document.getElementById('showUnmanaged').classList.add('selected');
+            }
         }
+
+        // Apply initial filter on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            filterRequests('Unmanaged');
+        });
 
         // This function is called in _Layout.cshtml
         function setImg(theme) {
-                const logo = document.getElementById('logo');
-                if (theme === 'dark') {
-                    logo.src = '@Url.Content("~/images/logo_white.svg")';
-                } else {
-                    logo.src = '@Url.Content("~/images/logo.svg")';
-                }
-          }
+            const logo = document.getElementById('logo');
+            if (theme === 'dark') {
+                logo.src = '@Url.Content("~/images/logo_white.svg")';
+            } else {
+                logo.src = '@Url.Content("~/images/logo.svg")';
+            }
+        }
     </script>
 }
