@@ -25,6 +25,18 @@ table {
     color: var(--text-primary-color);
 }
 
+.table thead th {
+    border-bottom: 2px solid #878787; // Bottom border for header row
+}
+
+.table tbody tr td {
+    border-bottom: none; // Remove bottom border for all rows
+}
+
+.table tbody tr:not(:first-child) td {
+    border-top: 1px solid #878787; // Top border for all rows except the first row
+}
+
 .btn-group .btn.selected {
     background-color: var(--button-blue-color); // Custom blue color for selected button
     color: white; // White text for selected button
