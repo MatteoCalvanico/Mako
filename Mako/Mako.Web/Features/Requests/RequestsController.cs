@@ -104,9 +104,35 @@ namespace Mako.Web.Features.Requests
             var requestsViewModel = await GetAllRequestsAndHolidayRequests(filter);
 
             // Combine the change and holiday requests into a single list
-            // TODO
+            // Params not present in the request type will be null
+            combinedRequests.AddRange(requestsViewModel.ChangeRequests.Select(cr => new RequestViewModel
+            {
+                Id = cr.Id,
+                ShiftId = cr.ShiftId,
+                SentDate = cr.SentDate,
+                ShiftDate = cr.ShiftDate,
+                Motivation = cr.Motivation,
+                Pier = cr.Pier,
+                State = cr.State,
+                WorkerCf = cr.WorkerCf,
+                WorkerName = cr.WorkerName,
+                WorkerSurname = cr.WorkerSurname
+            }));
+            combinedRequests.AddRange(requestsViewModel.HolidayRequests.Select(hr => new RequestViewModel
+            {
+                Id = hr.Id,
+                StartDate = hr.StartDate,
+                EndDate = hr.EndDate,
+                SentDate = hr.SentDate,
+                Motivation = hr.Motivation,
+                State = hr.State,
+                WorkerCf = hr.WorkerCf,
+                WorkerName = hr.WorkerName,
+                WorkerSurname = hr.WorkerSurname
+            }));
 
             return combinedRequests;
         }
+
     }
 }
