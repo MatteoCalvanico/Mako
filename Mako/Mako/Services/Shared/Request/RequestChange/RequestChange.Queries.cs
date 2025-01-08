@@ -24,10 +24,11 @@ namespace Mako.Services.Shared
             public string Motivation { get; set; }
             public RequestState State { get; set; }
             public DateTime SentDate { get; set; }
-            public string WorkerName { get; set; }    
-            public string WorkerSurname { get; set; }  
-            public DateTime ShiftDate { get; set; }    
+            public string WorkerCf { get; set; }
+            public DateTime ShiftDate { get; set; }
             public int Pier { get; set; }
+            public string WorkerName { get; set; }
+            public string WorkerSurname { get; set; }
         }
     }
 
@@ -73,10 +74,11 @@ namespace Mako.Services.Shared
                         Motivation = change.Motivation,
                         State = change.State,
                         SentDate = change.SentDate,
-                        WorkerName = worker.Name,
-                        WorkerSurname = worker.Surname,
+                        WorkerCf = change.WorkerCf,
                         ShiftDate = change.ShiftDate,
-                        Pier = change.Pier
+                        Pier = change.Pier,
+                        WorkerName = worker.Name,
+                        WorkerSurname = worker.Surname
                     }
                 )
                 .ToListAsync();

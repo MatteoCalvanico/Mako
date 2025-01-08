@@ -10,7 +10,5 @@ namespace Mako.Services.Shared
 
         [Required]
         public DateTime EndDate { get; set; }
-        public string WorkerName { get; set; }
-        public string WorkerSurname { get; set; }
     }
 }

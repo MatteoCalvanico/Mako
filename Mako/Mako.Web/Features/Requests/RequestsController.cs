@@ -50,34 +50,52 @@ namespace Mako.Web.Features.Requests
                 var changeResultsDto = await _sharedService.SelectRequestChange(changesQuery);
 
                 viewModel.ChangeRequests = changeResultsDto.RequestChanges
-                    .Select(rc => new RequestChange
+                    .Select(rc => new RequestChangeCustom
                     {
                         Id = rc.Id,
                         ShiftId = rc.ShiftId,
                         Motivation = rc.Motivation,
-                        State = rc.State,
-                        SentDate = rc.SentDate
+                        State = (RequestState)rc.State,
+                        SentDate = rc.SentDate,
+                        ShiftDate = rc.ShiftDate,
+                        Pier = rc.Pier,
+                        WorkerCf = rc.WorkerCf,
+                        WorkerName = rc.WorkerName,
+                        WorkerSurname = rc.WorkerSurname
                     })
                     .ToList();
 
-                // Retrieve holiday requests
-                var holidayQuery = new RequestHolidaySelectQuery{};
+                foreach (var changeRequest in viewModel.ChangeRequests)
+                {
+                    var worker = await _sharedService.Query(new WorkersDetailQuery { Cf = changeRequest.WorkerCf });
+                    changeRequest.WorkerName = worker?.Name ?? string.Empty;
+                    changeRequest.WorkerSurname = worker?.Surname ?? string.Empty;
+                }
+
+                var holidayQuery = new RequestHolidaySelectQuery { };
                 var holidayResultsDto = await _sharedService.SelectRequestsHolidayQuery(holidayQuery);
 
                 viewModel.HolidayRequests = holidayResultsDto.RequestHolidays
-                    .Select(rh => new RequestHoliday
+                    .Select(rh => new RequestHolidayCustom
                     {
                         Id = rh.Id,
                         StartDate = rh.StartDate,
                         EndDate = rh.EndDate,
-                        Motivation = rh.Motivation,
-                        State = rh.State,
+                        Motivation = rh.Motivation ?? string.Empty,
+                        State = (RequestState)rh.State,
                         SentDate = rh.SentDate,
-                        WorkerCf = rh.WorkerCf,
-                        WorkerName = rh.WorkerName,
-                        WorkerSurname = rh.WorkerSurname
+                        WorkerCf = rh.WorkerCf ?? string.Empty,
+                        WorkerName = rh.WorkerName ?? string.Empty,
+                        WorkerSurname = rh.WorkerSurname ?? string.Empty
                     })
                     .ToList();
+
+                foreach (var holidayRequest in viewModel.HolidayRequests)
+                {
+                    var worker = await _sharedService.Query(new WorkersDetailQuery { Cf = holidayRequest.WorkerCf });
+                    holidayRequest.WorkerName = worker?.Name ?? string.Empty;
+                    holidayRequest.WorkerSurname = worker?.Surname ?? string.Empty;
+                }
             }
             catch (Exception ex)
             {

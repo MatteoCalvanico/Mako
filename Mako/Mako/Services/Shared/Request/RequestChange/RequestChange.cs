@@ -11,8 +11,6 @@ namespace Mako.Services.Shared
         public Guid ShiftId { get; set; }
 
         public Shift Shift { get; set; }
-        public string WorkerName { get; set; }
-        public string WorkerSurname { get; set; }
         public DateTime ShiftDate { get; set; }
         public int Pier { get; set; }
     }
