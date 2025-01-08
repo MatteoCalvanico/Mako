@@ -2,21 +2,17 @@
 
 .filter-bar {
     background-color: var(--secondary-color); // colore della barra
-    border-radius: 12px;
+    border-radius: 10px;
 
     .dropdown {
         position: relative;
-        // border: solid 2px $accent_light;
-        border: none;
         border-radius: 0;
 
         .filter-bar-btn {
             background-color: var(--secondary-color); // colore del bottone dell’hamburger
-            color: black; // colore del testo nel bottone
-            // border: none;
+            color: var(--text-primary-color); // colore del testo nel bottone
+            border: none;
             font-weight: 500;
-            border: 2px solid grey;
-            border-bottom: none;
             border-radius: 10px 0px 0px 10px;
             padding: 0.5rem 1rem;
 
@@ -30,11 +26,8 @@
         .dropdown-menu {
             margin-top: 0;
             background-color: var(--secondary-color);
-            border: 2px solid grey;
             border-top: none;
             border-radius: 0 0 10px 10px;
-            // margin-top: -2px;
-            // border-radius: 0 0 10px 10px;
         }
 
         .filter-bar-dropdown {
@@ -48,7 +41,7 @@
     }
 }
 
-.input{
+.input {
     background-color: var(--secondary-color);
     border: none;
 }
