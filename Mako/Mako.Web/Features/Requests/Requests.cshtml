@@ -15,71 +15,65 @@
             </div>
 
             <div id="allRequests">
-                @if (Model.Count == 0)
-                {
-                    <div class="text-lg-center p-4">
-                        <h1 class="fw-bold">All done</h1>
-                        <h2 class="fw-bold">No pending request</h2>
-                        <img src="~/images/logo.svg" alt="Logo" id="logo" class="login-logo" />
-                    </div>
-                }
-                else
-                {
-                    <table class="table" id="requestsTable">
-                        <thead>
-                            <tr>
-                                <th class="text-start">
-                                    @Model.Count
-                                    @if (Model.Count == 1)
+                <div class="epmtyList text-lg-center p-4" style="display:none">
+                    <h1 class="fw-bold">All done</h1>
+                    <h2 class="fw-bold">No pending request</h2>
+                    <img src="~/images/logo.svg" alt="Logo" id="logo" class="login-logo" />
+                </div>
+                <table class="table" id="requestsTable">
+                    <thead>
+                        <tr>
+                            <th class="text-start">
+                                @Model.Count
+                                @if (Model.Count == 1)
+                                {
+                                    @: Open Request
+                                }
+                                else
+                                {
+                                    @: Open Requests
+                                }
+                            </th>
+                            <th>Motivation</th>
+                            <th class="actions-column">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requestsBody">
+                        @foreach (var request in Model)
+                        {
+                            <tr data-state="@request.State">
+                                <td class="text-start">
+                                    @if (request.StartDate.HasValue && request.EndDate.HasValue)
                                     {
-                                        @: Open Request
+                                        <span class="fw-medium">Holiday from @request.StartDate.Value.ToShortDateString() to @request.EndDate.Value.ToShortDateString()</span>
                                     }
-                                    else
+                                    else if (request.ShiftDate.HasValue)
                                     {
-                                        @: Open Requests
+                                        <span class="fw-medium">Change shift on @request.ShiftDate.Value.ToShortDateString() - Pier @request.Pier</span>
                                     }
-                                </th>
-                                <th>Motivation</th>
-                                <th class="actions-column">Actions</th>
+                                    <br />
+                                    <small>@($"Sent on {request.SentDate.ToShortDateString()} by {request.WorkerName} {request.WorkerSurname}")</small>
+                                </td>
+                                <td>@request.Motivation</td>
+                                <td>
+                                    @if (request.State == Mako.Services.Shared.RequestState.Unmanaged)
+                                    {
+                                        <button class="btn btn-success btn-sm">Accept</button>
+                                        <button class="btn btn-danger btn-sm">Decline</button>
+                                    }
+                                    else if (request.State == Mako.Services.Shared.RequestState.Accepted)
+                                    {
+                                        <span class="text-success">Accepted</span>
+                                    }
+                                    else if (request.State == Mako.Services.Shared.RequestState.Declined)
+                                    {
+                                        <span class="text-danger">Declined</span>
+                                    }
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody id="requestsBody">
-                            @foreach (var request in Model)
-                            {
-                                <tr data-state="@request.State">
-                                    <td class="text-start">
-                                        @if (request.StartDate.HasValue && request.EndDate.HasValue)
-                                        {
-                                            <span class="fw-medium">Holiday from @request.StartDate.Value.ToShortDateString() to @request.EndDate.Value.ToShortDateString()</span>
-                                        }
-                                        else if (request.ShiftDate.HasValue)
-                                        {
-                                            <span class="fw-medium">Change shift on @request.ShiftDate.Value.ToShortDateString() - Pier @request.Pier</span>
-                                        }
-                                        <br />
-                                        <small>@($"Sent on {request.SentDate.ToShortDateString()} by {request.WorkerName} {request.WorkerSurname}")</small>
-                                    </td>
-                                    <td>@request.Motivation</td>
-                                    <td>
-                                        @if (request.State == Mako.Services.Shared.RequestState.Unmanaged)
-                                        {
-                                            <button class="btn btn-success btn-sm">Accept</button>
-                                            <button class="btn btn-danger btn-sm">Decline</button>
-                                        }
-                                        else if (request.State == Mako.Services.Shared.RequestState.Accepted)
-                                        {
-                                            <span class="text-success">Accepted</span>
-                                        }
-                                        else if (request.State == Mako.Services.Shared.RequestState.Declined)
-                                        {
-                                            <span class="text-danger">Declined</span>
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -103,12 +97,15 @@
                 }
             });
 
-            // Hide the table if no rows are visible
+            // Hide the table if no rows are visible and show the empty list message
             const table = document.getElementById('requestsTable');
+            const emptyList = document.querySelector('.epmtyList');
             if (visibleRows === 0) {
                 table.style.display = 'none';
+                emptyList.style.display = 'block';
             } else {
                 table.style.display = 'table';
+                emptyList.style.display = 'none';
             }
 
             document.querySelectorAll('.select-button').forEach(button => {
