@@ -15,11 +15,11 @@ namespace Mako.Web.Features.Requests
         public Guid Id { get; set; }
         public Guid ShiftId { get; set; }
         public DateTime SentDate { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime ShiftDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? ShiftDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public string Motivation { get; set; }
-        public int Pier { get; set; }
+        public int? Pier { get; set; }
         public RequestState State { get; set; }
         public string WorkerCf { get; set; }
         public string WorkerName { get; set; }
