@@ -8,9 +8,12 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-7 col-sm-10">
+
             @if (Model.Ships.Any())
             {
-                <div class="row">
+                <div class="mt-4">
+                @Html.Partial("_FilterBar")
+                </div>
                     @foreach (var ship in Model.Ships)
                     {
                         <div class="card card-custom mt-4 shadow">
@@ -38,7 +41,6 @@
                             </div>
                         </div>
                     }
-                </div>
             }
             else
             {
