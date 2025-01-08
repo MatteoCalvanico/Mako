@@ -17,8 +17,12 @@
             <div id="allRequests">
                 @if (Model.Count == 0)
                 {
-                    <h1 class="fw-bold text-lg-center">All done</h1>
-                    <h2 class="fw-bold text-lg-center">No pending request</h2>
+
+                    <div class="text-lg-center p-4">
+                        <h1 class="fw-bold">All done</h1>
+                        <h2 class="fw-bold">No pending request</h2>
+                        <img src="~/images/logo.svg" alt="Logo" id="logo" class="login-logo" />
+                    </div>
                 }
                 else
                 {
@@ -77,5 +81,15 @@
             document.getElementById('allRequests').style.display = 'block';
             document.getElementById('showAllRequests').classList.add('selected');
         }
+
+        // This function is called in _Layout.cshtml
+        function setImg(theme) {
+                const logo = document.getElementById('logo');
+                if (theme === 'dark') {
+                    logo.src = '@Url.Content("~/images/logo_white.svg")';
+                } else {
+                    logo.src = '@Url.Content("~/images/logo.svg")';
+                }
+          }
     </script>
 }
