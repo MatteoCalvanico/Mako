@@ -155,6 +155,17 @@ namespace Mako.Web.Features.Requests
                             State = state,
                         };
                         await _sharedService.Handle(command);
+
+                        // Remove the ShiftWorker if the state is Accepted
+                        if (state == RequestState.Accepted)
+                        {
+                            await _sharedService.RemoveShiftWorker(changeRequest.ShiftId, changeRequest.WorkerCf);
+                            Alerts.AddSuccess(this, "Request state updated and worker removed successfully.");
+                        }
+                        else
+                        {
+                            Alerts.AddSuccess(this, "Request state updated successfully.");
+                        }
                     }
                 }
                 else if (requestType == "RequestHoliday")
@@ -172,10 +183,9 @@ namespace Mako.Web.Features.Requests
                             State = state,
                         };
                         await _sharedService.Handle(command);
+                        Alerts.AddSuccess(this, "Request state updated successfully.");
                     }
                 }
-
-                Alerts.AddSuccess(this, "Request state updated successfully.");
             }
             catch (Exception ex)
             {
