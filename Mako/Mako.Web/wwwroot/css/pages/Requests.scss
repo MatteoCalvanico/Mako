@@ -1,0 +1,47 @@
+@import "../site.variables.scss";
+
+.btn-group .btn {
+    height: 40px;
+    line-height: 36px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #878787;
+    font-weight: 400;
+    color: black; // Default text color for unselected buttons
+}
+
+table {
+    overflow: hidden;
+    border-radius: 8px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    background-color: var(--secondary-color);
+    color: var(--text-primary-color);
+}
+
+.table thead th {
+    border-bottom: 2px solid #878787; // Bottom border for header row
+}
+
+.table tbody tr td {
+    border-bottom: none; // Remove bottom border for all rows
+}
+
+.table tbody tr:not(:first-child) td {
+    border-top: 1px solid #878787; // Top border for all rows except the first row
+}
+
+.btn-group .btn.selected {
+    background-color: var(--button-blue-color); // Custom blue color for selected button
+    color: white; // White text for selected button
+}
+
+.btn-group .btn:not(.selected) {
+    background-color: #e7e7e7; // Gray background for unselected buttons
+}

@@ -1,0 +1,147 @@
+﻿@model List<Mako.Web.Features.Requests.RequestViewModel>
+
+@{
+    ViewData["Title"] = "Requests";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="mb-4">
+                <div class="btn-group" role="group" aria-label="Filter requests">
+                    <button id="showUnmanaged" class="btn select-button selected" onclick="filterRequests('Unmanaged')">Unmanaged</button>
+                    <button id="showManaged" class="btn select-button" onclick="filterRequests('Managed')">Managed</button>
+                </div>
+            </div>
+
+            <div id="allRequests">
+                <div class="epmtyList text-lg-center p-4" style="display:none">
+                    <h1 class="fw-bold">All done</h1>
+                    <h2 class="fw-bold">No pending request</h2>
+                    <img src="~/images/logo.svg" alt="Logo" id="logo" class="login-logo" />
+                </div>
+                <table class="table" id="requestsTable">
+                    <thead>
+                        <tr>
+                            <th class="text-start">
+                                @Model.Count
+                                @if (Model.Count == 1)
+                                {
+                                    @: Open Request
+                                }
+                                else
+                                {
+                                    @: Open Requests
+                                }
+                            </th>
+                            <th>Motivation</th>
+                            <th class="actions-column">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requestsBody">
+                        @foreach (var request in Model)
+                        {
+                            <tr data-state="@request.State">
+                                <td class="text-start">
+                                    @if (request.StartDate.HasValue && request.EndDate.HasValue)
+                                    {
+                                        <span class="fw-medium">Holiday from @request.StartDate.Value.ToShortDateString() to @request.EndDate.Value.ToShortDateString()</span>
+                                    }
+                                    else if (request.ShiftDate.HasValue)
+                                    {
+                                        <span class="fw-medium">Change shift on @request.ShiftDate.Value.ToShortDateString() - Pier @request.Pier</span>
+                                    }
+                                    <br />
+                                    <small>@($"Sent on {request.SentDate.ToShortDateString()} by {request.WorkerName} {request.WorkerSurname}")</small>
+                                </td>
+                                <td>@request.Motivation</td>
+                                <td>
+                                    @if (request.State == Mako.Services.Shared.RequestState.Unmanaged)
+                                    {
+                                        <form asp-action="UpdateRequestState" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@request.Id" />
+                                            <input type="hidden" name="newState" value="Accepted" />
+                                            <input type="hidden" name="requestType" value="@(request.StartDate.HasValue && request.EndDate.HasValue ? "RequestHoliday" : "RequestChange")" />
+                                            <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                        </form>
+                                        <form asp-action="UpdateRequestState" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@request.Id" />
+                                            <input type="hidden" name="newState" value="Declined" />
+                                            <input type="hidden" name="requestType" value="@(request.StartDate.HasValue && request.EndDate.HasValue ? "RequestHoliday" : "RequestChange")" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                        </form>
+                                    }
+                                    else if (request.State == Mako.Services.Shared.RequestState.Accepted)
+                                    {
+                                        <span class="text-success">Accepted</span>
+                                    }
+                                    else if (request.State == Mako.Services.Shared.RequestState.Declined)
+                                    {
+                                        <span class="text-danger">Declined</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function filterRequests(filter) {
+            const rows = document.querySelectorAll('#requestsBody tr');
+            let visibleRows = 0;
+            rows.forEach(row => {
+                const state = row.getAttribute('data-state');
+                if (filter === 'Managed' && (state === 'Accepted' || state === 'Declined')) {
+                    row.style.display = '';
+                    visibleRows++;
+                } else if (filter === 'Unmanaged' && state === 'Unmanaged') {
+                    row.style.display = '';
+                    visibleRows++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Hide the table if no rows are visible and show the empty list message
+            const table = document.getElementById('requestsTable');
+            const emptyList = document.querySelector('.epmtyList');
+            if (visibleRows === 0) {
+                table.style.display = 'none';
+                emptyList.style.display = 'block';
+            } else {
+                table.style.display = 'table';
+                emptyList.style.display = 'none';
+            }
+
+            document.querySelectorAll('.select-button').forEach(button => {
+                button.classList.remove('selected');
+            });
+
+            if (filter === 'Managed') {
+                document.getElementById('showManaged').classList.add('selected');
+            } else {
+                document.getElementById('showUnmanaged').classList.add('selected');
+            }
+        }
+
+        // Apply initial filter on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            filterRequests('Unmanaged');
+        });
+
+        // This function is called in _Layout.cshtml
+        function setImg(theme) {
+            const logo = document.getElementById('logo');
+            if (theme === 'dark') {
+                logo.src = '@Url.Content("~/images/logo_white.svg")';
+            } else {
+                logo.src = '@Url.Content("~/images/logo.svg")';
+            }
+        }
+    </script>
+}
