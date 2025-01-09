@@ -136,12 +136,19 @@ namespace Mako.Web.Features.Requests
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> UpdateRequestState(Guid id, string newState)
+        public virtual async Task<IActionResult> UpdateRequestState(Guid id, string newState, string requestType)
         {
+            RequestState state = newState == "Accepted" ? RequestState.Accepted : RequestState.Declined;
             try
             {
-                // Implement the logic to update the request state
-                // await _sharedService.UpdateRequestStateAsync(id, newState);
+                if (requestType == "RequestChange")
+                {
+                    // Update logic for RequestChange
+                }
+                else if (requestType == "RequestHoliday")
+                {
+                    // Update logic for RequestHoliday
+                }
 
                 Alerts.AddSuccess(this, "Request state updated successfully.");
             }

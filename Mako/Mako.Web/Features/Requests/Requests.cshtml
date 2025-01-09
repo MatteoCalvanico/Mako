@@ -61,11 +61,13 @@
                                         <form asp-action="UpdateRequestState" method="post" class="d-inline">
                                             <input type="hidden" name="id" value="@request.Id" />
                                             <input type="hidden" name="newState" value="Accepted" />
+                                            <input type="hidden" name="requestType" value="@(request.StartDate.HasValue && request.EndDate.HasValue ? "RequestHoliday" : "RequestChange")" />
                                             <button type="submit" class="btn btn-success btn-sm">Accept</button>
                                         </form>
                                         <form asp-action="UpdateRequestState" method="post" class="d-inline">
                                             <input type="hidden" name="id" value="@request.Id" />
                                             <input type="hidden" name="newState" value="Declined" />
+                                            <input type="hidden" name="requestType" value="@(request.StartDate.HasValue && request.EndDate.HasValue ? "RequestHoliday" : "RequestChange")" />
                                             <button type="submit" class="btn btn-danger btn-sm">Decline</button>
                                         </form>
                                     }
