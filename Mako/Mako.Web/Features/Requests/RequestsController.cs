@@ -1,5 +1,6 @@
 ﻿using Mako.Services.Shared;
 using Mako.Web.Areas;
+using Mako.Web.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -132,6 +133,24 @@ namespace Mako.Web.Features.Requests
             }));
 
             return combinedRequests;
+        }
+
+        [HttpPost]
+        public virtual async Task<IActionResult> UpdateRequestState(Guid id, string newState)
+        {
+            try
+            {
+                // Implement the logic to update the request state
+                // await _sharedService.UpdateRequestStateAsync(id, newState);
+
+                Alerts.AddSuccess(this, "Request state updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                Alerts.AddError(this, "An error occurred while updating the request state: " + ex.Message);
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

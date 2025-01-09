@@ -58,8 +58,16 @@
                                 <td>
                                     @if (request.State == Mako.Services.Shared.RequestState.Unmanaged)
                                     {
-                                        <button class="btn btn-success btn-sm">Accept</button>
-                                        <button class="btn btn-danger btn-sm">Decline</button>
+                                        <form asp-action="UpdateRequestState" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@request.Id" />
+                                            <input type="hidden" name="newState" value="Accepted" />
+                                            <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                        </form>
+                                        <form asp-action="UpdateRequestState" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@request.Id" />
+                                            <input type="hidden" name="newState" value="Declined" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                        </form>
                                     }
                                     else if (request.State == Mako.Services.Shared.RequestState.Accepted)
                                     {
