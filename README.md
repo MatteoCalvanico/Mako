@@ -31,3 +31,14 @@ Check out Mako's database diagram
 </p>
 
 [Or check out dbdiagram.io](https://dbdiagram.io/d/Mako-DB-676a7daf5406798ef78a3dde)
+
+## Project's Screenshots
+<p align = "center">
+    <img src="./ScreenShots/HomeDark.png"/>
+    <img src="./ScreenShots/RequestDark.png">
+    <img src="./ScreenShots/ShipDark.png">
+</p>
+<p align = "center">
+    <img src="./ScreenShots/ShipDarkMobile.png" width="45%">
+    <img src="./ScreenShots/WorkerShiftDarkMobile.png" width="45%">
+</p>
