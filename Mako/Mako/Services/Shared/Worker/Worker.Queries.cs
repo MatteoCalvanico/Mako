@@ -150,67 +150,67 @@ namespace Mako.Services.Shared
 
                 //join su Role
                 .Join(_dbContext.Roles,
-                    combo => combo.wr.RoleId,
+                    results => results.wr.RoleId,
                     r => r.Id,
-                    (combo, r) => new
+                    (results, r) => new
                     {
-                        combo.worker,
-                        combo.wr,
+                        results.worker,
+                        results.wr,
                         role = r    // Sarà { Id, Type = RoleTypes Type }
                     })
 
                 //join su JoinCertification
                 .Join(_dbContext.JoinCertifications,
-                    combo => combo.worker.Cf,
+                    results => results.worker.Cf,
                     jc => jc.WorkerCf,
-                    (combo, jc) => new
+                    (results, jc) => new
                     {
-                        combo.worker,
-                        combo.wr,
-                        combo.role,
+                        results.worker,
+                        results.wr,
+                        results.role,
                         jc
                     })
 
                 // d) Join su Certification
                 .Join(_dbContext.Certifications,
-                     combo => combo.jc.CertificationId,
+                     results => results.jc.CertificationId,
                      cert => cert.Id,
-                     (combo, cert) => new
+                     (results, cert) => new
                      {
-                         combo.worker,
-                         combo.wr,
-                         combo.role,
-                         combo.jc,
+                         results.worker,
+                         results.wr,
+                         results.role,
+                         results.jc,
                          cert
                      })
 
 
                 //join su JoinLicence
                 .Join(_dbContext.JoinLicences,
-                    combo => combo.worker.Cf,
+                    results => results.worker.Cf,
                     jl => jl.WorkerCf,
-                    (combo, jl) => new
+                    (results, jl) => new
                     {
-                        combo.worker,
-                        combo.wr,
-                        combo.role,
-                        combo.jc,
-                        combo.cert,
+                        results.worker,
+                        results.wr,
+                        results.role,
+                        results.jc,
+                        results.cert,
                         jl
                     })
 
                 //join su Licence
                 .Join(_dbContext.Licences,
-                     combo => combo.jl.LicenceId,
+                     results => results.jl.LicenceId,
                      licence => licence.Id,
-                     (combo, licence) => new
+                     (results, licence) => new
                      {
-                         Cf = combo.worker.Cf,
-                         Name = combo.worker.Name,
-                         Surname = combo.worker.Surname,
+                         Cf = results.worker.Cf,
+                         Name = results.worker.Name,
+                         Surname = results.worker.Surname,
 
-                         RoleType = combo.role.Type,
-                         CertType = combo.cert.Types,
+                         RoleType = results.role.Type,
+                         CertType = results.cert.Types,
                          LicenceType = licence.Types
                      }
                 )
