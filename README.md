@@ -10,6 +10,7 @@ These are all the features:
 - Login for Operators and Workers.
 - View for workers with the ability to see their shifts and request holidays, permits, etc.
 - View for operators with the possibility of checking incoming boats (with all the necessary information), creating/managing the various shifts of unloading and loading goods, and more.
+- Light and Dark Mode.
 
 ## Start-up
 - Open project with *Visual Studio 2022*
