@@ -133,6 +133,8 @@
                         const selectedShiftSelect = document.getElementById('selectedShift');
                         selectedShiftSelect.innerHTML = `<option value="${shift.id}" selected>Pier: ${shift.pier} | ${this.formatTime(shift.startHour)} - ${this.formatTime(shift.endHour)} ${this.formatDate(shift.date)}</option>`;
 
+                        const selectedShiftId = document.getElementById('shiftId');
+                        selectedShiftId.value = shift.id;
                         // Optionally, you can add more options here dynamically if needed
                     }
                 }
