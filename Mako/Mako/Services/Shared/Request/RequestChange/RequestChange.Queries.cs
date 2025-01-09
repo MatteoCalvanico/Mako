@@ -44,7 +44,7 @@ namespace Mako.Services.Shared
         public string Motivation { get; set; }
         public RequestState State { get; set; }
         public DateTime SentDate { get; set; }
-        public Worker Sender { get; set; }
+        public string WorkerCf { get; set; }
     }
 
     public partial class SharedService
@@ -106,7 +106,7 @@ namespace Mako.Services.Shared
                     Motivation = x.Motivation,
                     State = x.State,
                     SentDate = x.SentDate,
-                    Sender = x.Sender
+                    WorkerCf = x.WorkerCf
                 })
                 .FirstOrDefaultAsync();
         }

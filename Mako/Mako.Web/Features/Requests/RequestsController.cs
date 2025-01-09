@@ -143,11 +143,36 @@ namespace Mako.Web.Features.Requests
             {
                 if (requestType == "RequestChange")
                 {
-                    // Update logic for RequestChange
+                    var changeRequest = await _sharedService.Query(new RequestChangeDetailQuery { Id = id });
+                    if (changeRequest != null)
+                    {
+                        var command = new AddOrUpdateRequestChangeCommand
+                        {
+                            Id = changeRequest.Id,
+                            ShiftId = changeRequest.ShiftId,
+                            Motivation = changeRequest.Motivation,
+                            WorkerCf = changeRequest.WorkerCf,
+                            State = state,
+                        };
+                        await _sharedService.Handle(command);
+                    }
                 }
                 else if (requestType == "RequestHoliday")
                 {
-                    // Update logic for RequestHoliday
+                    var holidayRequest = await _sharedService.Query(new RequestHolidayDetailQuery { Id = id });
+                    if (holidayRequest != null)
+                    {
+                        var command = new AddOrUpdateRequestHolidayCommand
+                        {
+                            Id = holidayRequest.Id,
+                            StartDate = holidayRequest.StartDate,
+                            EndDate = holidayRequest.EndDate,
+                            Motivation = holidayRequest.Motivation,
+                            WorkerCf = holidayRequest.WorkerCf,
+                            State = state,
+                        };
+                        await _sharedService.Handle(command);
+                    }
                 }
 
                 Alerts.AddSuccess(this, "Request state updated successfully.");
