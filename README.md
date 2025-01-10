@@ -34,11 +34,11 @@ Check out Mako's database diagram
 
 ## Project's Screenshots
 <p align = "center">
-    <img src="./ScreenShots/HomeDark.png"/>
-    <img src="./ScreenShots/RequestDark.png">
-    <img src="./ScreenShots/ShipDark.png">
+    ![HomeDark](https://github.com/user-attachments/assets/207977cb-8c1c-4314-bb0a-4dcb9cd5cdf3)
+    ![RequestDark](https://github.com/user-attachments/assets/e702142a-5809-45a2-a9f5-a15f27b9a627)
+    ![ShipDark](https://github.com/user-attachments/assets/08b3e706-2f87-4b9b-9cd6-5633bb21bb94)
 </p>
 <p align = "center">
-    <img src="./ScreenShots/ShipDarkMobile.png" width="45%">
-    <img src="./ScreenShots/WorkerShiftDarkMobile.png" width="45%">
+    ![ShipDarkMobile](https://github.com/user-attachments/assets/f3a3cc04-2904-4e5f-9a24-62d43039242c)
+    ![WorkerShiftDarkMobile](https://github.com/user-attachments/assets/8522ad8b-5e17-4940-85c9-15f89050026d)
 </p>
