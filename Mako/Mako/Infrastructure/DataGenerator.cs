@@ -38,6 +38,7 @@ namespace Mako.Infrastructure
             InitializeWorkerRoles(context);
             InitializeShiftWorkers(context);
             InitializeJoinCertification(context);
+            InitializeJoinLicence(context);
             // END INIT: JOIN Tables
         }
 

@@ -128,9 +128,9 @@ namespace Mako.Services.Shared
     {
         public async Task<WorkersComplexDTO> SelectWorkersComplex(WorkersComplexQuery qry)
         {
+            // Step 1: Retrieve all workers based on the filter
             var baseQuery = _dbContext.Workers.AsQueryable();
 
-            // filtro che se necessario si può aggiungere cf o id
             if (!string.IsNullOrEmpty(qry.Filter))
             {
                 baseQuery = baseQuery.Where(w =>
@@ -140,102 +140,78 @@ namespace Mako.Services.Shared
                 );
             }
 
+            var workers = await baseQuery.ToListAsync();
 
-            var resultList = await baseQuery
-                // 1) Join con WorkerRoles (si collegano Worker a WorkerRole)
-                .Join(_dbContext.WorkerRoles,
-                    worker => worker.Cf,
-                    wr => wr.WorkerCf,
-                    (worker, wr) => new { worker, wr })
+            // Step 2: Retrieve related data for the workers
+            var workerCfs = workers.Select(w => w.Cf).ToList();
 
-                //join su Role
-                .Join(_dbContext.Roles,
-                    results => results.wr.RoleId,
-                    r => r.Id,
-                    (results, r) => new
-                    {
-                        results.worker,
-                        results.wr,
-                        role = r    // Sarà { Id, Type = RoleTypes Type }
-                    })
-
-                //join su JoinCertification
-                .Join(_dbContext.JoinCertifications,
-                    results => results.worker.Cf,
-                    jc => jc.WorkerCf,
-                    (results, jc) => new
-                    {
-                        results.worker,
-                        results.wr,
-                        results.role,
-                        jc
-                    })
-
-                // d) Join su Certification
-                .Join(_dbContext.Certifications,
-                     results => results.jc.CertificationId,
-                     cert => cert.Id,
-                     (results, cert) => new
-                     {
-                         results.worker,
-                         results.wr,
-                         results.role,
-                         results.jc,
-                         cert
-                     })
-
-
-                //join su JoinLicence
-                .Join(_dbContext.JoinLicences,
-                    results => results.worker.Cf,
-                    jl => jl.WorkerCf,
-                    (results, jl) => new
-                    {
-                        results.worker,
-                        results.wr,
-                        results.role,
-                        results.jc,
-                        results.cert,
-                        jl
-                    })
-
-                //join su Licence
-                .Join(_dbContext.Licences,
-                     results => results.jl.LicenceId,
-                     licence => licence.Id,
-                     (results, licence) => new
-                     {
-                         Cf = results.worker.Cf,
-                         Name = results.worker.Name,
-                         Surname = results.worker.Surname,
-
-                         RoleType = results.role.Type,
-                         CertType = results.cert.Types,
-                         LicenceType = licence.Types
-                     }
-                )
-
+            var workerRoles = await _dbContext.WorkerRoles
+                .Where(wr => workerCfs.Contains(wr.WorkerCf))
                 .ToListAsync();
 
-            var grouped =  resultList
+            var roles = await _dbContext.Roles
+                .Where(r => workerRoles.Select(wr => wr.RoleId).Contains(r.Id))
+                .ToListAsync();
+
+            var joinCertifications = await _dbContext.JoinCertifications
+                .Where(jc => workerCfs.Contains(jc.WorkerCf))
+                .ToListAsync();
+
+            var certifications = await _dbContext.Certifications
+                .Where(c => joinCertifications.Select(jc => jc.CertificationId).Contains(c.Id))
+                .ToListAsync();
+
+            var joinLicences = await _dbContext.JoinLicences
+                .Where(jl => workerCfs.Contains(jl.WorkerCf))
+                .ToListAsync();
+
+            var licences = await _dbContext.Licences
+                .Where(l => joinLicences.Select(jl => jl.LicenceId).Contains(l.Id))
+                .ToListAsync();
+
+            // Step 3: Assemble the result
+            var resultList = (from worker in workers
+                              join wr in workerRoles on worker.Cf equals wr.WorkerCf into workerRolesGroup
+                              from wr in workerRolesGroup.DefaultIfEmpty()
+                              join role in roles on wr?.RoleId equals role.Id into rolesGroup
+                              from role in rolesGroup.DefaultIfEmpty()
+                              join jc in joinCertifications on worker.Cf equals jc.WorkerCf into joinCertificationsGroup
+                              from jc in joinCertificationsGroup.DefaultIfEmpty()
+                              join cert in certifications on jc?.CertificationId equals cert.Id into certificationsGroup
+                              from cert in certificationsGroup.DefaultIfEmpty()
+                              join jl in joinLicences on worker.Cf equals jl.WorkerCf into joinLicencesGroup
+                              from jl in joinLicencesGroup.DefaultIfEmpty()
+                              join licence in licences on jl?.LicenceId equals licence.Id into licencesGroup
+                              from licence in licencesGroup.DefaultIfEmpty()
+                              select new
+                              {
+                                  worker.Cf,
+                                  worker.Name,
+                                  worker.Surname,
+                                  RoleType = role?.Type,
+                                  CertType = cert?.Types,
+                                  LicenceType = licence?.Types
+                              }).ToList();
+
+            var grouped = resultList
                 .GroupBy(x => new { x.Cf, x.Name, x.Surname })
                 .Select(grp => new WorkersComplexDTO.WorkerDTO
                 {
                     Cf = grp.Key.Cf,
                     Name = grp.Key.Name,
                     Surname = grp.Key.Surname,
-                    
                     Roles = grp
+                        .Where(x => x.RoleType != null)
                         .Select(x => x.RoleType.ToString())
                         .Distinct()
                         .ToList(),
-                    
                     Certificates = grp
+                        .Where(x => x.CertType != null)
                         .Select(x => x.CertType.ToString())
                         .Distinct()
                         .ToList(),
-
                     Licences = grp
+                        .Where(x => x.LicenceType != null)
                         .Select(x => x.LicenceType.ToString())
                         .Distinct()
                         .ToList()

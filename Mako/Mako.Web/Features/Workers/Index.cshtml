@@ -16,10 +16,10 @@
                             <div class="card-body">
                                 
                                 <div class="overlay-card px-2 py-1 d-none d-md-block">
-                                    CF: @worker.Cf
+                                    @string.Join(", ", worker.Licences)
                                 </div>
                                 <div class="overlay-card px-2 py-1 d-block d-md-none text-center">
-                                    CF: @worker.Cf
+                                    @string.Join(", ",worker.Licences)
                                 </div>
 
                                 <!-- Titolo principale -->
