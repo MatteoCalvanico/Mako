@@ -1,0 +1,51 @@
+﻿@model Mako.Web.Features.Workers.WorkersViewModel
+
+@{
+    ViewData["Title"] = "Workers";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-7 col-sm-10">
+            @if (Model.Workers.Any())
+            {
+                <div class="row">
+                    @foreach (var worker in Model.Workers)
+                    {
+                        <div class="card card-custom mt-5 shadow">
+                            <div class="card-body">
+                                <!-- Overlay in alto, simile a "days left" dei Ships -->
+                                <div class="overlay-card px-2 py-1 d-none d-md-block">
+                                    <!-- Qui potresti mostrare il Cf come overlay, 
+                                         o eventuali info personalizzate -->
+                                    CF: @worker.Cf
+                                </div>
+                                <div class="overlay-card px-2 py-1 d-block d-md-none text-center">
+                                    CF: @worker.Cf
+                                </div>
+
+                                <!-- Titolo principale -->
+                                <h5 class="card-title fs-3">
+                                    <b>@worker.Name @worker.Surname</b>
+                                </h5>
+
+                                <div class="d-flex justify-content-between">
+                                    <p class="card-text fs-5 mb-0">
+                                        <strong class="fs-4">Roles:</strong> @string.Join(", ", worker.Roles)<br />
+                                        <strong>Certificates:</strong> @string.Join(", ", worker.Certificates)<br />
+                                        <strong>Licences:</strong> @string.Join(", ", worker.Licences)
+                                    </p>
+                                    <!-- eventuali link a PDF, download, ecc. -->
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No workers available.</p>
+            }
+        </div>
+    </div>
+</div>
