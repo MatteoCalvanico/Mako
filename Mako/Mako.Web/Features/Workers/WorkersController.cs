@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace Mako.Web.Features.Workers
 {
@@ -22,8 +23,7 @@ namespace Mako.Web.Features.Workers
         {
             // Recupera il ViewModel completo (lista di WorkerViewModel)
             var workersViewModel = await GetAllWorkers();
-            return View("Worker", workersViewModel);
-            // Nome della view = "Worker.cshtml"
+            return View("Index", workersViewModel);
         }
 
         public async Task<WorkersViewModel> GetAllWorkers()
@@ -32,16 +32,14 @@ namespace Mako.Web.Features.Workers
 
             try
             {
-                // Usiamo la query complessa (WorkersComplexQuery)
                 var query = new WorkersComplexQuery
                 {
-                    Filter = null // o ciò che desideri filtrare
+                    Filter = ""
                 };
 
                 // Richiamiamo il tuo metodo in Worker.Queries.cs
                 // che fa la catena di join e ritorna roles, cert, licence.
                 var workersDTO = await _sharedService.SelectWorkersComplex(query);
-
                 // Mappiamo i DTO in WorkerViewModel
                 viewModel.Workers = workersDTO.Workers
                     .Select(w => new WorkerViewModel
