@@ -1,35 +1,37 @@
 ﻿@{
-    bool isShip = true;    // if false show worker filters, if true show ship filters
+    bool isShip = true; // if false show worker filters, if true show ship filters
 }
 
 <div class="filter-bar d-flex align-items-center shadow-sm">
-    <div class="dropdown px-3">
-        <button class="btn btn-secondary dropdown-toggle filter-bar-btn"
-                type="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-            Filters
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end filter-bar-dropdown">
-            <li><a class="dropdown-item-header" href="#">FILTER BY</a></li>
-            @if (isShip)
-            {
-                <li><a class="dropdown-item" href="#">Ship Name</a></li>
-                <li><a class="dropdown-item" href="#">Pier</a></li>
-                <li><a class="dropdown-item" href="#">Arrival</a></li>
-                <li><a class="dropdown-item" href="#">Departure</a></li>
-            }
-            else
-            {
-                <li><a class="dropdown-item" href="#">Worker Name</a></li>
-                <li><a class="dropdown-item" href="#">Ruolo</a></li>
-                <li><a class="dropdown-item" href="#">Licence</a></li>
-                <li><a class="dropdown-item" href="#">Certification</a></li>
-            }
-        </ul>
-    </div>
+    <form method="get" asp-action="Index" class="d-flex">
+        <div class="dropdown px-3">
+            <button class="btn btn-secondary dropdown-toggle filter-bar-btn"
+                    type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                Filters
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end filter-bar-dropdown">
+                <li><a class="dropdown-item-header" href="#">FILTER BY</a></li>
+                @if (isShip)
+                {
+                    <li><button type="submit" name="filterType" value="ShipName" class="dropdown-item">Ship Name</button></li>
+                    <li><button type="submit" name="filterType" value="Pier" class="dropdown-item">Pier</button></li>
+                    <li><button type="submit" name="filterType" value="Arrival" class="dropdown-item">Arrival</button></li>
+                    <li><button type="submit" name="filterType" value="Departure" class="dropdown-item">Departure</button></li>
+                }
+                else
+                {
+                    <li><a class="dropdown-item" href="#">Worker Name</a></li>
+                    <li><a class="dropdown-item" href="#">Ruolo</a></li>
+                    <li><a class="dropdown-item" href="#">Licence</a></li>
+                    <li><a class="dropdown-item" href="#">Certification</a></li>
+                }
+            </ul>
+        </div>
 
-    <div class="filter-bar-input ms-1">
-        <i class="fa-solid fa-filter"></i>
-        <input type="text" class="input" placeholder="FILTER BY" />
-    </div>
+        <div class="filter-bar-input ms-1">
+            <i class="fa-solid fa-filter"></i>
+            <input type="text" class="input" placeholder="FILTER BY" name="searchTerm" />
+        </div>
+    </form>
 </div>

@@ -260,7 +260,7 @@ namespace Mako.Infrastructure
                     Name = "Nautilus",
                     DateArrival = DateTime.Now.AddDays(new Random().Next(1, 30)),
                     DateDeparture = DateTime.Now.AddDays(new Random().Next(31, 60)),
-                    Pier = 2,
+                    Pier = 3,
                     TimeEstimation = TimeSpan.FromHours(15),
                     CargoManifest = "TODO",
                 },
@@ -269,13 +269,13 @@ namespace Mako.Infrastructure
                     Name = "Over the Rainbow",
                     DateArrival = DateTime.Now.AddDays(new Random().Next(1, 30)),
                     DateDeparture = DateTime.Now.AddDays(new Random().Next(31, 60)),
-                    Pier = 2,
+                    Pier = 4,
                     TimeEstimation = TimeSpan.FromHours(15),
                     CargoManifest = "TODO",
                 },
                 new Ship
                 {
-                Name = "Filomons",
+                    Name = "Filomons",
                     DateArrival = DateTime.Now,
                     DateDeparture = DateTime.Now.AddDays(new Random().Next(31, 60)),
                     Pier = 2,
@@ -283,14 +283,14 @@ namespace Mako.Infrastructure
                     CargoManifest = "TODO",
                 },
                 new Ship
-                    {
-                        Name = "Flying Dutchman",
-                        DateArrival = DateTime.Now.AddDays(new Random().Next(1, 30)),
-                        DateDeparture = DateTime.Now.AddDays(new Random().Next(31, 60)),
-                        Pier = 2,
-                        TimeEstimation = TimeSpan.FromHours(15),
-                        CargoManifest = "TODO",
-                    });
+                {
+                    Name = "Flying Dutchman",
+                    DateArrival = DateTime.Now.AddDays(new Random().Next(1, 30)),
+                    DateDeparture = DateTime.Now.AddDays(new Random().Next(31, 60)),
+                    Pier = 2,
+                    TimeEstimation = TimeSpan.FromHours(15),
+                    CargoManifest = "TODO",
+                });
             context.SaveChanges();
         }
 

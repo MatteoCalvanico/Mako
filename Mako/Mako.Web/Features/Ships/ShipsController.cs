@@ -19,11 +19,18 @@ namespace Mako.Web.Features.ShipName
             _sharedService = sharedService;
         }
 
-        public virtual async Task<IActionResult> Index()
+        public virtual async Task<IActionResult> Index(string searchTerm = null)
         {
-            // Recupera il DTO che contiene la lista di navi
-            var shipsDTO = await _sharedService.SelectShipsQuery(new ShipsSelectQuery { });
             var shipsViewModel = await GetAllShips();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                // Example: filtering by Ship Name or Pier
+                shipsViewModel.Ships = shipsViewModel.Ships
+                    .Where(s => s.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                             || s.Pier.ToString().Contains(searchTerm))
+                    .ToList();
+            }
 
             return View("Index", shipsViewModel);
         }
