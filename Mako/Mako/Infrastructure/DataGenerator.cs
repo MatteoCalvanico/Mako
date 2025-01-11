@@ -3,6 +3,7 @@ using Mako.Services.Shared;
 using Mako.Services.Shared.Enums;
 using System;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Mako.Infrastructure
 {
@@ -274,13 +275,22 @@ namespace Mako.Infrastructure
                 },
                 new Ship
                 {
-                    Name = "Flying Dutchman",
-                    DateArrival = DateTime.Now.AddDays(new Random().Next(1, 30)),
+                Name = "Filomons",
+                    DateArrival = DateTime.Now,
                     DateDeparture = DateTime.Now.AddDays(new Random().Next(31, 60)),
                     Pier = 2,
                     TimeEstimation = TimeSpan.FromHours(15),
                     CargoManifest = "TODO",
-                });
+                },
+                new Ship
+                    {
+                        Name = "Flying Dutchman",
+                        DateArrival = DateTime.Now.AddDays(new Random().Next(1, 30)),
+                        DateDeparture = DateTime.Now.AddDays(new Random().Next(31, 60)),
+                        Pier = 2,
+                        TimeEstimation = TimeSpan.FromHours(15),
+                        CargoManifest = "TODO",
+                    });
             context.SaveChanges();
         }
 
