@@ -10,6 +10,7 @@ These are all the features:
 - Login for Operators and Workers.
 - View for workers with the ability to see their shifts and request holidays, permits, etc.
 - View for operators with the possibility of checking incoming boats (with all the necessary information), creating/managing the various shifts of unloading and loading goods, and more.
+- Light and Dark Mode.
 
 ## Start-up
 - Open project with *Visual Studio 2022*
@@ -30,3 +31,14 @@ Check out Mako's database diagram
 </p>
 
 [Or check out dbdiagram.io](https://dbdiagram.io/d/Mako-DB-676a7daf5406798ef78a3dde)
+
+## Project's Screenshots
+<p align = "center">
+    <img src="https://github.com/user-attachments/assets/207977cb-8c1c-4314-bb0a-4dcb9cd5cdf3" />
+    <img src="https://github.com/user-attachments/assets/e702142a-5809-45a2-a9f5-a15f27b9a627" />
+    <img src="https://github.com/user-attachments/assets/08b3e706-2f87-4b9b-9cd6-5633bb21bb94" />
+</p>
+<p align = "center">
+    <img src="https://github.com/user-attachments/assets/f3a3cc04-2904-4e5f-9a24-62d43039242c" />
+    <img src="https://github.com/user-attachments/assets/8522ad8b-5e17-4940-85c9-15f89050026d" />
+</p>

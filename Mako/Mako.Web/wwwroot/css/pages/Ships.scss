@@ -1,0 +1,12 @@
+﻿@import "../site.variables.scss";
+
+@media (max-width: 767.98px) {
+    .overlay-card {
+        position: absolute;
+        width: fit-content;
+        top: -10%;
+        right: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

@@ -104,6 +104,17 @@ namespace Mako.Services.Shared
                  .Select(sw => sw.WorkerCf)
                  .ToListAsync();
         }
+
+        public async Task RemoveShiftWorker(Guid shiftId, string workerCf)
+        {
+            var shiftWorker = await _dbContext.ShiftWorker
+                .FirstOrDefaultAsync(sw => sw.ShiftId == shiftId && sw.WorkerCf == workerCf);
+            if (shiftWorker != null)
+            {
+                _dbContext.ShiftWorker.Remove(shiftWorker);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
     }
 }
 

@@ -27,6 +27,8 @@ namespace Mako.Services.Shared
             public RequestState State { get; set; }
             public DateTime SentDate { get; set; }
             public string WorkerCf { get; set; }
+            public string WorkerName { get; set; }
+            public string WorkerSurname { get; set; }
         }
     }
 
@@ -48,39 +50,33 @@ namespace Mako.Services.Shared
 
     public partial class SharedService
     {
-        public async Task<RequestHolidaySelectDTO> Query(RequestHolidaySelectQuery qry)
+        public async Task<RequestHolidaySelectDTO> SelectRequestsHolidayQuery(RequestHolidaySelectQuery qry)
         {
-            var queryable = _dbContext.RequestsHolidays.AsQueryable();
+            var holidayQuery = _dbContext.RequestsHolidays.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(qry.ShipCurrentId.ToString()))
-            {
-                queryable = queryable.Where(x => x.Id == qry.ShipCurrentId);
-            }
-
-            if (qry.StartDateFilter.HasValue)
-            {
-                queryable = queryable.Where(x => x.StartDate >= qry.StartDateFilter.Value);
-            }
-
-            if (qry.EndDateFilter.HasValue)
-            {
-                queryable = queryable.Where(x => x.EndDate <= qry.EndDateFilter.Value);
-            }
+            var resultList = await holidayQuery
+                .Join(_dbContext.Workers,
+                    holiday => holiday.WorkerCf,
+                    worker => worker.Cf,
+                    (holiday, worker) => new RequestHolidaySelectDTO.RequestHoliday
+                    {
+                        Id = holiday.Id,
+                        StartDate = holiday.StartDate,
+                        EndDate = holiday.EndDate,
+                        Motivation = holiday.Motivation,
+                        State = holiday.State,
+                        SentDate = holiday.SentDate,
+                        WorkerCf = holiday.WorkerCf,
+                        WorkerName = worker.Name,
+                        WorkerSurname = worker.Surname
+                    }
+                )
+                .ToListAsync();
 
             return new RequestHolidaySelectDTO
             {
-                RequestHolidays = await queryable
-                    .Select(x => new RequestHolidaySelectDTO.RequestHoliday
-                    {
-                        Id = x.Id,
-                        StartDate = x.StartDate,
-                        EndDate = x.EndDate,
-                        Motivation = x.Motivation,
-                        State = x.State,
-                        SentDate = x.SentDate
-                    })
-                    .ToArrayAsync(),
-                Count = await queryable.CountAsync()
+                RequestHolidays = resultList,
+                Count = resultList.Count
             };
         }
 

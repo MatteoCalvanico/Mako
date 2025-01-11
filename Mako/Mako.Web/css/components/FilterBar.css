@@ -1,0 +1,63 @@
+:root {
+  --primary-color: #F8F9FA;
+  --secondary-color: #E7F1FF;
+  --tertiary-color: #D3E0F2;
+  --accent-color: #0E76FE;
+  --warning-color: #FFC107;
+  --danger-color: #DC3545;
+  --button-blue-color: #0e76fe;
+  --text-primary-color: black;
+  --title-color: black;
+}
+
+[data-theme=dark] {
+  --primary-color: #171717;
+  --secondary-color: #1E242C;
+  --tertiary-color: #2B323C;
+  --accent-color: #5C97E4;
+  --warning-color: #FFC107;
+  --danger-color: #DC3545;
+  --button-blue-color: #5c97e4;
+  --text-primary-color: white;
+  --title-color: white;
+}
+
+.filter-bar {
+  background-color: #E7F1FF;
+  border-radius: 5px;
+}
+.filter-bar .dropdown {
+  position: relative;
+  border: none;
+  border-radius: 0;
+}
+.filter-bar .dropdown .filter-bar-btn {
+  background-color: #E7F1FF;
+  color: black;
+  font-weight: 500;
+  border: 2px solid #E7F1FF;
+  border-bottom: none;
+  border-radius: 10px 0px 0px 10px;
+  padding: 0.5rem 1rem;
+}
+.filter-bar .dropdown .filter-bar-btn:focus, .filter-bar .dropdown .filter-bar-btn:active {
+  outline: none;
+  box-shadow: none;
+}
+.filter-bar .dropdown .dropdown-menu {
+  margin-top: 0;
+  background-color: #E7F1FF;
+  border: 2px solid #0E76FE;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+}
+.filter-bar .filter-bar-text {
+  color: grey;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.input {
+  background-color: #E7F1FF;
+  border: none;
+}

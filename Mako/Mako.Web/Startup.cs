@@ -123,6 +123,7 @@ namespace Mako.Web
                 endpoints.MapControllerRoute("Home", "{controller=Home}/{action=Index}");
                 endpoints.MapControllerRoute("Shifts", "{controller=Shifts}/{action=Index}");
                 endpoints.MapControllerRoute("Ships", "{controller=Ships}/{action=Index}");
+                endpoints.MapControllerRoute("Workers", "{controller=Workers}/{action=Index}");
             });
         }
     }

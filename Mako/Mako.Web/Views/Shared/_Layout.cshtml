@@ -111,12 +111,14 @@
               document.documentElement.setAttribute('data-theme', newTheme);
               localStorage.setItem('theme', newTheme);
               setLogo(newTheme);
+              setImg(newTheme); // In Request.cshtml
            }
 
             document.addEventListener('DOMContentLoaded', function () {
               const savedTheme = localStorage.getItem('theme') || 'light';
               document.documentElement.setAttribute('data-theme', savedTheme);
               setLogo(savedTheme);
+              setImg(savedTheme); // In Request.cshtml
            });
     </script>
 
