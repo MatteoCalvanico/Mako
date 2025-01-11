@@ -9,7 +9,6 @@
     }
 
     .dropdown {
-        position: relative;
         border-radius: 0;
 
         .filter-bar-btn {
@@ -33,9 +32,6 @@
             border-top: none;
             border-radius: 0 0 10px 10px;
         }
-
-        .filter-bar-dropdown {
-        }
     }
 
     .filter-bar-text {
@@ -48,4 +44,5 @@
 .input {
     background-color: var(--secondary-color);
     border: none;
+    color: var(--text-primary-color);
 }

@@ -9,14 +9,17 @@
                 data-bs-toggle="dropdown" aria-expanded="false">
             Filters
         </button>
-        <ul class="dropdown-menu filter-bar-dropdown">
+        <ul class="dropdown-menu dropdown-menu-end filter-bar-dropdown">
             <li><a class="dropdown-item-header" href="#">FILTER BY</a></li>
-            @if(isShip){
+            @if (isShip)
+            {
                 <li><a class="dropdown-item" href="#">Ship Name</a></li>
                 <li><a class="dropdown-item" href="#">Pier</a></li>
                 <li><a class="dropdown-item" href="#">Arrival</a></li>
                 <li><a class="dropdown-item" href="#">Departure</a></li>
-            }else{
+            }
+            else
+            {
                 <li><a class="dropdown-item" href="#">Worker Name</a></li>
                 <li><a class="dropdown-item" href="#">Ruolo</a></li>
                 <li><a class="dropdown-item" href="#">Licence</a></li>
@@ -25,9 +28,8 @@
         </ul>
     </div>
 
-    @* Barra “FILTER BY” disabilitata*@
-    <div class="filter-bar-input ms-3">
+    <div class="filter-bar-input ms-1">
         <i class="fa-solid fa-filter"></i>
-        <input type="text" class="input" disabled placeholder="FILTER BY" />
+        <input type="text" class="input" placeholder="FILTER BY" />
     </div>
 </div>
