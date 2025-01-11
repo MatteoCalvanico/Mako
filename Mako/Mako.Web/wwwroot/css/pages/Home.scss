@@ -1,0 +1,42 @@
+﻿@import "../site.variables.scss";
+
+.custom-btn {
+    white-space: nowrap;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    margin-top: 10%;
+    padding: 8px;
+}
+
+.custom-title {
+    font-size: 3rem; 
+    font-weight: bold; 
+    margin-bottom: 20px
+}
+
+.custom-card-text {
+    font-size: 1.25rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.custom-card-title {
+    font-size: 2rem; 
+    font-weight: bold; 
+}
+
+/*
+.custom-card-height {
+    height: 250px;
+}*/
+
+.card {
+    border-radius: 40px;
+    border: none;
+    background-color: var(---secondary-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    color: var(--text-primary-color);
+}

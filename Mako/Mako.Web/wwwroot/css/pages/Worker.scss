@@ -1,0 +1,104 @@
+﻿@import "../site.variables.scss";
+
+header {
+    background-color: var(--secondary-color);
+
+    h1 {
+        color: var(--title-color);
+    }
+}
+
+h2 {
+    margin-left: 10px;
+}
+
+main {
+    padding-bottom: 80px; // Avoid that the dock hides some part
+}
+
+.modal-content {
+    background-color: var(---secondary-color);
+    color: var(--text-primary-color);
+
+    .btn-close {
+        color: var(--text-primary-color);
+        background-color: transparent;
+        border: none;
+    }
+}
+
+.shiftLi {
+    list-style-type: none;
+    background-color: var(--tertiary-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.startedMsg {
+    color: var(--accent-color);
+}
+
+.date-input {
+    background-color: var(--accent-color);
+    color: var(--text-primary-color);
+    border:none
+}
+
+.btn-sm {
+    width: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: var(--accent-color);
+    border:none
+}
+
+.text-white::placeholder {
+    color: white !important;
+}
+
+.placeholder-white::placeholder {
+    color: white !important;
+    opacity: 1; /* Ensures the color is visible */
+}
+
+#requestInput {
+    background-color: #E2E2E2;
+}
+
+#darkMode {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+}
+
+#lightMode {
+    background-color: ghostwhite;
+    color: black;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+}
+
+/* Form boxes styling */
+.modal-body .form-control,
+.modal-body .form-select {
+    background-color: var(---primary-color);
+    color: var(--text-primary-color);
+}
+
+.modal-body .form-control::placeholder,
+.modal-body .form-select::placeholder {
+    color: var(--text-primary-color);
+    opacity: 1;
+}
+
+.modal-body .form-label {
+    color: var(--text-primary-color);
+}

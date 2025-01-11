@@ -1,0 +1,24 @@
+﻿// Import bootstrap to be able to customize it with scss variables
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+@import "site.layout.scss";
+
+// TODO: find a better way to compile all this garbage into one single file (global patterns don't work by default for some reason)
+// IMPORT SECTION FOR PAGES
+@import "./pages/Login.scss";
+@import "./pages/Home.scss";
+@import "./pages/Worker.scss";
+@import "./pages/Shifts.scss";
+@import "./pages/Requests.scss";
+@import "./pages/Ships.scss";
+
+// IMPORT SECTION FOR COMPONENTS
+@import "./components/Navbar.scss";
+@import "./components/FilterBar.scss";
+@import "./components/Dock.scss";
+
+// SCSS section for base layout
+body {
+    background-color: var(--primary-color);
+    color: var(--text-primary-color);
+}
