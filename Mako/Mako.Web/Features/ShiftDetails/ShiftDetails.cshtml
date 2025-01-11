@@ -18,4 +18,28 @@ else
     <p>Pier: @Model.ShipViewModel.Pier</p>
     <p>Tempo Stimato: @Model.ShipViewModel.TimeEstimation</p>
     <p>Manifesto del Carico: @Model.ShipViewModel.CargoManifest</p>
+
+    <h2>Turni Associati</h2>
+    @if (Model.ShiftViewModel.Any())
+    {
+        <ul>
+            @foreach (var shift in Model.ShiftViewModel)
+            {
+                <li>
+                    <p>Pier: @shift.Pier</p>
+                    <p>Data: @shift.Date</p>
+                    <p>Ora di Inizio: @shift.StartHour</p>
+                    <p>Ora di Fine: @shift.EndHour</p>
+					@foreach (var worker in shift.Workers)
+					{
+						<p>Nome: @worker.Cf</p>
+					}
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Nessun turno associato a questa nave.</p>
+    }
 }
