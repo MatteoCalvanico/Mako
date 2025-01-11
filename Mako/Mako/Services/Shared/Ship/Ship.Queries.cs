@@ -46,7 +46,6 @@ namespace Mako.Services.Shared
 
     public partial class SharedService
     {
-
         public async Task<ShipSelectDTO> SelectShipsQuery(ShipsSelectQuery query)
         {
             var shipsQuery = _dbContext.Ships.AsQueryable();
@@ -58,7 +57,8 @@ namespace Mako.Services.Shared
 
             if (query.CurrentShipDateArrival.HasValue)
             {
-                shipsQuery = shipsQuery.Where(s => s.DateArrival == query.CurrentShipDateArrival.Value);
+                var truncatedDateArrival = query.CurrentShipDateArrival.Value.Date; // Truncate time part of the date to match the database
+                shipsQuery = shipsQuery.Where(s => s.DateArrival.Date == truncatedDateArrival);
             }
 
             var ships = await shipsQuery.Select(s => new ShipSelectDTO.Ship
