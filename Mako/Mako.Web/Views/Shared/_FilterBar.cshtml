@@ -5,7 +5,7 @@
 }
 
 <div class="filter-bar d-flex align-items-center shadow-sm">
-    <form method="get" asp-action="Index" class="d-flex" w-100>
+    <form method="get" asp-action="Index" class="d-flex w-100">
         <div class="dropdown me-2">
             <button class="btn btn-secondary dropdown-toggle filter-bar-btn px-4"
                     type="button"
@@ -30,9 +30,9 @@
             </ul>
         </div>
 
-        <div class="filter-bar-input ms-1">
+        <div class="filter-bar-input ms-1 flex-grow-1">
             <i class="fa-solid fa-filter"></i>
-            <input type="text" class="input" placeholder="FILTER BY" name="searchTerm" />
+            <input type="text" class="input w-100" placeholder="FILTER BY" name="searchTerm" />
         </div>
     </form>
 </div>
