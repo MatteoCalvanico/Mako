@@ -5,14 +5,14 @@
 }
 
 <div class="filter-bar d-flex align-items-center shadow-sm">
-    <form method="get" asp-action="Index" class="d-flex">
-        <div class="dropdown">
+    <form method="get" asp-action="Index" class="d-flex" w-100>
+        <div class="dropdown me-2">
             <button class="btn btn-secondary dropdown-toggle filter-bar-btn px-4"
                     type="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                 Filters
             </button>
-            <ul class="dropdown-menu dropdown-menu-end filter-bar-dropdown">
+            <ul class="dropdown-menu">
                 @if (isShip)
                 {
                     <li><button type="submit" name="filterType" value="ShipName" class="dropdown-item">Ship Name</button></li>
