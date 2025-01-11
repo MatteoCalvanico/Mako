@@ -1,11 +1,13 @@
-﻿@{
-    bool isShip = true; // if false show worker filters, if true show ship filters
+﻿@model bool
+
+@{
+    bool isShip = Model; // Dynamically set by the parent view
 }
 
 <div class="filter-bar d-flex align-items-center shadow-sm">
     <form method="get" asp-action="Index" class="d-flex">
-        <div class="dropdown px-3">
-            <button class="btn btn-secondary dropdown-toggle filter-bar-btn"
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle filter-bar-btn px-4"
                     type="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                 Filters
@@ -20,10 +22,10 @@
                 }
                 else
                 {
-                    <li><a class="dropdown-item" href="#">Worker Name</a></li>
-                    <li><a class="dropdown-item" href="#">Ruolo</a></li>
-                    <li><a class="dropdown-item" href="#">Licence</a></li>
-                    <li><a class="dropdown-item" href="#">Certification</a></li>
+                    <li><button type="submit" name="filterType" value="WorkerName" class="dropdown-item">Name</button></li>
+                    <li><button type="submit" name="filterType" value="Role" class="dropdown-item">Role</button></li>
+                    <li><button type="submit" name="filterType" value="Licence" class="dropdown-item">Licence</button></li>
+                    <li><button type="submit" name="filterType" value="Certification" class="dropdown-item">Certification</button></li>
                 }
             </ul>
         </div>
