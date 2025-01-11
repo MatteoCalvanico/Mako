@@ -1,4 +1,4 @@
-﻿@model Mako.Web.Features.ShiftDetails.ShiftDetailsViewModel
+﻿@model Mako.Web.Features.ShiftDetails.CombinedViewModel
 
 @{
     ViewData["Title"] = "Shift Details";
@@ -12,10 +12,10 @@
 else
 {
     <h1>Dettagli della Nave</h1>
-    <p>Nome: @Model.Name</p>
-    <p>Data di Arrivo: @Model.DateArrival</p>
-    <p>Data di Partenza: @Model.DateDeparture</p>
-    <p>Pier: @Model.Pier</p>
-    <p>Tempo Stimato: @Model.TimeEstimation</p>
-    <p>Manifesto del Carico: @Model.CargoManifest</p>
+    <p>Nome: @Model.ShipViewModel.Name</p>
+    <p>Data di Arrivo: @Model.ShipViewModel.DateArrival</p>
+    <p>Data di Partenza: @Model.ShipViewModel.DateDeparture</p>
+    <p>Pier: @Model.ShipViewModel.Pier</p>
+    <p>Tempo Stimato: @Model.ShipViewModel.TimeEstimation</p>
+    <p>Manifesto del Carico: @Model.ShipViewModel.CargoManifest</p>
 }

@@ -3,6 +3,7 @@ using Mako.Web.Areas;
 using Mako.Web.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,16 +19,25 @@ namespace Mako.Web.Features.ShiftDetails
 
         public virtual async Task<IActionResult> Index(string shipName, DateTime shipDateArrival)
         {
-            var shipDetails = await GetShipDetailsById(shipName, shipDateArrival);
-            if (shipDetails == null)
+            var model = new CombinedViewModel
+            {
+                ShipViewModel = await GetShipDetailsById(shipName, shipDateArrival),
+                ShiftViewModel = await GetShiftsDetailsByShip(shipName, shipDateArrival)
+            };
+
+            if (model.ShipViewModel == null)
             {
                 Alerts.AddError(this, "Ship not found.");
                 return RedirectToAction("Index", "Shifts");
+            } else if (model.ShiftViewModel == null)
+            {
+                Alerts.AddError(this, "Shift not found.");
             }
-            return View("ShiftDetails", shipDetails);
+
+            return View("ShiftDetails", model);
         }
 
-        private async Task<ShiftDetailsViewModel> GetShipDetailsById(string shipName, DateTime shipDateArrival)
+        private async Task<ShipClickedDetailsViewModel> GetShipDetailsById(string shipName, DateTime shipDateArrival)
         {
             var shipSelectDTO = await _sharedService.SelectShipsQuery(new ShipsSelectQuery { CurrentShipName = shipName, CurrentShipDateArrival = shipDateArrival });
             var ship = shipSelectDTO.Ships.FirstOrDefault();
@@ -37,7 +47,7 @@ namespace Mako.Web.Features.ShiftDetails
                 return null;
             }
 
-            return new ShiftDetailsViewModel
+            return new ShipClickedDetailsViewModel
             {
                 Name = ship.Name,
                 DateArrival = ship.DateArrival,
@@ -46,6 +56,11 @@ namespace Mako.Web.Features.ShiftDetails
                 TimeEstimation = ship.TimeEstimation,
                 CargoManifest = ship.CargoManifest
             };
+        }
+
+        private async Task<List<ShiftDetailsViewModel>> GetShiftsDetailsByShip(string shipName, DateTime shipDateArrival)
+        {
+            return null;
         }
     }
 }
