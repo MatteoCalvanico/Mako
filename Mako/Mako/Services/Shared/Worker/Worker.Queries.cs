@@ -44,6 +44,29 @@ namespace Mako.Services.Shared
         public List<string> Licences { get; set; }
     }
 
+    public class WorkersComplexQuery
+    {
+        public string Filter { get; set; }
+    }
+
+    public class WorkersComplexDTO
+    {
+        public IEnumerable<WorkerDTO> Workers { get; set; }
+        public int Count { get; set; }
+
+        public class WorkerDTO
+        {
+            public string Cf { get; set; }
+            public string Name { get; set; }
+            public string Surname { get; set; }
+
+            //liste per ruoli, certificati e licenze
+            public List<string> Roles { get; set; }
+            public List<string> Certificates { get; set; }
+            public List<string> Licences { get; set; }
+        }
+    }
+
 
     public partial class SharedService
     {
@@ -93,36 +116,7 @@ namespace Mako.Services.Shared
                 })
                 .FirstOrDefaultAsync();
         }
-    }
 
-
-
-    public class WorkersComplexQuery
-    {
-        public string Filter { get; set; }
-    }
-
-    public class WorkersComplexDTO
-    {
-        public IEnumerable<WorkerDTO> Workers { get; set; }
-        public int Count { get; set; }
-
-        public class WorkerDTO
-        {
-            public string Cf { get; set; }
-            public string Name { get; set; }
-            public string Surname { get; set; }
-
-            //liste per ruoli, certificati e licenze
-            public List<string> Roles { get; set; }
-            public List<string> Certificates { get; set; }
-            public List<string> Licences { get; set; }
-        }
-    }
-
-
-        public partial class SharedService
-    {
         public async Task<WorkersComplexDTO> SelectWorkersComplex(WorkersComplexQuery qry)
         {
             // Step 1: Retrieve all workers based on the filter
