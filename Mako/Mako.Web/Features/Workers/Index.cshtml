@@ -6,33 +6,39 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10 col-lg-7 col-sm-10">
+        <div class="col-12">
             @if (Model.Workers.Any())
             {
+                <div class="d-flex justify-content-center mt-4">
+                    @Html.Partial("_FilterBar", false) <!-- For workers, pass false in place of true -->
+                </div>
+
+                <!-- Row container for multiple worker cards -->
                 <div class="row">
                     @foreach (var worker in Model.Workers)
                     {
-                        <div class="card card-custom mt-5 shadow">
-                            <div class="card-body">
-                                
-                                <div class="overlay-card px-2 py-1 d-none d-md-block">
-                                    @string.Join(", ", worker.Licences)
-                                </div>
-                                <div class="overlay-card px-2 py-1 d-block d-md-none text-center">
-                                    @string.Join(", ",worker.Licences)
-                                </div>
+                        <!-- Make each card take half the row on md+ devices -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card card-custom mt-5 shadow">
+                                <div class="card-body">
+                                    <div class="overlay-card px-2 py-1 d-none d-md-block">
+                                        @string.Join(", ", worker.Licences)
+                                    </div>
+                                    <div class="overlay-card px-2 py-1 d-block d-md-none text-center">
+                                        @string.Join(", ", worker.Licences)
+                                    </div>
 
-                                <!-- Titolo principale -->
-                                <h5 class="card-title fs-3">
-                                    <b>@worker.Name @worker.Surname</b>
-                                </h5>
+                                    <h5 class="card-title fs-3">
+                                        <b>@worker.Name @worker.Surname</b>
+                                    </h5>
 
-                                <div class="d-flex justify-content-between">
-                                    <p class="card-text fs-5 mb-0">
-                                        <strong class="fs-4">Roles:</strong> @string.Join(", ", worker.Roles)<br />
-                                        <strong>Certificates:</strong> @string.Join(", ", worker.Certificates)<br />
-                                        <strong>Licences:</strong> @string.Join(", ", worker.Licences)
-                                    </p>
+                                    <div class="d-flex justify-content-between">
+                                        <p class="card-text fs-5 mb-0">
+                                            <strong class="fs-4">Roles:</strong> @string.Join(", ", worker.Roles)<br />
+                                            <strong>Certificates:</strong> @string.Join(", ", worker.Certificates)<br />
+                                            <strong>Licences:</strong> @string.Join(", ", worker.Licences)
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

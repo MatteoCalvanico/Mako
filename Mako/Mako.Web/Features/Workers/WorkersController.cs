@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Mako.Services.Shared;
-using Mako.Web.Areas;
-using Mako.Web.Features.Workers;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.StaticFiles;
+using Mako.Services.Shared;
+using Mako.Web.Areas;
 
 namespace Mako.Web.Features.Workers
 {
@@ -19,10 +16,56 @@ namespace Mako.Web.Features.Workers
             _sharedService = sharedService;
         }
 
-        public virtual async Task<IActionResult> Index()
+        [HttpGet]
+        public virtual async Task<IActionResult> Index(string searchTerm = null, string filterType = null)
         {
-            // Recupera il ViewModel completo (lista di WorkerViewModel)
             var workersViewModel = await GetAllWorkers();
+
+            // Basic filtering logic example:
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                switch (filterType)
+                {
+                    case "Name":
+                        workersViewModel.Workers = workersViewModel.Workers
+                            .Where(w => (w.Name + " " + w.Surname)
+                            .Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                            .ToList();
+                        break;
+
+                    case "Ruolo":
+                        workersViewModel.Workers = workersViewModel.Workers
+                            .Where(w => w.Roles.Any(r => r.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
+                            .ToList();
+                        break;
+
+                    case "Licence":
+                        workersViewModel.Workers = workersViewModel.Workers
+                            .Where(w => w.Licences.Any(l => l.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
+                            .ToList();
+                        break;
+
+                    case "Certification":
+                        workersViewModel.Workers = workersViewModel.Workers
+                            .Where(w => w.Certificates.Any(c => c.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
+                            .ToList();
+                        break;
+
+                    default:
+                        // Fallback: match name, roles, certificates, or licences
+                        workersViewModel.Workers = workersViewModel.Workers
+                            .Where(w =>
+                                (w.Name + " " + w.Surname)
+                                .Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                                || w.Roles.Any(r => r.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                                || w.Certificates.Any(c => c.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                                || w.Licences.Any(l => l.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                            )
+                            .ToList();
+                        break;
+                }
+            }
+
             return View("Index", workersViewModel);
         }
 
@@ -37,10 +80,8 @@ namespace Mako.Web.Features.Workers
                     Filter = ""
                 };
 
-                // Richiamiamo il tuo metodo in Worker.Queries.cs
-                // che fa la catena di join e ritorna roles, cert, licence.
                 var workersDTO = await _sharedService.SelectWorkersComplex(query);
-                // Mappiamo i DTO in WorkerViewModel
+
                 viewModel.Workers = workersDTO.Workers
                     .Select(w => new WorkerViewModel
                     {

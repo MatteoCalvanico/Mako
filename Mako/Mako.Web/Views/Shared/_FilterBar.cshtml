@@ -1,0 +1,38 @@
+﻿@model bool
+
+@{
+    bool isShip = Model; // Dynamically set by the parent view
+}
+
+<div class="filter-bar d-flex align-items-center shadow-sm">
+    <form method="get" asp-action="Index" class="d-flex">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle filter-bar-btn px-4"
+                    type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                Filters
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end filter-bar-dropdown">
+                @if (isShip)
+                {
+                    <li><button type="submit" name="filterType" value="ShipName" class="dropdown-item">Ship Name</button></li>
+                    <li><button type="submit" name="filterType" value="Pier" class="dropdown-item">Pier</button></li>
+                    <li><button type="submit" name="filterType" value="Arrival" class="dropdown-item">Arrival</button></li>
+                    <li><button type="submit" name="filterType" value="Departure" class="dropdown-item">Departure</button></li>
+                }
+                else
+                {
+                    <li><button type="submit" name="filterType" value="WorkerName" class="dropdown-item">Name</button></li>
+                    <li><button type="submit" name="filterType" value="Role" class="dropdown-item">Role</button></li>
+                    <li><button type="submit" name="filterType" value="Licence" class="dropdown-item">Licence</button></li>
+                    <li><button type="submit" name="filterType" value="Certification" class="dropdown-item">Certification</button></li>
+                }
+            </ul>
+        </div>
+
+        <div class="filter-bar-input ms-1">
+            <i class="fa-solid fa-filter"></i>
+            <input type="text" class="input" placeholder="FILTER BY" name="searchTerm" />
+        </div>
+    </form>
+</div>

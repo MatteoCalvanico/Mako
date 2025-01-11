@@ -1,26 +1,22 @@
-﻿@import "../site.variables.scss";
+﻿.filter-bar {
+    background-color: var(--secondary-color);
+    border-radius: 10px;
 
-.filter-bar {
-    background-color: $secondary_light; // colore della barra
-    border-radius: 5px;
+    @media (min-width: 992px) { // Large screens breakpoint
+        width: 50%;
+    }
 
     .dropdown {
-        position: relative;
-        // border: solid 2px $accent_light;
-        border: none;
         border-radius: 0;
+        position: relative; /* Ensure the dropdown positioning is relative to the parent */
 
         .filter-bar-btn {
-            background-color: $secondary_light; // colore del bottone dell’hamburger
-            color: black; // colore del testo nel bottone
-            // border: none;
+            background-color: var(--secondary-color); /* Button background color */
+            color: var(--text-primary-color); /* Button text color */
+            border: none;
             font-weight: 500;
-            
-            border: 2px solid $secondary_light;
-            border-bottom:none;
             border-radius: 10px 0px 0px 10px;
-
-            padding: 0.5rem 1rem;
+            font-size: 1.1rem; /* Slightly larger text */
 
             &:focus,
             &:active {
@@ -30,27 +26,35 @@
         }
 
         .dropdown-menu {
-            margin-top: 0;
-            background-color: $secondary_light;
-            border:  2px solid $accent_light;
-            border-top:none;
+            background-color: var(--secondary-color);
+            border-top: none;
             border-radius: 0 0 10px 10px;
-            // margin-top: -2px;
-            // border-radius: 0 0 10px 10px;
-        }
-
-        .filter-bar-dropdown {
+            width: 100%; /* Set the dropdown menu width to match the button */
+            left: 0; /* Align the dropdown menu to the left */
+            right: 0; /* Ensure the dropdown menu takes the full width */
         }
     }
 
     .filter-bar-text {
-        color: grey; // colore del testo “FILTER BY”
+        color: grey; /* “FILTER BY” text color */
         font-weight: 500;
         font-size: 1rem;
     }
-}
 
-.input{
-    background-color: $secondary_light;
-    border: none;
+    .filter-bar-input {
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+
+        i {
+            margin-right: 0.5rem;
+        }
+
+        .input {
+            background-color: var(--secondary-color);
+            border: none;
+            color: var(--text-primary-color);
+            flex-grow: 1;
+        }
+    }
 }
