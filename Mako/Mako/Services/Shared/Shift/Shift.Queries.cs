@@ -103,5 +103,26 @@ namespace Mako.Services.Shared
                 Count = shifts.Count
             };
         }
+
+        public async Task<List<ShiftDetailDTO>> GetShiftsByShipAsync(string shipName, DateTime shipDateArrival)
+        {
+            return await _dbContext.Shifts
+                .Where(s => s.ShipName == shipName && s.ShipDateArrival.Date == shipDateArrival.Date)
+                .Select(s => new ShiftDetailDTO
+                {
+                    Id = s.Id,
+                    Pier = s.Pier,
+                    Date = s.Date,
+                    StartHour = s.StartHour,
+                    EndHour = s.EndHour,
+                    Workers = string.Join(", ", _dbContext.ShiftWorker
+                        .Where(sw => sw.ShiftId == s.Id)
+                        .Select(sw => sw.WorkerCf)
+                        .ToList()), //TODO: Add join with Worker table
+                    ShipName = s.ShipName,
+                    ShipDateArrival = s.ShipDateArrival
+                })
+                .ToListAsync();
+        }
     }
 }

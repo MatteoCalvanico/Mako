@@ -60,7 +60,18 @@ namespace Mako.Web.Features.ShiftDetails
 
         private async Task<List<ShiftDetailsViewModel>> GetShiftsDetailsByShip(string shipName, DateTime shipDateArrival)
         {
-            return null;
+            var shifts = await _sharedService.GetShiftsByShipAsync(shipName, shipDateArrival);
+            return shifts.Select(s => new ShiftDetailsViewModel
+            {
+                Id = s.Id,
+                Pier = s.Pier,
+                Date = s.Date,
+                StartHour = s.StartHour,
+                EndHour = s.EndHour,
+                ShipName = s.ShipName,
+                ShipDateArrival = s.ShipDateArrival,
+                Workers = s.Workers.Split(',').Select(w => new Worker { Cf = w.Trim() }).ToList()
+            }).ToList();
         }
     }
 }

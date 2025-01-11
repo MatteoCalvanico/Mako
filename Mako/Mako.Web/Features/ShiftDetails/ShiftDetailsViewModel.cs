@@ -21,7 +21,7 @@ namespace Mako.Web.Features.ShiftDetails
         public TimeOnly EndHour { get; set; }
         public string ShipName { get; set; }
         public DateTime ShipDateArrival { get; set; }
-        public List<Worker> workers { get; set; }
+        public List<Worker> Workers { get; set; }
     }
 
     public class ShipClickedDetailsViewModel
