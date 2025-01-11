@@ -1,0 +1,21 @@
+﻿@model Mako.Web.Features.ShiftDetails.ShiftDetailsViewModel
+
+@{
+    ViewData["Title"] = "Shift Details";
+}
+
+@if (Model == null)
+{
+    <h1>Ship not found</h1>
+    <p>The ship you are looking for does not exist or has been removed.</p>
+}
+else
+{
+    <h1>Dettagli della Nave</h1>
+    <p>Nome: @Model.Name</p>
+    <p>Data di Arrivo: @Model.DateArrival</p>
+    <p>Data di Partenza: @Model.DateDeparture</p>
+    <p>Pier: @Model.Pier</p>
+    <p>Tempo Stimato: @Model.TimeEstimation</p>
+    <p>Manifesto del Carico: @Model.CargoManifest</p>
+}

@@ -1,7 +1,7 @@
 ﻿@model Mako.Web.Features.Shifts.ShiftsViewModel
 
 @{
-    ViewData["Title"] = "Ships";
+    ViewData["Title"] = "Shift";
 }
 
 <div class="container">
@@ -12,7 +12,7 @@
                 <div class="row">
                     @foreach (var ship in Model.Ships)
                     {
-                        <div class="card card-custom mt-4 shadow">
+                        <div class="card card-custom mt-4 shadow" onclick="location.href='@Url.Action("Index", "ShiftDetails", new { shipName = ship.Name, shipDateArrival = ship.DateArrival })'">
                             <div class="card-body">
                                 <div class="overlay-card px-2 py-1">
                                     @if (ship.DateArrival > DateTime.Now)
@@ -32,7 +32,7 @@
                                         Arrival: @ship.DateArrival.ToShortDateString() <br />
                                         Departure: @ship.DateDeparture.ToShortDateString()
                                     </p>
-                                    <a href="#" class="card-link mb-1">Cargo Manifest</a>
+                                    <a href="@Url.Action("Index", "ShiftDetails", new { shipName = ship.Name, shipDateArrival = ship.DateArrival })" class="card-link mb-1">Cargo Manifest</a>
                                 </div>
                             </div>
                         </div>
