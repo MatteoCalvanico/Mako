@@ -4,42 +4,64 @@
     ViewData["Title"] = "Shift Details";
 }
 
-@if (Model == null)
-{
-    <h1>Ship not found</h1>
-    <p>The ship you are looking for does not exist or has been removed.</p>
-}
-else
-{
-    <h1>Dettagli della Nave</h1>
-    <p>Nome: @Model.ShipViewModel.Name</p>
-    <p>Data di Arrivo: @Model.ShipViewModel.DateArrival</p>
-    <p>Data di Partenza: @Model.ShipViewModel.DateDeparture</p>
-    <p>Pier: @Model.ShipViewModel.Pier</p>
-    <p>Tempo Stimato: @Model.ShipViewModel.TimeEstimation</p>
-    <p>Manifesto del Carico: @Model.ShipViewModel.CargoManifest</p>
-
-    <h2>Turni Associati</h2>
-    @if (Model.ShiftViewModel.Any())
-    {
-        <ul>
-            @foreach (var shift in Model.ShiftViewModel)
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-7 col-sm-10">
+            @if (Model == null)
             {
-                <li>
-                    <p>Pier: @shift.Pier</p>
-                    <p>Data: @shift.Date</p>
-                    <p>Ora di Inizio: @shift.StartHour</p>
-                    <p>Ora di Fine: @shift.EndHour</p>
-					@foreach (var worker in shift.Workers)
-					{
-						<p>Nome: @worker.Cf</p>
-					}
-                </li>
+                <h1>Ship not found</h1>
+                <p>The ship you are looking for does not exist or has been removed.</p>
             }
-        </ul>
-    }
-    else
-    {
-        <p>Nessun turno associato a questa nave.</p>
-    }
-}
+            else
+            {
+                <div class="row">
+                    <!-- Left column: Ship details -->
+                    <div class="col-md-6">
+                        <div class="card card-custom mt-4 shadow">
+                            <div class="card-body">
+                                <h2 class="fs-4 mb-3">Dettagli della Nave</h2>
+                                <p><strong>Nome:</strong> @Model.ShipViewModel.Name</p>
+                                <p><strong>Data di Arrivo:</strong> @Model.ShipViewModel.DateArrival</p>
+                                <p><strong>Data di Partenza:</strong> @Model.ShipViewModel.DateDeparture</p>
+                                <p><strong>Pier:</strong> @Model.ShipViewModel.Pier</p>
+                                <p><strong>Tempo Stimato:</strong> @Model.ShipViewModel.TimeEstimation</p>
+                                <p><strong>Manifesto del Carico:</strong> @Model.ShipViewModel.CargoManifest</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right column: Associated shifts -->
+                    <div class="col-md-6">
+                        <div class="card card-custom mt-4 shadow">
+                            <div class="card-body">
+                                <h2 class="fs-4 mb-3">Turni Associati</h2>
+                                @if (Model.ShiftViewModel.Any())
+                                {
+                                    <ul class="list-group list-group-flush">
+                                        @foreach (var shift in Model.ShiftViewModel)
+                                        {
+                                            <li class="list-group-item">
+                                                <p><strong>Pier:</strong> @shift.Pier</p>
+                                                <p><strong>Data:</strong> @shift.Date</p>
+                                                <p><strong>Ora di Inizio:</strong> @shift.StartHour</p>
+                                                <p><strong>Ora di Fine:</strong> @shift.EndHour</p>
+                                                @foreach (var worker in shift.Workers)
+                                                {
+                                                    <p><strong>Nome Lavoratore:</strong> @worker.Cf</p>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p>Nessun turno associato a questa nave.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
