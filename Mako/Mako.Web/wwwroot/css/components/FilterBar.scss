@@ -4,6 +4,10 @@
     background-color: var(--secondary-color); // colore della barra
     border-radius: 10px;
 
+    @media (min-width: 992px) { // Large screens breakpoint
+        width: 50%;
+    }
+
     .dropdown {
         position: relative;
         border-radius: 0;

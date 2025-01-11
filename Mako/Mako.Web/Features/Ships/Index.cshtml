@@ -10,9 +10,11 @@
         <div class="col-12">
             @if (Model.Ships.Any())
             {
-                <div class="mt-4">
-                @Html.Partial("_FilterBar")
+                <div class="d-flex justify-content-center mt-4">
+                    @Html.Partial("_FilterBar")
                 </div>
+
+                <div class="row">
                     @foreach (var ship in Model.Ships)
                     {
                         var overlayClass = ship.DateArrival > DateTime.Now ? "overlay-card px-2 py-1 d-none d-md-block bg-warning" : "overlay-card px-2 py-1 d-md-block bg-danger text-white";
@@ -41,6 +43,7 @@
                             </div>
                         </div>
                     }
+                </div>
             }
             else
             {
