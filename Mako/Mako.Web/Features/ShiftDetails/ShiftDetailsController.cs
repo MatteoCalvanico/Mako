@@ -128,5 +128,33 @@ namespace Mako.Web.Features.ShiftDetails
                 .ThenBy(s => s.Date) // Secondary sort by actual date
                 .ToList();
         }
+
+        [HttpPost]
+        public virtual async Task<IActionResult> AddWorkerToShift(Guid shiftId, List<string> workerCfs)
+        {
+            if (shiftId == Guid.Empty || workerCfs == null || !workerCfs.Any())
+            {
+                return BadRequest("Invalid shift ID or worker CF.");
+            }
+
+            try
+            {
+                foreach (var cf in workerCfs)
+                {
+                    var command = new AddOrUpdateShiftWorkerCommand
+                    {
+                        ShiftId = shiftId,
+                        WorkerCf = cf
+                    };
+
+                    await _sharedService.Handle(command);
+                }
+                return RedirectToAction("ShiftDetails");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }

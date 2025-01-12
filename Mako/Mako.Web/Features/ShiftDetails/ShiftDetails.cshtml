@@ -141,7 +141,6 @@
 <!-- Worker Selection Modal -->
 <div class="modal fade" id="workerSelectionModal" tabindex="-1" aria-labelledby="workerSelectionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <!-- Changed from modal-xl to modal-lg -->
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="workerSelectionModalLabel">Select Workers</h5>
@@ -154,15 +153,19 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="addSelectedWorkers">Add Selected Workers</button>
+                <form asp-action="AddWorkerToShift" method="post" id="addWorkersForm">
+                    <input type="hidden" name="shiftId" id="shiftIdInput" />
+                    <div id="selectedWorkersContainer"></div>
+                    <button type="submit" class="btn btn-primary">Add Selected Workers</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-<script>
-            document.addEventListener('DOMContentLoaded', function() {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             // Initialize Bootstrap modal
             const workerModal = new bootstrap.Modal(document.getElementById('workerSelectionModal'));
             let currentShiftId = null;
@@ -342,10 +345,14 @@
                 }
             }
 
+                    
             function addWorkersToShift(selectedWorkers) {
                 const workersGrid = document.querySelector(`[data-shift-id="${currentShiftId}"]`)
-                    .closest('.shift-item')
-                    .querySelector('.workers-grid');
+                        .closest('.shift-item')
+                        .querySelector('.workers-grid');
+
+                const selectedWorkersContainer = document.getElementById('selectedWorkersContainer');
+                selectedWorkersContainer.innerHTML = ''; // Clear previous selections
 
                 selectedWorkers.forEach(card => {
                     const name = card.querySelector('.card-title').textContent.trim();
@@ -354,6 +361,13 @@
                     if (!workersGrid.querySelector(`[data-worker-cf="${cf}"]`)) {
                         const workerItem = createWorkerItem(name, cf);
                         workersGrid.insertBefore(workerItem, workersGrid.querySelector('.add-worker-container'));
+
+                        // Add hidden input to form
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'workerCfs';
+                        input.value = cf;
+                        selectedWorkersContainer.appendChild(input);
                     }
                 });
 
@@ -381,5 +395,5 @@
                 return workerItem;
             }
         });
-</script>
+    </script>
 }
