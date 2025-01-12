@@ -5,63 +5,381 @@
 }
 
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10 col-lg-7 col-sm-10">
-            @if (Model == null)
+    <div class="d-flex justify-content-center mt-4">
+        @Html.Partial("_FilterBar", true)
+    </div>
+    <div class="row">
+        <!-- Left column: Ship Card (same as Shifts view) -->
+        <div class="col-md-4">
+            @if (Model?.ShipViewModel != null)
             {
-                <h1>Ship not found</h1>
-                <p>The ship you are looking for does not exist or has been removed.</p>
-            }
-            else
-            {
-                <div class="row">
-                    <!-- Left column: Ship details -->
-                    <div class="col-md-6">
-                        <div class="card card-custom mt-4 shadow">
-                            <div class="card-body">
-                                <h2 class="fs-4 mb-3">Dettagli della Nave</h2>
-                                <p><strong>Nome:</strong> @Model.ShipViewModel.Name</p>
-                                <p><strong>Data di Arrivo:</strong> @Model.ShipViewModel.DateArrival</p>
-                                <p><strong>Data di Partenza:</strong> @Model.ShipViewModel.DateDeparture</p>
-                                <p><strong>Pier:</strong> @Model.ShipViewModel.Pier</p>
-                                <p><strong>Tempo Stimato:</strong> @Model.ShipViewModel.TimeEstimation</p>
-                                <p><strong>Manifesto del Carico:</strong> @Model.ShipViewModel.CargoManifest</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right column: Associated shifts -->
-                    <div class="col-md-6">
-                        <div class="card card-custom mt-4 shadow">
-                            <div class="card-body">
-                                <h2 class="fs-4 mb-3">Turni Associati</h2>
-                                @if (Model.ShiftViewModel.Any())
-                                {
-                                    <ul class="list-group list-group-flush">
-                                        @foreach (var shift in Model.ShiftViewModel)
-                                        {
-                                            <li class="list-group-item">
-                                                <p><strong>Pier:</strong> @shift.Pier</p>
-                                                <p><strong>Data:</strong> @shift.Date</p>
-                                                <p><strong>Ora di Inizio:</strong> @shift.StartHour</p>
-                                                <p><strong>Ora di Fine:</strong> @shift.EndHour</p>
-                                                @foreach (var worker in shift.Workers)
-                                                {
-                                                    <p><strong>Nome Lavoratore:</strong> @worker.Cf</p>
-                                                }
-                                            </li>
-                                        }
-                                    </ul>
-                                }
-                                else
-                                {
-                                    <p>Nessun turno associato a questa nave.</p>
-                                }
-                            </div>
+                <div class="card card-custom mt-4 shadow">
+                    <div class="card-body">
+                        <h5 class="card-title fs-3"><b>@Model.ShipViewModel.Name</b> - <i>Time estimation: @(Math.Round(Model.ShipViewModel.TimeEstimation.TotalHours, 1)) hr</i></h5>
+                        <div class="d-flex justify-content-between">
+                            <p class="card-text fs-5 mb-0">
+                                <strong class="fs-4">Pier @Model.ShipViewModel.Pier</strong><br />
+                                Arrival: @Model.ShipViewModel.DateArrival.ToShortDateString() <br />
+                                Departure: @Model.ShipViewModel.DateDeparture.ToShortDateString()
+                            </p>
+                            <a href="#" class="card-link mb-1">Cargo Manifest</a>
                         </div>
                     </div>
                 </div>
             }
         </div>
+
+        <!-- Right column: Shifts Details -->
+        <div class="col-md-8">
+            <div class="card card-custom mt-4 shadow">
+                <div class="card-body">
+                    <p class="fs-2 mb-3 text-center fw-bold">@Model.ShipViewModel.Name - Shifts</p>
+                    @if (Model?.ShiftViewModel != null && Model.ShiftViewModel.Any())
+                    {
+                        <div class="shifts-list">
+                            @foreach (var shift in Model.ShiftViewModel)
+                            {
+                                <div class="shift-item mb-3 p-3 border rounded">
+                                    <div class="d-flex justify-content-between align-items-center mb-2 fs-4">
+                                        @{
+                                            var shiftDateTime = shift.Date.ToDateTime(TimeOnly.MinValue);
+                                            var daysUntil = (shiftDateTime - DateTime.UtcNow.Date).Days;
+                                            string dayText = daysUntil switch
+                                            {
+                                                0 => "Today",
+                                                1 => "Tomorrow",
+                                                _ => $"In {daysUntil} days"
+                                            };
+                                        }
+                                        <span>
+                                            <strong>@dayText</strong>
+                                            <i class="shift-time" data-shift-id="@shift.Id">
+                                                @shift.StartHour.ToString("HH:mm") - @shift.EndHour.ToString("HH:mm")
+                                            </i>
+                                        </span>
+                                        <span class="fs-4"><strong>Pier:</strong> @shift.Pier</span>
+                                    </div>
+
+                                    <!-- Workers section -->
+                                    <div class="mt-2">
+                                        <div class="d-flex align-items-start">
+                                            <!-- Workers section with conditional add button -->
+                                            <div class="workers-section flex-grow-1">
+                                                <strong class="fs-5">Workers</strong>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    @if (shift.Workers != null && shift.Workers.Any())
+                                                    {
+                                                        <div class="workers-grid">
+                                                            @foreach (var worker in shift.Workers)
+                                                            {
+                                                                <div class="worker-item text-center position-relative" data-shift-id="@shift.Id" data-worker-cf="@worker.Cf">
+                                                                    <div class="delete-icon">
+                                                                        <i class="fas fa-times"></i>
+                                                                    </div>
+                                                                    <img class="rounded-circle worker-avatar mb-2"
+                                                                         src="https://www.gravatar.com/avatar/@(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(worker.Cf)).ToLower())?s=40&d=identicon"
+                                                                         alt="@worker.Name @worker.Surname"
+                                                                         width="40"
+                                                                         height="40" />
+                                                                    <div class="worker-name">@worker.Name @worker.Surname</div>
+                                                                </div>
+                                                            }
+                                                            <!-- Add worker button that shows in edit mode -->
+                                                            <div class="add-worker-container d-none">
+                                                                <button class="btn btn-sm btn-outline-primary add-worker" data-shift-id="@shift.Id">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="mt-2 me-2">No workers assigned</p>
+                                                        <!-- Add worker button that shows in edit mode -->
+                                                        <div class="add-worker-container d-none">
+                                                            <button class="btn btn-sm btn-outline-primary add-worker" data-shift-id="@shift.Id">
+                                                                <i class="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Toggle switch at bottom right -->
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input shift-toggle"
+                                                   type="checkbox"
+                                                   id="shift-toggle-@shift.Id"
+                                                   data-shift-id="@shift.Id">
+                                            <label class="form-check-label" for="shift-toggle-@shift.Id">Edit</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No shifts assigned to this ship.</p>
+                    }
+
+                    <div class="text-center mt-4">
+                        <a href="@Url.Action("Create", "ShiftDetails", new { shipName = Model?.ShipViewModel.Name, shipDateArrival = Model?.ShipViewModel.DateArrival })"
+                           class="btn btn-primary add-shifts-button">
+                            Add Shifts
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Worker Selection Modal -->
+<!-- Worker Selection Modal -->
+<div class="modal fade" id="workerSelectionModal" tabindex="-1" aria-labelledby="workerSelectionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <!-- Changed from modal-xl to modal-lg -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="workerSelectionModalLabel">Select Workers</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Workers List -->
+                <div class="workers-selection-list">
+                    <!-- Workers will be dynamically inserted here -->
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary" id="addSelectedWorkers">Add Selected Workers</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+            document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Bootstrap modal
+            const workerModal = new bootstrap.Modal(document.getElementById('workerSelectionModal'));
+            let currentShiftId = null;
+
+            // Initialize all event listeners
+            initializeToggleSwitches();
+            initializeTimeEditing();
+            initializeWorkerHandling();
+            initializeModalHandling();
+
+            function initializeToggleSwitches() {
+                document.querySelectorAll('.shift-toggle').forEach(toggle => {
+                    toggle.addEventListener('change', function() {
+                        const shiftItem = this.closest('.shift-item');
+                        const addWorkerContainer = shiftItem.querySelector('.add-worker-container');
+
+                        if (this.checked) {
+                            shiftItem.classList.add('edit-mode');
+                            if (addWorkerContainer) {
+                                addWorkerContainer.classList.remove('d-none');
+                            }
+                        } else {
+                            shiftItem.classList.remove('edit-mode');
+                            if (addWorkerContainer) {
+                                addWorkerContainer.classList.add('d-none');
+                            }
+                            resetTimePicker(shiftItem);
+                        }
+                    });
+                });
+            }
+
+            // Time Editing Functionality
+            function initializeTimeEditing() {
+                document.querySelectorAll('.shift-time').forEach(timeElement => {
+                    timeElement.addEventListener('click', function() {
+                        const shiftItem = this.closest('.shift-item');
+                        if (!shiftItem.classList.contains('edit-mode')) return;
+
+                        if (!this.querySelector('.time-picker-container')) {
+                            createTimePicker(this);
+                        }
+                    });
+                });
+            }
+
+            function createTimePicker(timeElement) {
+                const currentTimes = timeElement.textContent.trim().match(/(\d{2}:\d{2}) - (\d{2}:\d{2})/);
+                if (!currentTimes) return;
+
+                const [_, startTime, endTime] = currentTimes;
+                timeElement.innerHTML = `
+                    <div class="time-picker-container">
+                        <input type="time" class="time-picker start-time" value="${startTime}">
+                        <span> - </span>
+                        <input type="time" class="time-picker end-time" value="${endTime}">
+                    </div>
+                `;
+
+                const inputs = timeElement.querySelectorAll('input[type="time"]');
+                inputs.forEach(input => {
+                    input.addEventListener('keypress', e => {
+                        if (e.key === 'Enter') saveTimeChanges(timeElement);
+                    });
+                    input.addEventListener('blur', () => {
+                        setTimeout(() => {
+                            if (!timeElement.contains(document.activeElement)) {
+                                saveTimeChanges(timeElement);
+                            }
+                        }, 100);
+                    });
+                });
+            }
+
+            function saveTimeChanges(timeElement) {
+                const startTime = timeElement.querySelector('.start-time')?.value;
+                const endTime = timeElement.querySelector('.end-time')?.value;
+
+                if (startTime && endTime) {
+                    timeElement.innerHTML = `${startTime} - ${endTime}`;
+                    toastr.success('Time updated successfully');
+                }
+            }
+
+            function resetTimePicker(shiftItem) {
+                const timeElement = shiftItem.querySelector('.shift-time');
+                if (timeElement?.querySelector('.time-picker-container')) {
+                    const startTime = timeElement.querySelector('.start-time').value;
+                    const endTime = timeElement.querySelector('.end-time').value;
+                    timeElement.innerHTML = `${startTime} - ${endTime}`;
+                }
+            }
+
+            // Worker Handling Functionality
+            function initializeWorkerHandling() {
+                // Worker deletion
+                document.addEventListener('click', function(e) {
+                    if (e.target.closest('.delete-icon')) {
+                        handleWorkerDeletion(e);
+                    } else if (e.target.closest('.add-worker')) {
+                        handleAddWorkerClick(e);
+                    }
+                });
+            }
+
+            function handleWorkerDeletion(e) {
+                e.stopPropagation();
+                const workerItem = e.target.closest('.worker-item');
+                const shiftItem = workerItem.closest('.shift-item');
+
+                if (!shiftItem.classList.contains('edit-mode')) return;
+
+                if (confirm('Are you sure you want to remove this worker from the shift?')) {
+                    workerItem.remove();
+                    updateWorkersGrid(shiftItem);
+                    toastr.success('Worker removed from shift');
+                }
+            }
+
+            function handleAddWorkerClick(e) {
+                const button = e.target.closest('.add-worker');
+                const shiftItem = button.closest('.shift-item');
+
+                if (!shiftItem.classList.contains('edit-mode')) return;
+
+                currentShiftId = button.dataset.shiftId;
+                loadWorkers();
+                workerModal.show();
+            }
+
+            function updateWorkersGrid(shiftItem) {
+                const workersGrid = shiftItem.querySelector('.workers-grid');
+                const remainingWorkers = workersGrid.querySelectorAll('.worker-item').length;
+
+                if (remainingWorkers === 0) {
+                    const addWorkerContainer = workersGrid.querySelector('.add-worker-container');
+                    workersGrid.innerHTML = '<p class="mt-2 me-2">No workers assigned</p>';
+                    workersGrid.appendChild(addWorkerContainer);
+                }
+            }
+
+            // Modal Handling Functionality
+            function initializeModalHandling() {
+                document.getElementById('addSelectedWorkers')?.addEventListener('click', () => {
+                    const selectedWorkers = document.querySelectorAll('.worker-selectable.selected');
+                    addWorkersToShift(selectedWorkers);
+                    workerModal.hide();
+                });
+            }
+
+            async function loadWorkers() {
+                try {
+                    const response = await fetch('/Workers/Index');
+                    const data = await response.text();
+
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = data;
+
+                    const workersList = document.querySelector('.workers-selection-list');
+                    workersList.innerHTML = '';
+
+                    tempDiv.querySelectorAll('.card-custom').forEach(card => {
+                        const listItem = document.createElement('div');
+                        listItem.className = 'worker-list-item mb-2';
+                        card.classList.add('worker-selectable');
+                        card.setAttribute('role', 'button');
+
+                        card.addEventListener('click', () => card.classList.toggle('selected'));
+
+                        listItem.appendChild(card);
+                        workersList.appendChild(listItem);
+                    });
+                } catch (error) {
+                    console.error('Error loading workers:', error);
+                    toastr.error('Error loading workers');
+                }
+            }
+
+            function addWorkersToShift(selectedWorkers) {
+                const workersGrid = document.querySelector(`[data-shift-id="${currentShiftId}"]`)
+                    .closest('.shift-item')
+                    .querySelector('.workers-grid');
+
+                selectedWorkers.forEach(card => {
+                    const name = card.querySelector('.card-title').textContent.trim();
+                    const cf = card.dataset.cf;
+
+                    if (!workersGrid.querySelector(`[data-worker-cf="${cf}"]`)) {
+                        const workerItem = createWorkerItem(name, cf);
+                        workersGrid.insertBefore(workerItem, workersGrid.querySelector('.add-worker-container'));
+                    }
+                });
+
+                toastr.success('Workers added successfully');
+            }
+
+            function createWorkerItem(name, cf) {
+                const workerItem = document.createElement('div');
+                workerItem.className = 'worker-item text-center position-relative';
+                workerItem.dataset.shiftId = currentShiftId;
+                workerItem.dataset.workerCf = cf;
+
+                workerItem.innerHTML = `
+                    <div class="delete-icon">
+                        <i class="fas fa-times"></i>
+                    </div>
+                    <img class="rounded-circle worker-avatar mb-2"
+                         src="https://www.gravatar.com/avatar/${btoa(cf).toLowerCase()}?s=40&d=identicon"
+                         alt="${name}"
+                         width="40"
+                         height="40" />
+                    <div class="worker-name">${name}</div>
+                `;
+
+                return workerItem;
+            }
+        });
+</script>
+}

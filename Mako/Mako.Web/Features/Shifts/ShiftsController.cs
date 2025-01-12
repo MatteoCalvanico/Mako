@@ -19,7 +19,7 @@ namespace Mako.Web.Features.Shifts
             _sharedService = sharedService;
         }
 
-        public virtual async Task<IActionResult> Index()
+        public virtual async Task<IActionResult> Index(string filterType, string searchTerm)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId != null)
@@ -34,6 +34,20 @@ namespace Mako.Web.Features.Shifts
             try
             {
                 var shiftsViewModel = await GetAllShiftsAndShips();
+
+                // Apply filters if they exist
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    shiftsViewModel.Ships = filterType?.ToLower() switch
+                    {
+                        "shipname" => shiftsViewModel.Ships.Where(s => s.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList(),
+                        "pier" => shiftsViewModel.Ships.Where(s => s.Pier.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList(),
+                        "arrival" => shiftsViewModel.Ships.Where(s => s.DateArrival.ToString("d").Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList(),
+                        "departure" => shiftsViewModel.Ships.Where(s => s.DateDeparture.ToString("d").Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList(),
+                        _ => shiftsViewModel.Ships
+                    };
+                }
+
                 return View("Shifts", shiftsViewModel);
             }
             catch (Exception ex)

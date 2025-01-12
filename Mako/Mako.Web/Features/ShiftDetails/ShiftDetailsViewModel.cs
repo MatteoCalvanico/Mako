@@ -1,5 +1,4 @@
 ﻿using Mako.Services.Shared;
-using Mako.Web.Areas.Worker.Models;
 using System;
 using System.Collections.Generic;
 
