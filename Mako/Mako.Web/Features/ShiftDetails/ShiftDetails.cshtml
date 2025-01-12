@@ -278,7 +278,6 @@
 
                 if (startTime && endTime) {
                     timeElement.innerHTML = `${startTime} - ${endTime}`;
-                    toastr.success('Time updated successfully');
                 }
             }
 
@@ -315,7 +314,6 @@
 
                 workerItem.remove();
                 updateWorkersGrid(shiftItem);
-                toastr.success('Worker removed from shift');
             }
 
             function handleAddWorkerClick(e) {
@@ -407,7 +405,6 @@
                     console.error('Error loading workers:', error);
                     const workersList = document.querySelector('.workers-selection-list');
                     workersList.innerHTML = '<div class="alert alert-danger">Error loading workers. Please try again.</div>';
-                    toastr.error('Error loading workers');
                 }
             }
 
@@ -418,7 +415,6 @@
                 const workerCfs = Array.from(selectedWorkers).map(worker => worker.dataset.cf);
 
                 if (workerCfs.length === 0) {
-                    toastr.warning('Please select at least one worker');
                     return;
                 }
 
@@ -444,11 +440,8 @@
 
                     // Close the modal
                     workerModal.hide();
-
-                    toastr.success('Workers added successfully');
                 } catch (error) {
                     console.error('Error:', error);
-                    toastr.error('Error adding workers to shift');
                 }
             }
 
