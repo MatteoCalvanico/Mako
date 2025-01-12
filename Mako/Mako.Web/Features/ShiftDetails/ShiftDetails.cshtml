@@ -281,15 +281,23 @@
             }
 
             function handleAddWorkerClick(e) {
-                const button = e.target.closest('.add-worker');
-                const shiftItem = button.closest('.shift-item');
+            const button = e.target.closest('.add-worker');
+            const shiftItem = button.closest('.shift-item');
 
-                if (!shiftItem.classList.contains('edit-mode')) return;
+            if (!shiftItem.classList.contains('edit-mode')) return;
 
-                currentShiftId = button.dataset.shiftId;
-                loadWorkers();
-                workerModal.show();
-            }
+            currentShiftId = button.dataset.shiftId;
+
+            // Clear the modal content before showing
+            const workersList = document.querySelector('.workers-selection-list');
+            workersList.innerHTML = '';
+
+            // Show modal first so the loading appears in the modal
+            workerModal.show();
+
+            // Then load the workers
+            loadWorkers();
+        }
 
             function updateWorkersGrid(shiftItem) {
                 const workersGrid = shiftItem.querySelector('.workers-grid');
@@ -314,32 +322,64 @@
                 });
             }
 
-            async function loadWorkers() {
+            function createWorkerCard(worker) {
+                const listItem = document.createElement('div');
+                listItem.className = 'worker-list-item mb-2';
+
+                const card = document.createElement('div');
+                card.className = 'card card-custom worker-selectable';
+                card.setAttribute('role', 'button');
+                card.dataset.cf = worker.cf;
+
+                card.innerHTML = `
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <img class="rounded-circle me-3"
+                                 src="https://www.gravatar.com/avatar/${btoa(worker.cf).toLowerCase()}?s=40&d=identicon"
+                                 alt="${worker.name} ${worker.surname}"
+                                 width="40"
+                                 height="40" />
+                            <h5 class="card-title mb-0">${worker.name} ${worker.surname}</h5>
+                        </div>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => card.classList.toggle('selected'));
+
+                listItem.appendChild(card);
+                return listItem;
+                }
+
+                            async function loadWorkers() {
                 try {
-                    const response = await fetch('/Workers/Index');
-                    const data = await response.text();
-
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = data;
-
                     const workersList = document.querySelector('.workers-selection-list');
+
+                    // Show loading state
+                    workersList.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+
+                    const response = await fetch(`/api/workers/free/${currentShiftId}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const workers = await response.json();
+
                     workersList.innerHTML = '';
 
-                    tempDiv.querySelectorAll('.card-custom').forEach(card => {
-                        const listItem = document.createElement('div');
-                        listItem.className = 'worker-list-item mb-2';
-                        card.classList.add('worker-selectable');
-                        card.setAttribute('role', 'button');
+                    if (workers.length === 0) {
+                        workersList.innerHTML = '<div class="alert alert-info">No available workers found for this time slot.</div>';
+                        return;
+                    }
 
-                        card.addEventListener('click', () => card.classList.toggle('selected'));
-
-                        listItem.appendChild(card);
-                        workersList.appendChild(listItem);
+                    workers.forEach(worker => {
+                        const workerCard = createWorkerCard(worker);
+                        workersList.appendChild(workerCard);
                     });
                 } catch (error) {
                     console.error('Error loading workers:', error);
+                    const workersList = document.querySelector('.workers-selection-list');
+                    workersList.innerHTML = '<div class="alert alert-danger">Error loading workers. Please try again.</div>';
                     toastr.error('Error loading workers');
-                }
+            }
             }
 
             function addWorkersToShift(selectedWorkers) {

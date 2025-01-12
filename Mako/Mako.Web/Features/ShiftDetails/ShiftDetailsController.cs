@@ -128,5 +128,12 @@ namespace Mako.Web.Features.ShiftDetails
                 .ThenBy(s => s.Date) // Secondary sort by actual date
                 .ToList();
         }
+
+        [HttpGet("api/workers/free/{shiftId}")]
+        public virtual async Task<IActionResult> GetFreeWorkers(Guid shiftId)
+        {
+            var freeWorkers = await _sharedService.GetFreeWorkersForShiftAsync(shiftId);
+            return Ok(freeWorkers);
+        }
     }
 }
