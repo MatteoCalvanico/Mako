@@ -156,5 +156,12 @@ namespace Mako.Web.Features.ShiftDetails
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet("api/workers/free/{shiftId}")]
+        public virtual async Task<IActionResult> GetFreeWorkers(Guid shiftId)
+        {
+            var freeWorkers = await _sharedService.GetFreeWorkersForShiftAsync(shiftId);
+            return Ok(freeWorkers);
+        }
     }
 }

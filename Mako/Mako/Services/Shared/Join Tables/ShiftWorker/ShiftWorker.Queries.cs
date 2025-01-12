@@ -115,6 +115,45 @@ namespace Mako.Services.Shared
                 await _dbContext.SaveChangesAsync();
             }
         }
+
+        public async Task<List<Worker>> GetFreeWorkersForShiftAsync(Guid shiftId)
+        {
+            // Get the shift details
+            var shift = await _dbContext.Shifts
+                .FirstOrDefaultAsync(s => s.Id == shiftId);
+
+            if (shift == null)
+                return new List<Worker>();
+
+            // Get all workers that are already assigned to this shift
+            var workersInCurrentShift = await _dbContext.ShiftWorker
+                .Where(sw => sw.ShiftId == shiftId)
+                .Select(sw => sw.WorkerCf)
+                .ToListAsync();
+
+            // Get all workers that are assigned to other shifts on the same date with overlapping times
+            var busyWorkerCfs = await _dbContext.Shifts
+                .Where(s => s.Date == shift.Date && s.Id != shiftId) // Exclude current shift
+                .Where(s =>
+                    (s.StartHour <= shift.EndHour && s.EndHour >= shift.StartHour) // Overlapping time check
+                )
+                .Join(_dbContext.ShiftWorker,
+                    s => s.Id,
+                    sw => sw.ShiftId,
+                    (s, sw) => sw.WorkerCf)
+                .Distinct()
+                .ToListAsync();
+
+            // Combine both lists of unavailable workers
+            var unavailableWorkerCfs = workersInCurrentShift.Union(busyWorkerCfs).Distinct();
+
+            // Get all workers that are not in either list
+            var freeWorkers = await _dbContext.Workers
+                .Where(w => !unavailableWorkerCfs.Contains(w.Cf))
+                .ToListAsync();
+
+            return freeWorkers;
+        }
     }
 }
 
