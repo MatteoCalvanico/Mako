@@ -17,17 +17,48 @@
                 <div class="row">
                     @foreach (var worker in Model.Workers)
                     {
+                            var expiredLicences = worker.Licences
+                                .Where(l => l.ExpiryDate < DateOnly.FromDateTime(DateTime.Now))
+                                .Select(l => l.Type)
+                                .ToList();
+
+                            var expiringLicences = worker.Licences
+                                .Where(l => l.ExpiryDate >= DateOnly.FromDateTime(DateTime.Now) && l.ExpiryDate <= DateOnly.FromDateTime(DateTime.Now.AddDays(7)))
+                                .Select(l => l.Type)
+                                .ToList();
+
+                            string overlayClass = null;
+                            string overlayClassMobile = null;
+                            string licenceStatus = null;
+
+                            if (worker.Licences.Any())
+                            {
+                                if (expiredLicences.Any())
+                                {
+                                    overlayClass = "overlay-card px-2 py-1 d-none d-md-block bg-danger text-white";
+                                    overlayClassMobile = "overlay-card px-2 py-1 d-block d-md-none text-center bg-danger text-white";
+                                    licenceStatus = "Licence expired";
+                                }
+                                else if (expiringLicences.Any())
+                                {
+                                    overlayClass = "overlay-card px-2 py-1 d-none d-md-block bg-warning";
+                                    overlayClassMobile = "overlay-card px-2 py-1 d-block d-md-none text-center bg-warning";
+                                    licenceStatus = $"Licences expiring: {string.Join(", ", expiringLicences)}";
+                                }
+                            }
                         <!-- Make each card take half the row on md+ devices -->
                         <div class="col-md-6 mb-4">
-                            <div class="card card-custom mt-5 shadow">
+                            <div class="card card-custom mt-5 shadow mx-4">
                                 <div class="card-body">
-                                    <div class="overlay-card px-2 py-1 d-none d-md-block">
-                                        <strong>Licences expiring:</strong> @string.Join(", ", worker.Licences.Where(l => l.ExpiryDate <= DateOnly.FromDateTime(DateTime.Now.AddDays(30))).Select(l => l.Type))
-                                    </div>
-                                    <div class="overlay-card px-2 py-1 d-block d-md-none text-center">
-                                        <strong>Licences expiring:</strong> @string.Join(", ", worker.Licences.Where(l => l.ExpiryDate <= DateOnly.FromDateTime(DateTime.Now.AddDays(30))).Select(l => l.Type))
-                                    </div>
-
+                                    @if (licenceStatus != null)
+                                    {
+                                        <div class="@overlayClass">
+                                            @licenceStatus
+                                        </div>
+                                        <div class="@overlayClassMobile">
+                                            @licenceStatus
+                                        </div>
+                                    }
                                     <h5 class="card-title fs-3">
                                         <b>@worker.Name @worker.Surname</b>
                                     </h5>
@@ -35,8 +66,52 @@
                                     <div class="d-flex justify-content-between">
                                         <p class="card-text fs-5 mb-0">
                                             <strong class="fs-4">Roles:</strong> @string.Join(", ", worker.Roles)<br />
-                                            <strong>Certificates:</strong> @string.Join(", ", worker.Certificates.Select(c => c.Type))<br />
-                                            <strong>Licences:</strong> @string.Join(", ", worker.Licences.Select(l => l.Type))
+                                            <strong>Certificates:</strong>
+                                            @{
+                                                var displayedCertificates = worker.Certificates.Take(5).ToList();
+                                                foreach (var cert in displayedCertificates)
+                                                {
+                                                    @cert.Type
+                                                    if (cert != displayedCertificates.Last())
+                                                    {
+                                                        @:,
+                                                    }
+                                                }
+                                                if (worker.Certificates.Count > 5)
+                                                {
+                                                    @:...
+                                                }
+                                            }<br />
+                                            <strong>Licences:</strong>
+                                            @{
+                                                if (worker.Licences.Any())
+                                                {
+                                                    var displayedLicences = worker.Licences.Take(5).ToList();
+                                                    foreach (var licence in displayedLicences)
+                                                    {
+                                                        var isExpired = licence.ExpiryDate < DateOnly.FromDateTime(DateTime.Now);
+                                                        if (isExpired)
+                                                        {
+                                                            <span>@licence.Type</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            @licence.Type
+                                                        }
+                                                        if (licence != displayedLicences.Last())
+                                                        {
+                                                            @:,
+                                                        }
+                                                    }
+                                                    if (worker.Licences.Count > 5)
+                                                    {
+                                                        @:...
+                                                    }
+                                                }else
+                                                {
+                                                    @:None
+                                                }
+                                            }
                                         </p>
                                     </div>
                                 </div>

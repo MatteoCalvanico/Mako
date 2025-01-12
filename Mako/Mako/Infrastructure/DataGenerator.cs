@@ -548,8 +548,8 @@ namespace Mako.Infrastructure
             context.JoinLicences.AddRange(
                 new JoinLicence { WorkerCf = worker1.Cf, LicenceId = licenceA.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 6))) },
                 new JoinLicence { WorkerCf = worker1.Cf, LicenceId = licenceA1.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
-                new JoinLicence { WorkerCf = worker1.Cf, LicenceId = licenceA2.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
-                new JoinLicence { WorkerCf = worker2.Cf, LicenceId = licenceNone.Id }
+                new JoinLicence { WorkerCf = worker1.Cf, LicenceId = licenceA2.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) }
+                // new JoinLicence { WorkerCf = worker2.Cf, LicenceId = licenceNone.Id }
             );
             context.SaveChanges();
         }
