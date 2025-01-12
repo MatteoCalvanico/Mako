@@ -70,13 +70,9 @@
                                                             @foreach (var worker in shift.Workers)
                                                             {
                                                                 <div class="worker-item text-center position-relative" data-shift-id="@shift.Id" data-worker-cf="@worker.Cf">
-                                                                    <form asp-action="RemoveWorkerFromShift" method="post">
-                                                                        <input type="hidden" name="shiftId" value="@shift.Id" />
-                                                                        <input type="hidden" name="workerCf" value="@worker.Cf" />
-                                                                        <button type="submit" class="delete-icon">
-                                                                            <i class="fas fa-times"></i>
-                                                                        </button>
-                                                                    </form>
+                                                                    <button type="button" class="delete-icon">
+                                                                        <i class="fas fa-times"></i>
+                                                                    </button>
                                                                     <img class="rounded-circle worker-avatar mb-2"
                                                                          src="https://www.gravatar.com/avatar/@(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(worker.Cf)).ToLower())?s=40&d=identicon"
                                                                          alt="@worker.Name @worker.Surname"
@@ -200,6 +196,25 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const antiforgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            if (antiforgeryToken) {
+                document.addEventListener('fetch', function(event) {
+                    if (event.request.method === 'POST') {
+                        const headers = new Headers(event.request.headers);
+                        headers.append('RequestVerificationToken', antiforgeryToken);
+                        event.request = new Request(event.request.url, {
+                            method: event.request.method,
+                            headers: headers,
+                            body: event.request.body,
+                            credentials: event.request.credentials,
+                            cache: event.request.cache,
+                            redirect: event.request.redirect,
+                            referrer: event.request.referrer,
+                            integrity: event.request.integrity
+                        });
+                    }
+            });
+            }
             // Initialize Bootstrap modal
             const workerModal = new bootstrap.Modal(document.getElementById('workerSelectionModal'));
             let currentShiftId = null;
@@ -305,15 +320,40 @@
                 addSelectedWorkersBtn.addEventListener('click', handleAddSelectedWorkers);
             }
 
-            function handleWorkerDeletion(e) {
-                e.stopPropagation();
-                const workerItem = e.target.closest('.worker-item');
-                const shiftItem = workerItem.closest('.shift-item');
+            async function handleWorkerDeletion(e) {
+            e.stopPropagation();
+            const workerItem = e.target.closest('.worker-item');
+            const shiftItem = workerItem.closest('.shift-item');
 
-                if (!shiftItem.classList.contains('edit-mode')) return;
+            if (!shiftItem.classList.contains('edit-mode')) return;
 
+            const shiftId = workerItem.dataset.shiftId;
+            const workerCf = workerItem.dataset.workerCf;
+
+            try {
+                const response = await fetch('/ShiftDetails/RemoveWorkerFromShift', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({
+                        shiftId: shiftId,
+                        workerCf: workerCf
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // If successful, remove the worker from UI
                 workerItem.remove();
                 updateWorkersGrid(shiftItem);
+
+            } catch (error) {
+                console.error('Error removing worker:', error);
+                }
             }
 
             function handleAddWorkerClick(e) {

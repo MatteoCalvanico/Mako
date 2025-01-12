@@ -219,16 +219,17 @@ namespace Mako.Web.Features.ShiftDetails
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> RemoveWorkerFromShift(Guid shiftId, string workerCf)
+        [ValidateAntiForgeryToken]
+        public virtual async Task<IActionResult> RemoveWorkerFromShift([FromBody] RemoveWorkerModel model)
         {
-            if (shiftId == Guid.Empty || string.IsNullOrEmpty(workerCf))
+            if (model.ShiftId == Guid.Empty || string.IsNullOrEmpty(model.WorkerCf))
             {
                 return BadRequest("Invalid shift ID or worker CF.");
             }
 
             try
             {
-                await _sharedService.RemoveShiftWorker(shiftId, workerCf);
+                await _sharedService.RemoveShiftWorker(model.ShiftId, model.WorkerCf);
                 return Json(new { success = true, message = "Worker removed successfully" });
             }
             catch (Exception ex)

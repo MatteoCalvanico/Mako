@@ -44,9 +44,9 @@ namespace Mako.Web.Features.ShiftDetails
         public DateTime ShipDateArrival { get; set; }
     }
 
-    public class WorkerToRemove
+    public class RemoveWorkerModel
     {
-        public Guid shiftId { get; set; }
-        public string workerCf { get; set; }
+        public Guid ShiftId { get; set; }
+        public string WorkerCf { get; set; }
     }
 }
