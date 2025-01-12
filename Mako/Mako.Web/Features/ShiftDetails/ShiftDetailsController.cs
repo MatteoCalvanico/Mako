@@ -217,5 +217,25 @@ namespace Mako.Web.Features.ShiftDetails
 
             return View("ShiftDetails", model);
         }
+
+        [HttpPost]
+        public virtual async Task<IActionResult> RemoveWorkerFromShift(Guid shiftId, string workerCf)
+        {
+            if (shiftId == Guid.Empty || string.IsNullOrEmpty(workerCf))
+            {
+                return BadRequest("Invalid shift ID or worker CF.");
+            }
+
+            try
+            {
+                await _sharedService.RemoveShiftWorker(shiftId, workerCf);
+                return Json(new { success = true, message = "Worker removed successfully" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, new { success = false, message = "An error occurred while removing the worker from the shift." });
+            }
+        }
     }
 }

@@ -5,9 +5,6 @@
 }
 
 <div class="container">
-    <div class="d-flex justify-content-center mt-4">
-        @Html.Partial("_FilterBar", true)
-    </div>
     <div class="row">
         <!-- Left column: Ship Card (same as Shifts view) -->
         <div class="col-md-4">
@@ -73,9 +70,13 @@
                                                             @foreach (var worker in shift.Workers)
                                                             {
                                                                 <div class="worker-item text-center position-relative" data-shift-id="@shift.Id" data-worker-cf="@worker.Cf">
-                                                                    <div class="delete-icon">
-                                                                        <i class="fas fa-times"></i>
-                                                                    </div>
+                                                                    <form asp-action="RemoveWorkerFromShift" method="post">
+                                                                        <input type="hidden" name="shiftId" value="@shift.Id" />
+                                                                        <input type="hidden" name="workerCf" value="@worker.Cf" />
+                                                                        <button type="submit" class="delete-icon">
+                                                                            <i class="fas fa-times"></i>
+                                                                        </button>
+                                                                    </form>
                                                                     <img class="rounded-circle worker-avatar mb-2"
                                                                          src="https://www.gravatar.com/avatar/@(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(worker.Cf)).ToLower())?s=40&d=identicon"
                                                                          alt="@worker.Name @worker.Surname"
@@ -277,7 +278,6 @@
 
                 if (startTime && endTime) {
                     timeElement.innerHTML = `${startTime} - ${endTime}`;
-                    toastr.success('Time updated successfully');
                 }
             }
 
@@ -314,7 +314,6 @@
 
                 workerItem.remove();
                 updateWorkersGrid(shiftItem);
-                toastr.success('Worker removed from shift');
             }
 
             function handleAddWorkerClick(e) {
@@ -446,7 +445,6 @@
                     console.error('Error loading workers:', error);
                     const workersList = document.querySelector('.workers-selection-list');
                     workersList.innerHTML = '<div class="alert alert-danger">Error loading workers. Please try again.</div>';
-                    toastr.error('Error loading workers');
                 }
             }
 
@@ -457,7 +455,6 @@
                 const workerCfs = Array.from(selectedWorkers).map(worker => worker.dataset.cf);
 
                 if (workerCfs.length === 0) {
-                    toastr.warning('Please select at least one worker');
                     return;
                 }
 
@@ -483,11 +480,8 @@
 
                     // Close the modal
                     workerModal.hide();
-
-                    toastr.success('Workers added successfully');
                 } catch (error) {
                     console.error('Error:', error);
-                    toastr.error('Error adding workers to shift');
                 }
             }
 
