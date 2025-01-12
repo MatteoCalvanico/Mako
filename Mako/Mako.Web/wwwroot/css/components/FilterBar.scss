@@ -17,6 +17,7 @@
             font-weight: 500;
             border-radius: 10px 0px 0px 10px;
             font-size: 1.1rem; /* Slightly larger text */
+            width: 150px;
 
             &:focus,
             &:active {
@@ -29,9 +30,10 @@
             background-color: var(--secondary-color);
             border-top: none;
             border-radius: 0 0 10px 10px;
-            width: 100%; /* Set the dropdown menu width to match the button */
-            left: 0; /* Align the dropdown menu to the left */
-            right: 0; /* Ensure the dropdown menu takes the full width */
+            width: auto; /* Set the dropdown menu width to match the button */
+            min-width: 110px; /* Set a minimum width 
+            left: auto; /* Align the dropdown menu to the left */
+            right: auto; /* Ensure the dropdown menu takes the full width */
         }
     }
 
@@ -57,8 +59,4 @@
             flex-grow: 1;
         }
     }
-}
-
-.cosutm-dropdown {
-    width: 150px;
 }
