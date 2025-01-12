@@ -173,68 +173,43 @@ namespace Mako.Services.Shared
                 .ToListAsync();
 
             // Step 3: Assemble the result
-            var resultList = (from worker in workers
-                              join wr in workerRoles on worker.Cf equals wr.WorkerCf into workerRolesGroup
-                              from wr in workerRolesGroup.DefaultIfEmpty()
-                              join role in roles on wr?.RoleId equals role.Id into rolesGroup
-                              from role in rolesGroup.DefaultIfEmpty()
-                              join jc in joinCertifications on worker.Cf equals jc.WorkerCf into joinCertificationsGroup
-                              from jc in joinCertificationsGroup.DefaultIfEmpty()
-                              join cert in certifications on jc?.CertificationId equals cert.Id into certificationsGroup
-                              from cert in certificationsGroup.DefaultIfEmpty()
-                              join jl in joinLicences on worker.Cf equals jl.WorkerCf into joinLicencesGroup
-                              from jl in joinLicencesGroup.DefaultIfEmpty()
-                              join licence in licences on jl?.LicenceId equals licence.Id into licencesGroup
-                              from licence in licencesGroup.DefaultIfEmpty()
-                              select new
-                              {
-                                  worker.Cf,
-                                  worker.Name,
-                                  worker.Surname,
-                                  RoleType = role?.Type,
-                                  CertType = cert?.Types,
-                                  CertExpireDate = jc?.ExpireDate,
-                                  LicenceType = licence?.Types,
-                                  LicenceExpireDate = jl?.ExpireDate
-                              }).ToList();
-
-            var grouped = resultList
-                .GroupBy(x => new { x.Cf, x.Name, x.Surname })
-                .Select(grp => new WorkersComplexDTO.WorkerDTO
-                {
-                    Cf = grp.Key.Cf,
-                    Name = grp.Key.Name,
-                    Surname = grp.Key.Surname,
-                    Roles = grp
-                        .Where(x => x.RoleType != null)
-                        .Select(x => x.RoleType.ToString())
-                        .Distinct()
-                        .ToList(),
-                    Certifications = grp
-                        .Where(x => x.CertType != null)
-                        .Select(x => new WorkersComplexDTO.CertificationDTO
-                        {
-                            Type = x.CertType.ToString(),
-                            ExpireDate = x.CertExpireDate ?? default
-                        })
-                        .Distinct()
-                        .ToList(),
-                    Licences = grp
-                        .Where(x => x.LicenceType != null)
-                        .Select(x => new WorkersComplexDTO.LicenceDTO
-                        {
-                            Type = x.LicenceType.ToString(),
-                            ExpireDate = x.LicenceExpireDate ?? default
-                        })
-                        .Distinct()
-                        .ToList()
-                })
-                .ToList();
+            var workerDTOs = workers.Select(worker => new WorkersComplexDTO.WorkerDTO
+            {
+                Cf = worker.Cf,
+                Name = worker.Name,
+                Surname = worker.Surname,
+                Roles = workerRoles
+                    .Where(wr => wr.WorkerCf == worker.Cf)
+                    .Select(wr => roles.FirstOrDefault(r => r.Id == wr.RoleId)?.Type.ToString())
+                    .Where(role => role != null)
+                    .Distinct()
+                    .ToList(),
+                Certifications = joinCertifications
+                    .Where(jc => jc.WorkerCf == worker.Cf)
+                    .Select(jc => new WorkersComplexDTO.CertificationDTO
+                    {
+                        Type = certifications.FirstOrDefault(c => c.Id == jc.CertificationId)?.Types.ToString(),
+                        ExpireDate = jc.ExpireDate
+                    })
+                    .Where(cert => cert.Type != null)
+                    .Distinct()
+                    .ToList(),
+                Licences = joinLicences
+                    .Where(jl => jl.WorkerCf == worker.Cf)
+                    .Select(jl => new WorkersComplexDTO.LicenceDTO
+                    {
+                        Type = licences.FirstOrDefault(l => l.Id == jl.LicenceId)?.Types.ToString(),
+                        ExpireDate = jl.ExpireDate
+                    })
+                    .Where(lic => lic.Type != null)
+                    .Distinct()
+                    .ToList()
+            }).ToList();
 
             return new WorkersComplexDTO
             {
-                Workers = grouped,
-                Count = grouped.Count
+                Workers = workerDTOs,
+                Count = workerDTOs.Count
             };
         }
     }
