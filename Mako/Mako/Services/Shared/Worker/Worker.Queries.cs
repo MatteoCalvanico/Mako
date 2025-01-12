@@ -10,7 +10,7 @@ namespace Mako.Services.Shared
     public class WorkersSelectQuery
     {
         public string IdCurrentWorker { get; set; }
-        public string Filter {  get; set; }
+        public string Filter { get; set; }
     }
 
     public class WorkersSelectDTO
@@ -31,7 +31,7 @@ namespace Mako.Services.Shared
 
     public class WorkersDetailQuery
     {
-        public string Cf {  get; set; }
+        public string Cf { get; set; }
     }
 
     public class WorkersDetailDTO
@@ -60,10 +60,22 @@ namespace Mako.Services.Shared
             public string Name { get; set; }
             public string Surname { get; set; }
 
-            //liste per ruoli, certificati e licenze
+            // Liste per ruoli, certificati e licenze
             public List<string> Roles { get; set; }
-            public List<string> Certificates { get; set; }
-            public List<string> Licences { get; set; }
+            public List<CertificationDTO> Certifications { get; set; }
+            public List<LicenceDTO> Licences { get; set; }
+        }
+
+        public class CertificationDTO
+        {
+            public string Type { get; set; }
+            public DateOnly ExpireDate { get; set; }
+        }
+
+        public class LicenceDTO
+        {
+            public string Type { get; set; }
+            public DateOnly ExpireDate { get; set; }
         }
     }
 
@@ -181,7 +193,9 @@ namespace Mako.Services.Shared
                                   worker.Surname,
                                   RoleType = role?.Type,
                                   CertType = cert?.Types,
-                                  LicenceType = licence?.Types
+                                  CertExpireDate = jc?.ExpireDate,
+                                  LicenceType = licence?.Types,
+                                  LicenceExpireDate = jl?.ExpireDate
                               }).ToList();
 
             var grouped = resultList
@@ -196,14 +210,22 @@ namespace Mako.Services.Shared
                         .Select(x => x.RoleType.ToString())
                         .Distinct()
                         .ToList(),
-                    Certificates = grp
+                    Certifications = grp
                         .Where(x => x.CertType != null)
-                        .Select(x => x.CertType.ToString())
+                        .Select(x => new WorkersComplexDTO.CertificationDTO
+                        {
+                            Type = x.CertType.ToString(),
+                            ExpireDate = x.CertExpireDate ?? default
+                        })
                         .Distinct()
                         .ToList(),
                     Licences = grp
                         .Where(x => x.LicenceType != null)
-                        .Select(x => x.LicenceType.ToString())
+                        .Select(x => new WorkersComplexDTO.LicenceDTO
+                        {
+                            Type = x.LicenceType.ToString(),
+                            ExpireDate = x.LicenceExpireDate ?? default
+                        })
                         .Distinct()
                         .ToList()
                 })

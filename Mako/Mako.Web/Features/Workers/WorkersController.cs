@@ -41,13 +41,13 @@ namespace Mako.Web.Features.Workers
 
                     case "Licence":
                         workersViewModel.Workers = workersViewModel.Workers
-                            .Where(w => w.Licences.Any(l => l.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
+                            .Where(w => w.Licences.Any(l => l.Type.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
                             .ToList();
                         break;
 
                     case "Certification":
                         workersViewModel.Workers = workersViewModel.Workers
-                            .Where(w => w.Certificates.Any(c => c.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
+                            .Where(w => w.Certificates.Any(c => c.Type.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
                             .ToList();
                         break;
 
@@ -58,8 +58,8 @@ namespace Mako.Web.Features.Workers
                                 (w.Name + " " + w.Surname)
                                 .Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
                                 || w.Roles.Any(r => r.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
-                                || w.Certificates.Any(c => c.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
-                                || w.Licences.Any(l => l.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                                || w.Certificates.Any(c => c.Type.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                                || w.Licences.Any(l => l.Type.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
                             )
                             .ToList();
                         break;
@@ -89,8 +89,16 @@ namespace Mako.Web.Features.Workers
                         Name = w.Name,
                         Surname = w.Surname,
                         Roles = w.Roles,
-                        Certificates = w.Certificates,
-                        Licences = w.Licences
+                        Certificates = w.Certifications.Select(c => new CustomLicenceCertificate
+                        {
+                            Type = c.Type,
+                            ExpiryDate = c.ExpireDate
+                        }).ToList(),
+                        Licences = w.Licences.Select(l => new CustomLicenceCertificate
+                        {
+                            Type = l.Type,
+                            ExpiryDate = l.ExpireDate
+                        }).ToList()
                     })
                     .ToList();
             }

@@ -22,10 +22,10 @@
                             <div class="card card-custom mt-5 shadow">
                                 <div class="card-body">
                                     <div class="overlay-card px-2 py-1 d-none d-md-block">
-                                        @string.Join(", ", worker.Licences)
+                                        <strong>Licences expiring:</strong> @string.Join(", ", worker.Licences.Where(l => l.ExpiryDate <= DateOnly.FromDateTime(DateTime.Now.AddDays(30))).Select(l => l.Type))
                                     </div>
                                     <div class="overlay-card px-2 py-1 d-block d-md-none text-center">
-                                        @string.Join(", ", worker.Licences)
+                                        <strong>Licences expiring:</strong> @string.Join(", ", worker.Licences.Where(l => l.ExpiryDate <= DateOnly.FromDateTime(DateTime.Now.AddDays(30))).Select(l => l.Type))
                                     </div>
 
                                     <h5 class="card-title fs-3">
@@ -35,8 +35,8 @@
                                     <div class="d-flex justify-content-between">
                                         <p class="card-text fs-5 mb-0">
                                             <strong class="fs-4">Roles:</strong> @string.Join(", ", worker.Roles)<br />
-                                            <strong>Certificates:</strong> @string.Join(", ", worker.Certificates)<br />
-                                            <strong>Licences:</strong> @string.Join(", ", worker.Licences)
+                                            <strong>Certificates:</strong> @string.Join(", ", worker.Certificates.Select(c => c.Type))<br />
+                                            <strong>Licences:</strong> @string.Join(", ", worker.Licences.Select(l => l.Type))
                                         </p>
                                     </div>
                                 </div>
