@@ -73,9 +73,13 @@
                                                             @foreach (var worker in shift.Workers)
                                                             {
                                                                 <div class="worker-item text-center position-relative" data-shift-id="@shift.Id" data-worker-cf="@worker.Cf">
-                                                                    <div class="delete-icon">
-                                                                        <i class="fas fa-times"></i>
-                                                                    </div>
+                                                                    <form asp-action="RemoveWorkerFromShift" method="post">
+																		<input type="hidden" name="shiftId" value="@shift.Id" />
+																		<input type="hidden" name="cf" value="@worker.Cf" />
+                                                                        <button class="delete-icon">
+                                                                            <i class="fas fa-times"></i>
+                                                                        </button>
+                                                                    </form>
                                                                     <img class="rounded-circle worker-avatar mb-2"
                                                                          src="https://www.gravatar.com/avatar/@(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(worker.Cf)).ToLower())?s=40&d=identicon"
                                                                          alt="@worker.Name @worker.Surname"
