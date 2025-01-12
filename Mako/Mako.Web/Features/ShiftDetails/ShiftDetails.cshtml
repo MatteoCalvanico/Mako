@@ -139,7 +139,6 @@
 </div>
 
 <!-- Worker Selection Modal -->
-<!-- Worker Selection Modal -->
 <div class="modal fade" id="workerSelectionModal" tabindex="-1" aria-labelledby="workerSelectionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <!-- Changed from modal-xl to modal-lg -->
@@ -276,11 +275,9 @@
 
                 if (!shiftItem.classList.contains('edit-mode')) return;
 
-                if (confirm('Are you sure you want to remove this worker from the shift?')) {
-                    workerItem.remove();
-                    updateWorkersGrid(shiftItem);
-                    toastr.success('Worker removed from shift');
-                }
+                workerItem.remove();
+                updateWorkersGrid(shiftItem);
+                toastr.success('Worker removed from shift');
             }
 
             function handleAddWorkerClick(e) {
@@ -305,12 +302,36 @@
                 }
             }
 
-            // Modal Handling Functionality
             function initializeModalHandling() {
-                document.getElementById('addSelectedWorkers')?.addEventListener('click', () => {
+                const addSelectedWorkersBtn = document.getElementById('addSelectedWorkers');
+                const modalElement = document.getElementById('workerSelectionModal');
+
+                addSelectedWorkersBtn?.addEventListener('click', () => {
                     const selectedWorkers = document.querySelectorAll('.worker-selectable.selected');
                     addWorkersToShift(selectedWorkers);
-                    workerModal.hide();
+
+                    // Clear selections
+                    selectedWorkers.forEach(worker => worker.classList.remove('selected'));
+
+                    // Close modal using Bootstrap's hide method
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    modalInstance?.hide();
+
+                    // If the above doesn't work, force remove modal classes and backdrop
+                    modalElement.classList.remove('show');
+                    modalElement.setAttribute('aria-hidden', 'true');
+                    modalElement.style.display = 'none';
+
+                    // Remove modal backdrop if it exists
+                    const backdrop = document.querySelector('.modal-backdrop');
+                    if (backdrop) {
+                        backdrop.remove();
+                    }
+
+                    // Remove modal-open class from body
+                    document.body.classList.remove('modal-open');
+                    document.body.style.overflow = '';
+                    document.body.style.paddingRight = '';
                 });
             }
 
