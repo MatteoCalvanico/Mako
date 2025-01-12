@@ -238,5 +238,44 @@ namespace Mako.Web.Features.ShiftDetails
                 return StatusCode(500, new { success = false, message = "An error occurred while removing the worker from the shift." });
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual async Task<IActionResult> UpdateShiftTime([FromBody] UpdateShiftTimeModel model)
+        {
+            if (model.ShiftId == Guid.Empty)
+            {
+                return BadRequest("Invalid shift ID.");
+            }
+
+            try
+            {
+                // Get the current shift first
+                var shift = await _sharedService.GetShiftByIdAsync(model.ShiftId);
+                if (shift == null)
+                {
+                    return NotFound("Shift not found.");
+                }
+
+                var command = new AddOrUpdateShiftCommand
+                {
+                    Id = model.ShiftId,
+                    Pier = shift.Pier,
+                    Date = shift.Date,
+                    StartHour = TimeOnly.Parse(model.StartTime),
+                    EndHour = TimeOnly.Parse(model.EndTime),
+                    ShipName = shift.ShipName,
+                    ShipDateArrival = shift.ShipDateArrival
+                };
+
+                await _sharedService.Handle(command);
+                return Json(new { success = true, message = "Shift time updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, new { success = false, message = "An error occurred while updating the shift time." });
+            }
+        }
     }
 }

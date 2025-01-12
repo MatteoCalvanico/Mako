@@ -575,6 +575,46 @@
 
                 return workerItem;
             }
+
+            async function saveTimeChanges(timeElement) {
+            const startTime = timeElement.querySelector('.start-time')?.value;
+            const endTime = timeElement.querySelector('.end-time')?.value;
+            const shiftId = timeElement.dataset.shiftId;
+
+            if (startTime && endTime) {
+                try {
+                    const response = await fetch('/ShiftDetails/UpdateShiftTime', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                        },
+                        body: JSON.stringify({
+                            shiftId: shiftId,
+                            startTime: startTime,
+                            endTime: endTime
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const result = await response.json();
+                    if (result.success) {
+                        // Update UI only after successful server update
+                        timeElement.innerHTML = `${startTime} - ${endTime}`;
+                    } else {
+                        throw new Error(result.message || 'Failed to update shift time');
+                    }
+                } catch (error) {
+                    console.error('Error updating shift time:', error);
+                    // Revert to original time if there's an error
+                    const originalTime = timeElement.textContent.trim();
+                    timeElement.innerHTML = originalTime;
+                }
+            }
+        }
         });
     </script>
 }

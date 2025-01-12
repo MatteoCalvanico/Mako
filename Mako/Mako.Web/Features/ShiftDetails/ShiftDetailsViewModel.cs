@@ -49,4 +49,11 @@ namespace Mako.Web.Features.ShiftDetails
         public Guid ShiftId { get; set; }
         public string WorkerCf { get; set; }
     }
+
+    public class UpdateShiftTimeModel
+    {
+        public Guid ShiftId { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
+    }
 }
