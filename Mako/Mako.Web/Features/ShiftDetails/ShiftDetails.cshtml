@@ -74,8 +74,8 @@
                                                             {
                                                                 <div class="worker-item text-center position-relative" data-shift-id="@shift.Id" data-worker-cf="@worker.Cf">
                                                                     <form asp-action="RemoveWorkerFromShift" method="post">
-																		<input type="hidden" name="shiftId" value="@shift.Id" />
-																		<input type="hidden" name="cf" value="@worker.Cf" />
+                                                                        <input type="hidden" name="shiftId" value="@shift.Id" />
+                                                                        <input type="hidden" name="workerCf" value="@worker.Cf" />
                                                                         <button class="delete-icon">
                                                                             <i class="fas fa-times"></i>
                                                                         </button>
