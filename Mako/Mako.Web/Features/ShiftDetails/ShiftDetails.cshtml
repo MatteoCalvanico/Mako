@@ -351,32 +351,72 @@
             }
 
             function createWorkerCard(worker) {
-                const listItem = document.createElement('div');
-                listItem.className = 'worker-list-item mb-2';
+            const listItem = document.createElement('div');
+            listItem.className = 'worker-list-item mb-2';
 
-                const card = document.createElement('div');
-                card.className = 'card card-custom worker-selectable';
-                card.setAttribute('role', 'button');
-                card.dataset.cf = worker.cf;
+            // Check for expired and expiring licenses
+            const now = new Date();
+            const expiredLicences = worker.licences?.filter(l => new Date(l.expiryDate) < now) || [];
+            const expiringLicences = worker.licences?.filter(l => {
+                const expDate = new Date(l.expiryDate);
+                return expDate >= now && expDate <= new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+            }) || [];
 
-                card.innerHTML = `
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <img class="rounded-circle me-3"
-                                 src="https://www.gravatar.com/avatar/${btoa(worker.cf).toLowerCase()}?s=40&d=identicon"
-                                 alt="${worker.name} ${worker.surname}"
-                                 width="40"
-                                 height="40" />
-                            <h5 class="card-title mb-0">${worker.name} ${worker.surname}</h5>
+            // Determine overlay class and status
+            let overlayClass = '';
+            let licenceStatus = '';
+            if (expiredLicences.length > 0) {
+                overlayClass = 'bg-danger text-white';
+                licenceStatus = 'Licence expired';
+            } else if (expiringLicences.length > 0) {
+                overlayClass = 'bg-warning';
+                licenceStatus = `Licences expiring: ${expiringLicences.map(l => l.type).join(', ')}`;
+            }
+
+            const card = document.createElement('div');
+            card.className = 'card card-custom worker-selectable';
+            card.setAttribute('role', 'button');
+            card.dataset.cf = worker.cf;
+
+            card.innerHTML = `
+                <div class="card-body">
+                    ${licenceStatus ? `<div class="overlay-card px-2 py-1 ${overlayClass}">${licenceStatus}</div>` : ''}
+                    <div class="d-flex align-items-center mb-3">
+                        <img class="rounded-circle me-3"
+                             src="https://www.gravatar.com/avatar/${btoa(worker.cf).toLowerCase()}?s=40&d=identicon"
+                             alt="${worker.name} ${worker.surname}"
+                             width="40"
+                             height="40" />
+                        <h5 class="card-title mb-0">${worker.name} ${worker.surname}</h5>
+                    </div>
+                    <div class="card-text">
+                        <div><strong>Roles:</strong> ${worker.roles?.join(', ') || 'None'}</div>
+                        <div>
+                            <strong>Certificates:</strong>
+                            ${worker.certificates?.length > 0
+                                ? worker.certificates.slice(0, 5).map(c => c.type).join(', ') + (worker.certificates.length > 5 ? '...' : '')
+                                : 'None'
+                            }
+                        </div>
+                        <div>
+                            <strong>Licences:</strong>
+                            ${worker.licences?.length > 0
+                                ? worker.licences.slice(0, 5).map(l => {
+                                    const isExpired = new Date(l.expiryDate) < now;
+                                    return isExpired ? `<span class="text-danger">${l.type}</span>` : l.type;
+                                }).join(', ') + (worker.licences.length > 5 ? '...' : '')
+                                : 'None'
+                            }
                         </div>
                     </div>
-                `;
+                </div>
+            `;
 
-                card.addEventListener('click', () => card.classList.toggle('selected'));
+            card.addEventListener('click', () => card.classList.toggle('selected'));
 
-                listItem.appendChild(card);
-                return listItem;
-            }
+            listItem.appendChild(card);
+            return listItem;
+        }
 
             async function loadWorkers() {
                 try {
