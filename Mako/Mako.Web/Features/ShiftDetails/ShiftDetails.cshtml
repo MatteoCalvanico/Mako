@@ -127,10 +127,9 @@
                     }
 
                     <div class="text-center mt-4">
-                        <a href="@Url.Action("Create", "ShiftDetails", new { shipName = Model?.ShipViewModel.Name, shipDateArrival = Model?.ShipViewModel.DateArrival })"
-                           class="btn btn-primary add-shifts-button">
-                            Add Shifts
-                        </a>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addShiftModal">
+                            Add Shift
+                        </button>
                     </div>
                 </div>
             </div>
@@ -164,9 +163,42 @@
     </div>
 </div>
 
+<!-- Add Shift Modal -->
+<div class="modal fade" id="addShiftModal" tabindex="-1" aria-labelledby="addShiftModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addShiftModalLabel">Add New Shift</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addShiftForm" asp-action="AddShift" asp-controller="ShiftDetails" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ShipName" value="@Model.ShipViewModel.Name" />
+                    <input type="hidden" name="ShipDateArrival" value="@Model.ShipViewModel.DateArrival.ToString("o")" />
+                    <input type="hidden" name="Pier" value="@Model.ShipViewModel.Pier" />
+                    <div class="mb-3">
+                        <label for="shiftDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="shiftDate" name="Date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="startTime" class="form-label">Start Time</label>
+                        <input type="time" class="form-control" id="startTime" name="StartHour" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endTime" class="form-label">End Time</label>
+                        <input type="time" class="form-control" id="endTime" name="EndHour" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Shift</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
-                document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // Initialize Bootstrap modal
             const workerModal = new bootstrap.Modal(document.getElementById('workerSelectionModal'));
             let currentShiftId = null;

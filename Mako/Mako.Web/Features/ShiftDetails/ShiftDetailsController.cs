@@ -187,5 +187,35 @@ namespace Mako.Web.Features.ShiftDetails
             var freeWorkers = await _sharedService.GetFreeWorkersForShiftAsync(shiftId);
             return Ok(freeWorkers);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual async Task<IActionResult> AddShift(AddShiftViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var command = new AddOrUpdateShiftCommand
+                {
+                    Pier = model.Pier,
+                    Date = model.Date,
+                    StartHour = model.StartHour,
+                    EndHour = model.EndHour,
+                    ShipName = model.ShipName,
+                    ShipDateArrival = model.ShipDateArrival
+                };
+
+                try
+                {
+                    await _sharedService.Handle(command);
+                    return RedirectToAction("Index", new { shipName = model.ShipName, shipDateArrival = model.ShipDateArrival });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, $"Error: {ex.Message}");
+                }
+            }
+
+            return View("ShiftDetails", model);
+        }
     }
 }

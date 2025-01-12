@@ -1,6 +1,7 @@
 ﻿using Mako.Services.Shared;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mako.Web.Features.ShiftDetails
 {
@@ -31,5 +32,15 @@ namespace Mako.Web.Features.ShiftDetails
         public int Pier { get; set; }
         public TimeSpan TimeEstimation { get; set; }
         public string CargoManifest { get; set; }
+    }
+
+    public class AddShiftViewModel
+    {
+        public int Pier { get; set; }
+        public DateOnly Date { get; set; }
+        public TimeOnly StartHour { get; set; }
+        public TimeOnly EndHour { get; set; }
+        public string ShipName { get; set; }
+        public DateTime ShipDateArrival { get; set; }
     }
 }
