@@ -130,16 +130,29 @@ namespace Mako.Web.Features.ShiftDetails
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> AddWorkerToShift(Guid shiftId, List<string> workerCfs)
+        [ValidateAntiForgeryToken]
+        public virtual async Task<IActionResult> AddWorkerToShift(Guid shiftId, [FromForm(Name = "workerCfs[]")] List<string> workerCfs)
         {
-            if (shiftId == Guid.Empty || workerCfs == null || !workerCfs.Any())
+            if (shiftId == Guid.Empty)
             {
-                return BadRequest("Invalid shift ID or worker CF.");
+                return BadRequest("Invalid shift ID.");
+            }
+
+            if (workerCfs == null || !workerCfs.Any())
+            {
+                return BadRequest("No workers selected.");
             }
 
             try
             {
-                foreach (var cf in workerCfs)
+                // First get the shift details to get the ship information
+                var shift = await _sharedService.GetShiftByIdAsync(shiftId);
+                if (shift == null)
+                {
+                    return NotFound("Shift not found.");
+                }
+
+                foreach (var cf in workerCfs.Where(cf => !string.IsNullOrEmpty(cf)))
                 {
                     var command = new AddOrUpdateShiftWorkerCommand
                     {
@@ -149,11 +162,22 @@ namespace Mako.Web.Features.ShiftDetails
 
                     await _sharedService.Handle(command);
                 }
-                return RedirectToAction("ShiftDetails");
+
+                // Get the updated shift details using the ship information
+                var updatedShifts = await GetShiftsDetailsByShip(shift.ShipName, shift.ShipDateArrival);
+                var updatedShift = updatedShifts.FirstOrDefault(s => s.Id == shiftId);
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Workers added successfully",
+                    workers = updatedShift?.Workers ?? new List<Worker>()
+                });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                // Log the exception
+                return StatusCode(500, new { success = false, message = "An error occurred while adding workers to the shift." });
             }
         }
 

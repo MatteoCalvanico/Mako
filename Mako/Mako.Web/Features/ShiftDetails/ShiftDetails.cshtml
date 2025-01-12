@@ -153,10 +153,11 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
-                <form asp-action="AddWorkerToShift" method="post" id="addWorkersForm">
-                    <input type="hidden" name="shiftId" id="shiftIdInput" />
+                <form id="addWorkersForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="shiftIdInput" name="shiftId" />
                     <div id="selectedWorkersContainer"></div>
-                    <button type="submit" class="btn btn-primary">Add Selected Workers</button>
+                    <button type="button" class="btn btn-primary" id="addSelectedWorkersBtn">Add Selected Workers</button>
                 </form>
             </div>
         </div>
@@ -165,7 +166,7 @@
 
 @section Scripts {
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+                document.addEventListener('DOMContentLoaded', function() {
             // Initialize Bootstrap modal
             const workerModal = new bootstrap.Modal(document.getElementById('workerSelectionModal'));
             let currentShiftId = null;
@@ -174,7 +175,6 @@
             initializeToggleSwitches();
             initializeTimeEditing();
             initializeWorkerHandling();
-            initializeModalHandling();
 
             function initializeToggleSwitches() {
                 document.querySelectorAll('.shift-toggle').forEach(toggle => {
@@ -198,7 +198,6 @@
                 });
             }
 
-            // Time Editing Functionality
             function initializeTimeEditing() {
                 document.querySelectorAll('.shift-time').forEach(timeElement => {
                     timeElement.addEventListener('click', function() {
@@ -259,7 +258,6 @@
                 }
             }
 
-            // Worker Handling Functionality
             function initializeWorkerHandling() {
                 // Worker deletion
                 document.addEventListener('click', function(e) {
@@ -269,6 +267,10 @@
                         handleAddWorkerClick(e);
                     }
                 });
+
+                // Initialize add selected workers button
+                const addSelectedWorkersBtn = document.getElementById('addSelectedWorkersBtn');
+                addSelectedWorkersBtn.addEventListener('click', handleAddSelectedWorkers);
             }
 
             function handleWorkerDeletion(e) {
@@ -284,23 +286,24 @@
             }
 
             function handleAddWorkerClick(e) {
-            const button = e.target.closest('.add-worker');
-            const shiftItem = button.closest('.shift-item');
+                const button = e.target.closest('.add-worker');
+                const shiftItem = button.closest('.shift-item');
 
-            if (!shiftItem.classList.contains('edit-mode')) return;
+                if (!shiftItem.classList.contains('edit-mode')) return;
 
-            currentShiftId = button.dataset.shiftId;
+                currentShiftId = button.dataset.shiftId;
+                document.getElementById('shiftIdInput').value = currentShiftId;
 
-            // Clear the modal content before showing
-            const workersList = document.querySelector('.workers-selection-list');
-            workersList.innerHTML = '';
+                // Clear the modal content before showing
+                const workersList = document.querySelector('.workers-selection-list');
+                workersList.innerHTML = '';
 
-            // Show modal first so the loading appears in the modal
-            workerModal.show();
+                // Show modal first so the loading appears in the modal
+                workerModal.show();
 
-            // Then load the workers
-            loadWorkers();
-        }
+                // Then load the workers
+                loadWorkers();
+            }
 
             function updateWorkersGrid(shiftItem) {
                 const workersGrid = shiftItem.querySelector('.workers-grid');
@@ -309,20 +312,10 @@
                 if (remainingWorkers === 0) {
                     const addWorkerContainer = workersGrid.querySelector('.add-worker-container');
                     workersGrid.innerHTML = '<p class="mt-2 me-2">No workers assigned</p>';
-                    workersGrid.appendChild(addWorkerContainer);
+                    if (addWorkerContainer) {
+                        workersGrid.appendChild(addWorkerContainer);
+                    }
                 }
-            }
-
-            function initializeModalHandling() {
-                const addSelectedWorkersBtn = document.getElementById('addSelectedWorkers');
-
-                addSelectedWorkersBtn.addEventListener('click', () => {
-                    const selectedWorkers = document.querySelectorAll('.worker-selectable.selected');
-                    addWorkersToShift(selectedWorkers);
-
-                    // Clear any 'selected' state after adding
-                    selectedWorkers.forEach(worker => worker.classList.remove('selected'));
-                });
             }
 
             function createWorkerCard(worker) {
@@ -351,9 +344,9 @@
 
                 listItem.appendChild(card);
                 return listItem;
-                }
+            }
 
-                            async function loadWorkers() {
+            async function loadWorkers() {
                 try {
                     const workersList = document.querySelector('.workers-selection-list');
 
@@ -382,36 +375,78 @@
                     const workersList = document.querySelector('.workers-selection-list');
                     workersList.innerHTML = '<div class="alert alert-danger">Error loading workers. Please try again.</div>';
                     toastr.error('Error loading workers');
-            }
+                }
             }
 
-                    
-            function addWorkersToShift(selectedWorkers) {
+            async function handleAddSelectedWorkers(e) {
+                e.preventDefault();
+
+                const selectedWorkers = document.querySelectorAll('.worker-selectable.selected');
+                const workerCfs = Array.from(selectedWorkers).map(worker => worker.dataset.cf);
+
+                if (workerCfs.length === 0) {
+                    toastr.warning('Please select at least one worker');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('shiftId', currentShiftId);
+                workerCfs.forEach(cf => formData.append('workerCfs[]', cf));
+
+                try {
+                    const response = await fetch('/ShiftDetails/AddWorkerToShift', {
+                        method: 'POST',
+                        headers: {
+                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                        },
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    // Update UI with selected workers
+                    updateWorkersUI(selectedWorkers);
+
+                    // Close the modal
+                    workerModal.hide();
+
+                    toastr.success('Workers added successfully');
+                } catch (error) {
+                    console.error('Error:', error);
+                    toastr.error('Error adding workers to shift');
+                }
+            }
+
+            function updateWorkersUI(selectedWorkers) {
                 const workersGrid = document.querySelector(`[data-shift-id="${currentShiftId}"]`)
-                        .closest('.shift-item')
-                        .querySelector('.workers-grid');
+                    .closest('.shift-item')
+                    .querySelector('.workers-grid');
 
-                const selectedWorkersContainer = document.getElementById('selectedWorkersContainer');
-                selectedWorkersContainer.innerHTML = ''; // Clear previous selections
+                // Remove "No workers assigned" message if it exists
+                const noWorkersMessage = workersGrid.querySelector('p');
+                if (noWorkersMessage) {
+                    noWorkersMessage.remove();
+                }
 
                 selectedWorkers.forEach(card => {
                     const name = card.querySelector('.card-title').textContent.trim();
                     const cf = card.dataset.cf;
 
+                    // Check if worker isn't already added
                     if (!workersGrid.querySelector(`[data-worker-cf="${cf}"]`)) {
                         const workerItem = createWorkerItem(name, cf);
-                        workersGrid.insertBefore(workerItem, workersGrid.querySelector('.add-worker-container'));
 
-                        // Add hidden input to form
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = 'workerCfs';
-                        input.value = cf;
-                        selectedWorkersContainer.appendChild(input);
+                        // Insert before the add worker button if it exists
+                        const addWorkerContainer = workersGrid.querySelector('.add-worker-container');
+                        if (addWorkerContainer) {
+                            workersGrid.insertBefore(workerItem, addWorkerContainer);
+                        } else {
+                            workersGrid.appendChild(workerItem);
+                        }
                     }
                 });
-
-                toastr.success('Workers added successfully');
             }
 
             function createWorkerItem(name, cf) {

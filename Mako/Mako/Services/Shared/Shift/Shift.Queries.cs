@@ -72,6 +72,27 @@ namespace Mako.Services.Shared
                 .ToListAsync();
         }
 
+        public async Task<ShiftDetailDTO> GetShiftByIdAsync(Guid shiftId)
+        {
+            return await _dbContext.Shifts
+                .Where(s => s.Id == shiftId)
+                .Select(s => new ShiftDetailDTO
+                {
+                    Id = s.Id,
+                    Pier = s.Pier,
+                    Date = s.Date,
+                    StartHour = s.StartHour,
+                    EndHour = s.EndHour,
+                    Workers = string.Join(", ", _dbContext.ShiftWorker
+                        .Where(sw => sw.ShiftId == s.Id)
+                        .Select(sw => sw.WorkerCf)
+                        .ToList()),
+                    ShipName = s.ShipName,
+                    ShipDateArrival = s.ShipDateArrival
+                })
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<ShiftsSelectDTO> SelectShiftsQuery(ShiftsSelectQuery query)
         {
             var shiftsQuery = _dbContext.Shifts.AsQueryable();
