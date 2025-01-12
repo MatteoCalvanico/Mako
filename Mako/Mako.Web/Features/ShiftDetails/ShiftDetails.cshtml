@@ -154,7 +154,7 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-primary" id="addSelectedWorkers">Add Selected Workers</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="addSelectedWorkers">Add Selected Workers</button>
             </div>
         </div>
     </div>
@@ -304,34 +304,13 @@
 
             function initializeModalHandling() {
                 const addSelectedWorkersBtn = document.getElementById('addSelectedWorkers');
-                const modalElement = document.getElementById('workerSelectionModal');
 
-                addSelectedWorkersBtn?.addEventListener('click', () => {
+                addSelectedWorkersBtn.addEventListener('click', () => {
                     const selectedWorkers = document.querySelectorAll('.worker-selectable.selected');
                     addWorkersToShift(selectedWorkers);
 
-                    // Clear selections
+                    // Clear any 'selected' state after adding
                     selectedWorkers.forEach(worker => worker.classList.remove('selected'));
-
-                    // Close modal using Bootstrap's hide method
-                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                    modalInstance?.hide();
-
-                    // If the above doesn't work, force remove modal classes and backdrop
-                    modalElement.classList.remove('show');
-                    modalElement.setAttribute('aria-hidden', 'true');
-                    modalElement.style.display = 'none';
-
-                    // Remove modal backdrop if it exists
-                    const backdrop = document.querySelector('.modal-backdrop');
-                    if (backdrop) {
-                        backdrop.remove();
-                    }
-
-                    // Remove modal-open class from body
-                    document.body.classList.remove('modal-open');
-                    document.body.style.overflow = '';
-                    document.body.style.paddingRight = '';
                 });
             }
 
