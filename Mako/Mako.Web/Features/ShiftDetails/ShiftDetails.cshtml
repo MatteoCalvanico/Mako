@@ -5,9 +5,6 @@
 }
 
 <div class="container">
-    <div class="d-flex justify-content-center mt-4">
-        @Html.Partial("_FilterBar", true)
-    </div>
     <div class="row">
         <!-- Left column: Ship Card (same as Shifts view) -->
         <div class="col-md-4">
@@ -76,7 +73,7 @@
                                                                     <form asp-action="RemoveWorkerFromShift" method="post">
                                                                         <input type="hidden" name="shiftId" value="@shift.Id" />
                                                                         <input type="hidden" name="workerCf" value="@worker.Cf" />
-                                                                        <button class="delete-icon">
+                                                                        <button type="submit" class="delete-icon">
                                                                             <i class="fas fa-times"></i>
                                                                         </button>
                                                                     </form>
