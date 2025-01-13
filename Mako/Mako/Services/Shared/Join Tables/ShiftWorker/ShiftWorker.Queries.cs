@@ -116,14 +116,14 @@ namespace Mako.Services.Shared
             }
         }
 
-        public async Task<List<Worker>> GetFreeWorkersForShiftAsync(Guid shiftId)
+        public async Task<List<WorkersComplexDTO.WorkerDTO>> GetFreeWorkersForShiftAsync(Guid shiftId)
         {
             // Get the shift details
             var shift = await _dbContext.Shifts
                 .FirstOrDefaultAsync(s => s.Id == shiftId);
 
             if (shift == null)
-                return new List<Worker>();
+                return new List<WorkersComplexDTO.WorkerDTO>();
 
             // Get all workers that are already assigned to this shift
             var workersInCurrentShift = await _dbContext.ShiftWorker
@@ -133,9 +133,9 @@ namespace Mako.Services.Shared
 
             // Get all workers that are assigned to other shifts on the same date with overlapping times
             var busyWorkerCfs = await _dbContext.Shifts
-                .Where(s => s.Date == shift.Date && s.Id != shiftId) // Exclude current shift
+                .Where(s => s.Date == shift.Date && s.Id != shiftId)
                 .Where(s =>
-                    (s.StartHour <= shift.EndHour && s.EndHour >= shift.StartHour) // Overlapping time check
+                    (s.StartHour <= shift.EndHour && s.EndHour >= shift.StartHour)
                 )
                 .Join(_dbContext.ShiftWorker,
                     s => s.Id,
@@ -147,12 +147,13 @@ namespace Mako.Services.Shared
             // Combine both lists of unavailable workers
             var unavailableWorkerCfs = workersInCurrentShift.Union(busyWorkerCfs).Distinct();
 
-            // Get all workers that are not in either list
-            var freeWorkers = await _dbContext.Workers
-                .Where(w => !unavailableWorkerCfs.Contains(w.Cf))
-                .ToListAsync();
+            // Get all workers using the existing complex query
+            var workersDTO = await SelectWorkersComplex(new WorkersComplexQuery { Filter = "" });
 
-            return freeWorkers;
+            // Filter out unavailable workers
+            return workersDTO.Workers
+                .Where(w => !unavailableWorkerCfs.Contains(w.Cf))
+                .ToList();
         }
     }
 }
