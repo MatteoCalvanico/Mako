@@ -34,7 +34,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item ms-5">
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Shifts" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" href="@Url.Action("Index", "Shifts")">Shifts</a>
+                            <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "Shifts" || ViewContext.RouteData.Values["controller"]?.ToString() == "ShiftDetails") && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" href="@Url.Action("Index", "Shifts")">Shifts</a>
                         </li>
                         <li class="nav-item ms-5">
                             <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" href="@Url.Action("Index", "Requests")">Requests</a>
