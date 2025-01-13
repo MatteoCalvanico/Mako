@@ -594,16 +594,24 @@ namespace Mako.Infrastructure
             }
             var worker1 = context.Workers.First(w => w.Cf == "00000000001");
             var worker2 = context.Workers.First(w => w.Cf == "PPPFNC80A01H501K");
+            var worker3 = context.Workers.First(w => w.Cf == "MMMRRRSS03463023");
+            var worker4 = context.Workers.First(w => w.Cf == "JJJDDDOOEH023403");
+            var worker5 = context.Workers.First(w => w.Cf == "GGGFFFERDE034034");
+
             var licenceA = context.Licences.First(l => l.Types == LicenceTypes.A);
             var licenceA1 = context.Licences.First(l => l.Types == LicenceTypes.A1);
             var licenceA2 = context.Licences.First(l => l.Types == LicenceTypes.A2);
-            var licenceNone = context.Licences.First(l => l.Types == LicenceTypes.None);
+            var licenceB = context.Licences.First(l => l.Types == LicenceTypes.B);
+            var licenceC = context.Licences.First(l => l.Types == LicenceTypes.C);
             var random = new Random();
             context.JoinLicences.AddRange(
                 new JoinLicence { WorkerCf = worker1.Cf, LicenceId = licenceA.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 6))) },
                 new JoinLicence { WorkerCf = worker1.Cf, LicenceId = licenceA1.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
-                new JoinLicence { WorkerCf = worker1.Cf, LicenceId = licenceA2.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) }
-                // new JoinLicence { WorkerCf = worker2.Cf, LicenceId = licenceNone.Id }
+                new JoinLicence { WorkerCf = worker1.Cf, LicenceId = licenceA2.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
+                new JoinLicence { WorkerCf = worker2.Cf, LicenceId = licenceB.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
+                new JoinLicence { WorkerCf = worker3.Cf, LicenceId = licenceC.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
+                new JoinLicence { WorkerCf = worker4.Cf, LicenceId = licenceA.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
+                new JoinLicence { WorkerCf = worker5.Cf, LicenceId = licenceB.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-1)) }
             );
             context.SaveChanges();
         }
