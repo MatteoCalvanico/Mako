@@ -60,12 +60,14 @@
                                     <a class="dropdown-item" href="/Worker/Shift/Index" onclick="">
                                         <i class="fa-solid fa-person-booth"></i>&nbsp;@SharedLocalizer["Change view"]
                                     </a>
-                                    <a class="dropdown-item" id="darkModeToggle" href="javascript:void(0)" onclick="toggleDarkMode()">
-                                        <i class="fa-solid fa-moon"></i>&nbsp;@SharedLocalizer["Dark Mode"]
-                                    </a>
-                                    <a class="dropdown-item" id="lightModeToggle" href="javascript:void(0)" onclick="toggleDarkMode()" style="display:none;">
-                                        <i class="fa-solid fa-sun"></i>&nbsp;@SharedLocalizer["Light Mode"]
-                                    </a>
+                                    <div class="theme-switch">
+                                        <a class="dropdown-item" id="darkModeToggle" href="javascript:void(0)" onclick="toggleDarkMode()">
+                                            <i class="fa-solid fa-moon"></i>&nbsp;<span class="mode-text">@SharedLocalizer["Dark Mode"]</span>
+                                        </a>
+                                        <a class="dropdown-item" id="lightModeToggle" href="javascript:void(0)" onclick="toggleDarkMode()" style="display:none;">
+                                            <i class="fa-solid fa-sun"></i>&nbsp;<span class="mode-text">@SharedLocalizer["Light Mode"]</span>
+                                        </a>
+                                    </div>
                                     <a class="dropdown-item" href="javascript:void(0)" onclick="document.getElementById('POST_LogOut').submit()">
                                         <i class="fa-solid fa-right-from-bracket"></i>&nbsp;@SharedLocalizer["Log out"]
                                     </a>
@@ -96,30 +98,62 @@
     <script type="text/javascript">
         @this.RenderAlertsWithToastify()
 
-          function setLogo(theme) {
-                const logoImg = document.getElementById('navLogo');
-                if (theme === 'dark') {
-                    logoImg.src = '@Url.Content("~/images/logo_white.svg")';
-                } else {
-                    logoImg.src = '@Url.Content("~/images/logo.svg")';
-                }
-          }
+        function setLogo(theme) {
+            const logoImg = document.getElementById('navLogo');
+            if (theme === 'dark') {
+                logoImg.src = '@Url.Content("~/images/logo_white.svg")';
+            } else {
+                logoImg.src = '@Url.Content("~/images/logo.svg")';
+            }
+        }
 
-          function toggleDarkMode() {
-              const currentTheme = document.documentElement.getAttribute('data-theme');
-              const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-              document.documentElement.setAttribute('data-theme', newTheme);
-              localStorage.setItem('theme', newTheme);
-              setLogo(newTheme);
-              setImg(newTheme); // In Request.cshtml
-           }
+        function toggleDarkMode() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
 
-            document.addEventListener('DOMContentLoaded', function () {
-              const savedTheme = localStorage.getItem('theme') || 'light';
-              document.documentElement.setAttribute('data-theme', savedTheme);
-              setLogo(savedTheme);
-              setImg(savedTheme); // In Request.cshtml
-           });
+            // Update logo and images
+            setLogo(newTheme);
+            if (typeof setImg === 'function') {
+                setImg(newTheme);
+            }
+
+            // Toggle menu items and their text
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const lightModeToggle = document.getElementById('lightModeToggle');
+
+            if (newTheme === 'dark') {
+                darkModeToggle.style.display = 'none';
+                lightModeToggle.style.display = 'block';
+            } else {
+                darkModeToggle.style.display = 'block';
+                lightModeToggle.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+
+            // Set initial logo and images
+            setLogo(savedTheme);
+            if (typeof setImg === 'function') {
+                setImg(savedTheme);
+            }
+
+            // Set initial menu items visibility
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const lightModeToggle = document.getElementById('lightModeToggle');
+
+            if (savedTheme === 'dark') {
+                darkModeToggle.style.display = 'none';
+                lightModeToggle.style.display = 'block';
+            } else {
+                darkModeToggle.style.display = 'block';
+                lightModeToggle.style.display = 'none';
+            }
+        });
     </script>
 
     @RenderSection("scripts", false)
