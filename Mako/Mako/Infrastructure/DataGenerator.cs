@@ -189,8 +189,8 @@ namespace Mako.Infrastructure
                 new Worker
                 {
                     Cf = "00000000001",
-                    Name = "Big",
-                    Surname = "Boss",
+                    Name = "admin",
+                    Surname = "admin",
 
                 },
                 new Worker
@@ -198,6 +198,27 @@ namespace Mako.Infrastructure
                     Cf = "PPPFNC80A01H501K",
                     Name = "Pippo",
                     Surname = "Franco",
+
+                },
+                new Worker
+                {
+                    Cf = "MMMRRRSS03463023",
+                    Name = "Mario",
+                    Surname = "Rossi",
+
+                },
+                new Worker
+                {
+                    Cf = "JJJDDDOOEH023403",
+                    Name = "John",
+                    Surname = "Doe",
+
+                },
+                new Worker
+                {
+                    Cf = "GGGFFFERDE034034",
+                    Name = "Gordon",
+                    Surname = "Freeman",
 
                 });
             context.SaveChanges();
@@ -225,6 +246,27 @@ namespace Mako.Infrastructure
                     Email = "admin",
                     Password = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", // SHA-256 of text "admin"
                     Cf = "00000000001",
+                },
+                new User
+                {
+                    Id = Guid.NewGuid(), 
+                    Email = "mario.rossi@mako.it",
+                    Password = "M0Cuk9OsrcS/rTLGf5SY6DUPqU2rGc1wwV2IL88GVGo=", // SHA-256 of text "Prova"
+                    Cf = "MMMRRRSS03463023",
+                },
+                new User
+                {
+                    Id = Guid.NewGuid(), 
+                    Email = "john.doe@mako.it",
+                    Password = "M0Cuk9OsrcS/rTLGf5SY6DUPqU2rGc1wwV2IL88GVGo=", // SHA-256 of text "Prova"
+                    Cf = "JJJDDDOOEH023403",
+                },
+                new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = "gordon.freeman@mako.it",
+                    Password = "M0Cuk9OsrcS/rTLGf5SY6DUPqU2rGc1wwV2IL88GVGo=", // SHA-256 of text "Prova"
+                    Cf = "GGGFFFERDE034034",
                 });
 
             context.SaveChanges();
