@@ -491,72 +491,100 @@
                 }
             }
 
-            async function handleAddSelectedWorkers(e) {
-                e.preventDefault();
+                            async function handleAddSelectedWorkers(e) {
+            e.preventDefault();
 
-                const selectedWorkers = document.querySelectorAll('.worker-selectable.selected');
-                const workerCfs = Array.from(selectedWorkers).map(worker => worker.dataset.cf);
+            const selectedWorkers = document.querySelectorAll('.worker-selectable.selected');
+            const workerCfs = Array.from(selectedWorkers).map(worker => worker.dataset.cf);
 
-                if (workerCfs.length === 0) {
-                    return;
-                }
-
-                const formData = new FormData();
-                formData.append('shiftId', currentShiftId);
-                workerCfs.forEach(cf => formData.append('workerCfs[]', cf));
-
-                try {
-                    const response = await fetch('/ShiftDetails/AddWorkerToShift', {
-                        method: 'POST',
-                        headers: {
-                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                        },
-                        body: formData
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-
-                    // Update UI with selected workers
-                    updateWorkersUI(selectedWorkers);
-
-                    // Close the modal
-                    workerModal.hide();
-                } catch (error) {
-                    console.error('Error:', error);
-                }
+            if (workerCfs.length === 0) {
+                return;
             }
 
-            function updateWorkersUI(selectedWorkers) {
-                const workersGrid = document.querySelector(`[data-shift-id="${currentShiftId}"]`)
-                    .closest('.shift-item')
-                    .querySelector('.workers-grid');
+            const formData = new FormData();
+            formData.append('shiftId', currentShiftId);
+            workerCfs.forEach(cf => formData.append('workerCfs[]', cf));
 
-                // Remove "No workers assigned" message if it exists
-                const noWorkersMessage = workersGrid.querySelector('p');
+            try {
+                const response = await fetch('/ShiftDetails/AddWorkerToShift', {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // Update UI with selected workers
+                updateWorkersUI(selectedWorkers);
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+                    function updateWorkersUI(selectedWorkers) {
+            // First find the shift item that contains our workers grid
+            const shiftItem = document.querySelector(`.shift-item:has([data-shift-id="${currentShiftId}"])`);
+            if (!shiftItem) {
+                console.error('Could not find shift item');
+                return;
+            }
+
+            // Then find the workers grid within that shift item
+            let workersGrid = shiftItem.querySelector('.workers-grid');
+
+            // If there's no workers grid yet (first worker being added), create one
+            if (!workersGrid) {
+                const workersSection = shiftItem.querySelector('.workers-section');
+                const container = workersSection.querySelector('.d-flex.align-items-center.gap-2');
+
+                // Remove the "No workers assigned" message if it exists
+                const noWorkersMessage = container.querySelector('p');
                 if (noWorkersMessage) {
                     noWorkersMessage.remove();
                 }
 
-                selectedWorkers.forEach(card => {
-                    const name = card.querySelector('.card-title').textContent.trim();
-                    const cf = card.dataset.cf;
-
-                    // Check if worker isn't already added
-                    if (!workersGrid.querySelector(`[data-worker-cf="${cf}"]`)) {
-                        const workerItem = createWorkerItem(name, cf);
-
-                        // Insert before the add worker button if it exists
-                        const addWorkerContainer = workersGrid.querySelector('.add-worker-container');
-                        if (addWorkerContainer) {
-                            workersGrid.insertBefore(workerItem, addWorkerContainer);
-                        } else {
-                            workersGrid.appendChild(workerItem);
-                        }
-                    }
-                });
+                // Create the workers grid
+                workersGrid = document.createElement('div');
+                workersGrid.className = 'workers-grid';
+                container.appendChild(workersGrid);
             }
+
+            // Get the add worker container if it exists
+            const addWorkerContainer = shiftItem.querySelector('.add-worker-container');
+            if (addWorkerContainer) {
+                // Temporarily remove it so we can add it back at the end
+                addWorkerContainer.remove();
+            }
+
+            // Add the selected workers
+            selectedWorkers.forEach(card => {
+                const name = card.querySelector('.card-title').textContent.trim();
+                const cf = card.dataset.cf;
+
+                // Check if worker isn't already added
+                if (!workersGrid.querySelector(`[data-worker-cf="${cf}"]`)) {
+                    const workerItem = createWorkerItem(name, cf);
+                    workersGrid.appendChild(workerItem);
+                }
+            });
+
+            // Add back the add worker container at the end if it exists
+            if (addWorkerContainer) {
+                workersGrid.appendChild(addWorkerContainer);
+            }
+
+            // Close the modal
+            const modalElement = document.getElementById('workerSelectionModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) {
+                modal.hide();
+            }
+        }
 
             function createWorkerItem(name, cf) {
                 const workerItem = document.createElement('div');
