@@ -150,7 +150,6 @@
             </div>
             <div class="modal-footer justify-content-center">
                 <form id="addWorkersForm">
-                    @Html.AntiForgeryToken()
                     <input type="hidden" id="shiftIdInput" name="shiftId" />
                     <div id="selectedWorkersContainer"></div>
                     <button type="button" class="btn btn-primary" id="addSelectedWorkersBtn">Add Selected Workers</button>
@@ -170,7 +169,6 @@
             </div>
             <div class="modal-body">
                 <form id="addShiftForm" asp-action="AddShift" asp-controller="ShiftDetails" method="post">
-                    @Html.AntiForgeryToken()
                     <input type="hidden" name="ShipName" value="@Model.ShipViewModel.Name" />
                     <input type="hidden" name="ShipDateArrival" value="@Model.ShipViewModel.DateArrival.ToString("o")" />
                     <input type="hidden" name="Pier" value="@Model.ShipViewModel.Pier" />
