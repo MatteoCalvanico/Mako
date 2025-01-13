@@ -130,7 +130,6 @@ namespace Mako.Web.Features.ShiftDetails
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public virtual async Task<IActionResult> AddWorkerToShift(Guid shiftId, [FromForm(Name = "workerCfs[]")] List<string> workerCfs)
         {
             if (shiftId == Guid.Empty)
@@ -189,7 +188,6 @@ namespace Mako.Web.Features.ShiftDetails
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public virtual async Task<IActionResult> AddShift(AddShiftViewModel model)
         {
             if (ModelState.IsValid)
@@ -219,7 +217,6 @@ namespace Mako.Web.Features.ShiftDetails
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public virtual async Task<IActionResult> RemoveWorkerFromShift([FromBody] RemoveWorkerModel model)
         {
             if (model.ShiftId == Guid.Empty || string.IsNullOrEmpty(model.WorkerCf))
@@ -240,7 +237,6 @@ namespace Mako.Web.Features.ShiftDetails
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public virtual async Task<IActionResult> UpdateShiftTime([FromBody] UpdateShiftTimeModel model)
         {
             if (model.ShiftId == Guid.Empty)
