@@ -133,7 +133,7 @@ namespace Mako.Services.Shared
 
             // Get all workers that are assigned to other shifts on the same date with overlapping times
             var busyWorkerCfs = await _dbContext.Shifts
-                .Where(s => s.Date == shift.Date && s.Id != shiftId)
+                .Where(s => s.Date.ToDateTime(TimeOnly.MinValue) == shift.Date.ToDateTime(TimeOnly.MinValue) && s.Id != shiftId)
                 .Where(s =>
                     (s.StartHour <= shift.EndHour && s.EndHour >= shift.StartHour)
                 )
@@ -144,8 +144,18 @@ namespace Mako.Services.Shared
                 .Distinct()
                 .ToListAsync();
 
-            // Combine both lists of unavailable workers
-            var unavailableWorkerCfs = workersInCurrentShift.Union(busyWorkerCfs).Distinct();
+            // Get all workers that are on holiday during the shift date
+            var holidayWorkerCfs = await _dbContext.RequestsHolidays
+                .Where(rh => rh.State == RequestState.Accepted && rh.StartDate <= shift.Date.ToDateTime(TimeOnly.MinValue) && rh.EndDate >= shift.Date.ToDateTime(TimeOnly.MinValue))
+                .Select(rh => rh.WorkerCf)
+                .Distinct()
+                .ToListAsync();
+
+            // Combine all lists of unavailable workers
+            var unavailableWorkerCfs = workersInCurrentShift
+                .Union(busyWorkerCfs)
+                .Union(holidayWorkerCfs)
+                .Distinct();
 
             // Get all workers using the existing complex query
             var workersDTO = await SelectWorkersComplex(new WorkersComplexQuery { Filter = "" });
