@@ -436,6 +436,9 @@ namespace Mako.Infrastructure
 
             var worker1 = context.Workers.First(w => w.Cf == "00000000001");
             var worker2 = context.Workers.First(w => w.Cf == "PPPFNC80A01H501K");
+            var worker3 = context.Workers.First(w => w.Cf == "MMMRRRSS03463023");
+            var worker4 = context.Workers.First(w => w.Cf == "JJJDDDOOEH023403");
+            var worker5 = context.Workers.First(w => w.Cf == "GGGFFFERDE034034");
 
             var roleWorker = context.Roles.First(r => r.Type == RoleTypes.Worker);
             var roleCraneOp = context.Roles.First(r => r.Type == RoleTypes.CraneOperator);
@@ -445,10 +448,13 @@ namespace Mako.Infrastructure
 
             context.WorkerRoles.AddRange(
                 new WorkerRole { WorkerCf = worker1.Cf, RoleId = roleWorker.Id },
-                new WorkerRole { WorkerCf = worker1.Cf, RoleId = roleCraneOp.Id },
                 new WorkerRole { WorkerCf = worker1.Cf, RoleId = roleShiftAdmin.Id },
-                new WorkerRole { WorkerCf = worker1.Cf, RoleId = roleDriver.Id },
-                new WorkerRole { WorkerCf = worker2.Cf, RoleId = roleCraneOp.Id }
+                new WorkerRole { WorkerCf = worker2.Cf, RoleId = roleCraneOp.Id },
+                new WorkerRole { WorkerCf = worker2.Cf, RoleId = roleWorker.Id },
+                new WorkerRole { WorkerCf = worker3.Cf, RoleId = roleDriver.Id },
+                new WorkerRole { WorkerCf = worker3.Cf, RoleId = roleWorker.Id },
+                new WorkerRole { WorkerCf = worker4.Cf, RoleId = roleWorker.Id },
+                new WorkerRole { WorkerCf = worker5.Cf, RoleId = roleWorker.Id }
             );
 
             context.SaveChanges();
@@ -560,6 +566,10 @@ namespace Mako.Infrastructure
             }
             var worker1 = context.Workers.First(w => w.Cf == "00000000001");
             var worker2 = context.Workers.First(w => w.Cf == "PPPFNC80A01H501K");
+            var worker3 = context.Workers.First(w => w.Cf == "MMMRRRSS03463023");
+            var worker4 = context.Workers.First(w => w.Cf == "JJJDDDOOEH023403");
+            var worker5 = context.Workers.First(w => w.Cf == "GGGFFFERDE034034");
+
             var certificationExplosives = context.Certifications.First(c => c.Types == CertificationTypes.Explosives);
             var certificationWeapons = context.Certifications.First(c => c.Types == CertificationTypes.Weapons);
             var certificationChemicals = context.Certifications.First(c => c.Types == CertificationTypes.Chemicals);
@@ -568,7 +578,6 @@ namespace Mako.Infrastructure
             context.JoinCertifications.AddRange(
                 new JoinCertification { WorkerCf = worker1.Cf, CertificationId = certificationExplosives.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
                 new JoinCertification { WorkerCf = worker1.Cf, CertificationId = certificationWeapons.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
-                new JoinCertification { WorkerCf = worker1.Cf, CertificationId = certificationChemicals.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
                 new JoinCertification { WorkerCf = worker2.Cf, CertificationId = certificationNone.Id }
             );
             context.SaveChanges();
