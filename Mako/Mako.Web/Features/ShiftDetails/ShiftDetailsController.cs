@@ -192,6 +192,21 @@ namespace Mako.Web.Features.ShiftDetails
         {
             if (ModelState.IsValid)
             {
+                // Ottieni i dettagli della nave per verificare le date
+                var shipDetails = await GetShipDetailsById(model.ShipName, model.ShipDateArrival);
+                if (shipDetails == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Ship not found.");
+                    return View("ShiftDetails", model);
+                }
+
+                // Verifica se la data dello shift è valida
+                if (model.Date.ToDateTime(TimeOnly.MinValue) < shipDetails.DateArrival || model.Date.ToDateTime(TimeOnly.MinValue) > shipDetails.DateDeparture)
+                {
+                    ModelState.AddModelError(string.Empty, "Shift date must be between the ship's arrival and departure dates.");
+                    return BadRequest("Shift date must be between the ship's arrival and departure dates.");
+                }
+
                 var command = new AddOrUpdateShiftCommand
                 {
                     Pier = model.Pier,
