@@ -578,7 +578,10 @@ namespace Mako.Infrastructure
             context.JoinCertifications.AddRange(
                 new JoinCertification { WorkerCf = worker1.Cf, CertificationId = certificationExplosives.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
                 new JoinCertification { WorkerCf = worker1.Cf, CertificationId = certificationWeapons.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
-                new JoinCertification { WorkerCf = worker2.Cf, CertificationId = certificationNone.Id }
+                new JoinCertification { WorkerCf = worker2.Cf, CertificationId = certificationNone.Id },
+                new JoinCertification { WorkerCf = worker3.Cf, CertificationId = certificationChemicals.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
+                new JoinCertification { WorkerCf = worker4.Cf, CertificationId = certificationExplosives.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) },
+                new JoinCertification { WorkerCf = worker5.Cf, CertificationId = certificationWeapons.Id, ExpireDate = DateOnly.FromDateTime(DateTime.Now.AddDays(random.Next(1, 365))) }
             );
             context.SaveChanges();
         }
